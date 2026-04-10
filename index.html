@@ -3,134 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AVODOD | Al-Jabr va Al-Muqobala</title>
+    <title>AVODOD | Al-Xorazmiy</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Lora&family=Inter:wght@400;900&display=swap" rel="stylesheet">
     <style>
-        /* ISLOMIY NAQSHLAR (Patterns) */
-        .pattern-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; opacity: 0.05; z-index: 1;
-            background-image: url('https://www.transparenttextures.com/patterns/islamic-art.png');
-        }
-
-        /* DYNAMIK RANG TIZIMI */
         :root {
             --bg: #F0F9FF; --text: #075985; --sidebar: #E0F2FE;
-            --ornament: #D4AF37; --border: #BAE6FD; --card: rgba(255,255,255,0.8);
+            --ornament: #D4AF37; --border: #BAE6FD; --card: #ffffff;
         }
         body.book-mode {
             --bg: #FDF8E1; --text: #451A03; --sidebar: #FEF3C7;
-            --ornament: #B45309; --border: #FDE68A; --card: rgba(255,252,232,0.9);
+            --ornament: #B45309; --border: #FDE68A; --card: #FFFCF0;
         }
         body.night-mode {
             --bg: #020617; --text: #BAE6FD; --sidebar: #0F172A;
-            --ornament: #EAB308; --border: #1E293B; --card: rgba(15,23,42,0.9);
+            --ornament: #EAB308; --border: #1E293B; --card: #0F172A;
         }
 
-        body { 
-            background-color: var(--bg); color: var(--text); 
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            font-family: 'Inter', sans-serif; margin: 0; 
-        }
-
-        /* SIDEBAR (MEHROB USLUBIDA) */
+        body { background-color: var(--bg); color: var(--text); transition: 0.5s; font-family: 'Inter', sans-serif; }
+        
+        /* SIDEBAR */
         #sidebar {
             position: fixed; top: 0; left: 0; bottom: 0; width: 300px;
-            background: var(--sidebar); border-right: 2px solid var(--ornament);
+            background: var(--sidebar); border-right: 3px solid var(--ornament);
             z-index: 1000; transform: translateX(-100%); transition: 0.4s;
         }
         #sidebar.open { transform: translateX(0); }
-        @media (min-width: 1024px) {
-            #sidebar { transform: translateX(0); }
-            main { margin-left: 300px; }
-            #menu-toggle { display: none; }
-        }
+        @media (min-width: 1024px) { #sidebar { transform: translateX(0); } main { margin-left: 300px; } }
 
-        /* CHAPTER ITEMS */
         .chapter-item {
-            padding: 20px; border-bottom: 1px solid var(--border);
-            cursor: pointer; transition: 0.3s; display: flex; align-items: center;
+            padding: 18px 25px; border-bottom: 1px solid var(--border);
+            cursor: pointer; transition: 0.3s; font-size: 14px;
         }
-        .chapter-item:hover { background: var(--ornament); color: white; }
-        .chapter-item.active { 
-            background: var(--bg); border-left: 8px solid var(--ornament);
-            font-weight: 900; color: var(--ornament);
-        }
+        .chapter-item.active { background: var(--bg); border-left: 10px solid var(--ornament); font-weight: 900; }
 
-        /* HEADER (SAMARQANDCHA ARKALI) */
+        /* HEADER */
         header {
-            position: fixed; top: 0; right: 0; left: 0; height: 70px;
-            background: var(--bg); border-bottom: 3px double var(--ornament);
+            position: fixed; top: 0; right: 0; left: 0; height: 80px;
+            background: var(--bg); border-bottom: 2px solid var(--ornament);
             display: flex; align-items: center; justify-content: space-between;
-            padding: 0 20px; z-index: 950;
+            padding: 0 25px; z-index: 950;
         }
         @media (min-width: 1024px) { header { left: 300px; } }
 
-        /* BUTTONS (REJIMLAR) */
-        .theme-btn {
-            padding: 6px 15px; font-size: 10px; font-weight: 900;
-            border: 1px solid var(--ornament); border-radius: 4px;
-            transition: 0.3s; cursor: pointer;
+        /* MATN BLOKLARI (JUFTLIK) */
+        .content-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
         }
+        /* Mehrob belgisi */
+        .content-card::before {
+            content: "✦"; position: absolute; top: 15px; left: 50%;
+            transform: translateX(-50%); color: var(--ornament); opacity: 0.5;
+        }
+
+        .arab-text { font-family: 'Amiri', serif; text-align: right; line-height: 2.5; margin-bottom: 30px; }
+        .uzb-text { font-family: 'Lora', serif; line-height: 1.8; border-top: 1px dashed var(--border); pt: 25px; }
+        .izoh-text { font-size: 14px; opacity: 0.7; font-style: italic; margin-top: 20px; color: var(--ornament); }
+
+        .theme-btn { padding: 5px 15px; font-size: 10px; font-weight: 900; border: 1px solid var(--ornament); cursor: pointer; border-radius: 5px; }
         .theme-btn.active { background: var(--ornament); color: var(--bg); }
-
-        /* READER AREA */
-        .reader-box { 
-            position: relative; z-index: 2; padding: 100px 25px; 
-            max-width: 800px; margin: 0 auto; 
-        }
-        .font-arab { font-family: 'Amiri', serif; }
-        .font-serif { font-family: 'Lora', serif; }
-
-        /* BOTTOM NAVIGATION */
-        .bottom-nav {
-            position: fixed; bottom: 0; right: 0; left: 0; height: 70px;
-            background: var(--sidebar); border-top: 2px solid var(--ornament);
-            display: flex; z-index: 900;
-        }
-        @media (min-width: 1024px) { .bottom-nav { left: 300px; } }
-        .tab { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; cursor: pointer; opacity: 0.5; }
-        .tab.active { opacity: 1; color: var(--ornament); border-top: 4px solid var(--ornament); }
     </style>
 </head>
-<body class="day-mode"> <!-- Default: Kun rejimi -->
-
-    <div class="pattern-overlay"></div>
+<body class="day-mode">
 
     <!-- SIDEBAR -->
     <aside id="sidebar">
         <div class="p-10 border-b-4 border-double border-[var(--ornament)]">
-            <h1 class="text-3xl font-black uppercase tracking-tighter">Avodod</h1>
-            <p class="text-[8px] tracking-[5px] opacity-60 mt-2">Meros Portali</p>
+            <h1 class="text-xs tracking-[4px] opacity-50 uppercase mb-2">Al-Xorazmiy</h1>
+            <h2 class="text-xl font-black uppercase leading-tight">Al-Jabr va Al-Muqobala</h2>
         </div>
         <div id="chapters-list" class="overflow-y-auto h-full pb-40"></div>
     </aside>
 
     <!-- HEADER -->
     <header>
-        <button id="menu-toggle" onclick="toggleSidebar()" class="text-2xl p-2">☰</button>
-        <h2 id="chapter-title" class="font-black text-[10px] uppercase tracking-widest truncate">Mundarija</h2>
+        <button onclick="toggleSidebar()" class="lg:hidden text-2xl">☰</button>
+        <div class="text-center lg:text-left">
+            <p class="text-[9px] font-bold tracking-[3px] opacity-50">HOZIRGI BOB:</p>
+            <h3 id="chapter-title" class="font-black text-sm uppercase">Yuklanmoqda...</h3>
+        </div>
         <div class="flex gap-2">
-            <div onclick="setTheme('day')" id="btn-day" class="theme-btn active">KUN</div>
-            <div onclick="setTheme('book')" id="btn-book" class="theme-btn">KITOB</div>
-            <div onclick="setTheme('night')" id="btn-night" class="theme-btn">TUN</div>
+            <button onclick="setTheme('day')" id="b-day" class="theme-btn active">KUN</button>
+            <button onclick="setTheme('book')" id="b-book" class="theme-btn">KITOB</button>
+            <button onclick="setTheme('night')" id="b-night" class="theme-btn">TUN</button>
         </div>
     </header>
 
-    <!-- CONTENT -->
-    <main class="reader-box">
-        <div id="win-arab" class="hidden"></div>
-        <div id="win-tarjima" class="block"></div>
-        <div id="win-izoh" class="hidden"></div>
+    <!-- READER AREA -->
+    <main class="pt-32 pb-20 px-6 max-w-4xl mx-auto">
+        <div id="main-content">
+            <!-- Bu yerda Arabcha + Tarjima juftlikda chiqadi -->
+        </div>
     </main>
-
-    <!-- BOTTOM NAV -->
-    <nav class="bottom-nav">
-        <div onclick="switchMode('arab')" id="tab-arab" class="tab"><span>ARABCHA</span></div>
-        <div onclick="switchMode('tarjima')" id="tab-tarjima" class="tab active"><span>TARJIMA</span></div>
-        <div onclick="switchMode('izoh')" id="tab-izoh" class="tab"><span>IZOH</span></div>
-    </nav>
 
     <script>
         let fullBookData = [];
@@ -141,13 +112,12 @@
                 fullBookData = await res.json();
                 renderSidebar();
                 openChapter(0);
-            } catch (e) { console.error(e); }
+            } catch (e) { alert("Xatolik: JSON topilmadi"); }
         }
 
         function renderSidebar() {
-            const list = document.getElementById('chapters-list');
-            list.innerHTML = fullBookData.map((bob, index) => `
-                <div class="chapter-item" id="ch-${index}" onclick="openChapter(${index})">
+            document.getElementById('chapters-list').innerHTML = fullBookData.map((bob, i) => `
+                <div class="chapter-item" id="ch-${i}" onclick="openChapter(${i})">
                     ${bob.bob_nomi}
                 </div>
             `).join('');
@@ -155,19 +125,32 @@
 
         function openChapter(index) {
             const bob = fullBookData[index];
-            if (!bob.matnlar || bob.matnlar.length === 0) return alert("Bo'sh bob");
+            if (!bob.matnlar || bob.matnlar.length === 0) return alert("Bu bob bo'sh.");
+            
             document.getElementById('chapter-title').innerText = bob.bob_nomi;
             document.querySelectorAll('.chapter-item').forEach(el => el.classList.remove('active'));
             document.getElementById(`ch-${index}`).classList.add('active');
-            if (window.innerWidth < 1024) toggleSidebar();
-            renderContent(bob.matnlar);
+            
+            if (window.innerWidth < 1024) document.getElementById('sidebar').classList.remove('open');
+            
+            renderCards(bob.matnlar);
             window.scrollTo({top: 0, behavior: 'smooth'});
         }
 
-        function renderContent(data) {
-            document.getElementById('win-arab').innerHTML = data.map(d => `<div class="mb-20 text-right"><p class="font-arab text-5xl leading-[2.5]">${d.arabcha_matn}</p></div>`).join('');
-            document.getElementById('win-tarjima').innerHTML = data.map(d => `<div class="mb-20"><span class="text-[9px] opacity-40 font-bold tracking-[3px] mb-4 block">${d.id}</span><p class="font-serif text-3xl leading-snug">${d.tarjima}</p></div>`).join('');
-            document.getElementById('win-izoh').innerHTML = data.map(d => `<div class="bg-[var(--sidebar)] p-10 rounded-3xl italic mb-10 border-l-8 border-[var(--ornament)]"><p class="text-xl opacity-80">${d.izoh}</p></div>`).join('');
+        function renderCards(data) {
+            // ENG MUHIM O'ZGARISH: Arabcha va Tarjimani bitta "card" ichiga birlashtirdik
+            document.getElementById('main-content').innerHTML = data.map(d => `
+                <div class="content-card">
+                    <span class="text-[9px] font-black opacity-30 tracking-widest block mb-6">№ ${d.id}</span>
+                    
+                    <div class="arab-text text-4xl md:text-5xl">${d.arabcha_matn}</div>
+                    
+                    <div class="uzb-text">
+                        <p class="text-2xl md:text-3xl">${d.tarjima}</p>
+                        ${d.izoh ? `<p class="izoh-text">Izoh: ${d.izoh}</p>` : ''}
+                    </div>
+                </div>
+            `).join('');
         }
 
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
@@ -175,15 +158,7 @@
         function setTheme(mode) {
             document.body.className = mode + '-mode';
             document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('btn-' + mode).classList.add('active');
-        }
-
-        function switchMode(m) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.getElementById('tab-' + m).classList.add('active');
-            ['arab', 'tarjima', 'izoh'].forEach(v => {
-                document.getElementById('win-' + v).style.display = (v === m ? 'block' : 'none');
-            });
+            document.getElementById('b-' + mode).classList.add('active');
         }
 
         initApp();
