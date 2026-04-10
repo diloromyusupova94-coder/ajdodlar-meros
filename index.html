@@ -7,68 +7,134 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Lora&family=Inter:wght@400;900&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #F0F9FF; --text: #075985; --sidebar: #E0F2FE; --ornament: #D4AF37; --border: #BAE6FD; --card: #ffffff; --arab-size: 48px; --uzb-size: 28px; }
-        body.book-mode { --bg: #FDF8E1; --text: #451A03; --sidebar: #FEF3C7; --ornament: #B45309; --border: #FDE68A; --card: #FFFCF0; }
-        body.night-mode { --bg: #020617; --text: #BAE6FD; --sidebar: #0F172A; --ornament: #EAB308; --border: #1E293B; --card: #0F172A; }
+        :root { --bg: #FDF8E1; --text: #451A03; --ornament: #B45309; --border: #FDE68A; --card: #FFFCF0; --arab-size: 48px; --uzb-size: 28px; }
+        body.day-mode { --bg: #F0F9FF; --text: #075985; --ornament: #D4AF37; --border: #BAE6FD; --card: #ffffff; }
+        body.night-mode { --bg: #020617; --text: #BAE6FD; --ornament: #EAB308; --border: #1E293B; --card: #0F172A; }
 
         body { background-color: var(--bg); color: var(--text); transition: 0.5s; font-family: 'Inter', sans-serif; min-height: 100vh; margin: 0; }
         
-        /* HEADER */
-        .top-nav { position: fixed; top: 0; left: 0; right: 0; height: 80px; background: var(--bg); border-bottom: 2px solid var(--ornament); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 1000; }
-        .logo { font-weight: 900; font-size: 18px; letter-spacing: -1px; }
+        .top-nav { position: fixed; top: 0; left: 0; right: 0; height: 80px; background: var(--bg); border-bottom: 2px solid var(--ornament); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .logo { font-weight: 900; font-size: 24px; color: var(--text); text-decoration: none; }
         
-        /* GRID */
-        .selection-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; padding: 110px 20px 40px; }
+        .selection-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; padding: 110px 20px 40px; max-width: 1200px; margin: 0 auto; }
         .item-card { background: var(--card); border: 2px solid var(--border); padding: 40px; border-radius: 20px; cursor: pointer; transition: 0.3s; text-align: center; }
-        .item-card:hover { border-color: var(--ornament); transform: translateY(-5px); }
+        .item-card:hover { border-color: var(--ornament); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .item-card h2 { font-weight: 800; font-size: 1.25rem; }
         
-        /* READER */
-        .content-card { background: var(--card); border-radius: 25px; padding: 45px; margin-bottom: 40px; border: 1px solid var(--border); }
+        .content-card { background: var(--card); border-radius: 25px; padding: 45px; margin-bottom: 40px; border: 1px solid var(--border); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
         .arab-text { font-family: 'Amiri', serif; text-align: right; line-height: 2.2; margin-bottom: 30px; font-size: var(--arab-size); }
         .uzb-text { font-family: 'Lora', serif; border-top: 1px dashed var(--border); padding-top: 25px; font-size: var(--uzb-size); }
+        
         .font-control { display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.05); padding: 4px 12px; border-radius: 8px; border: 1px solid var(--border); }
-        .theme-btn { padding: 6px 14px; font-size: 10px; font-weight: 900; border: 1px solid var(--ornament); border-radius: 6px; cursor: pointer; }
-        .theme-btn.active { background: var(--ornament); color: var(--bg); }
-        .size-btn { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; background: var(--ornament); color: white; border-radius: 4px; cursor: pointer; border: none; }
+        .theme-btn { padding: 6px 14px; font-size: 10px; font-weight: 900; border: 1px solid var(--ornament); border-radius: 6px; cursor: pointer; background: transparent; color: var(--text); }
+        .theme-btn.active { background: var(--ornament); color: white; }
+        .size-btn { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; background: var(--ornament); color: white; border-radius: 4px; cursor: pointer; border: none; font-weight: bold; }
+        
+        .hidden { display: none !important; }
     </style>
 </head>
-<body onload="init()"> <header class="top-nav">
+<body>
+
+    <header class="top-nav">
         <div class="flex items-center gap-4">
-            <button id="back-btn" onclick="goBack()" class="hidden text-2xl">←</button>
+            <button id="back-btn" onclick="goBack()" class="hidden text-2xl font-bold">←</button>
             <div class="logo">AVODOD</div>
         </div>
 
-        <div id="controls" class="hidden flex gap-3">
+        <div id="controls" class="hidden flex items-center gap-3">
             <div class="font-control"><span class="text-[10px] font-bold">ع</span><button onclick="changeFontSize('arab', -4)" class="size-btn">-</button><button onclick="changeFontSize('arab', 4)" class="size-btn">+</button></div>
             <div class="font-control"><span class="text-[10px] font-bold">UZ</span><button onclick="changeFontSize('uzb', -2)" class="size-btn">-</button><button onclick="changeFontSize('uzb', 2)" class="size-btn">+</button></div>
-            <input type="text" id="search-input" onkeyup="liveSearch()" placeholder="Izlash..." class="bg-white/10 text-[10px] border border-[var(--ornament)] rounded-lg px-3 w-20 outline-none">
+            <input type="text" id="search-input" onkeyup="liveSearch()" placeholder="Izlash..." class="bg-white/10 text-xs border border-[var(--ornament)] rounded-lg px-3 py-1 w-24 md:w-40 outline-none">
         </div>
 
         <div class="flex gap-2">
-            <button onclick="setTheme('day')" id="t-day" class="theme-btn active">KUN</button>
-            <button onclick="setTheme('book')" id="t-book" class="theme-btn">KITOB</button>
+            <button onclick="setTheme('day')" id="t-day" class="theme-btn">KUN</button>
+            <button onclick="setTheme('book')" id="t-book" class="theme-btn active">KITOB</button>
             <button onclick="setTheme('night')" id="t-night" class="theme-btn">TUN</button>
         </div>
     </header>
 
-    <main id="app-container"></main>
+    <main id="app-container">
+        <!-- Bu yerga JS orqali kontent tushadi -->
+    </main>
 
     <script>
-        let currentState = 'olimlar';
-        let history = []; // Orqaga qaytish uchun tarix
-        
+        // MA'LUMOTLAR
         const database = {
             "xorazmiy": { "ism": "Muhammad al-Xorazmiy", "asarlar": { "al-jabr": { "nomi": "Al-Jabr va Al-Muqobala", "file": "al-jabr.json" } } },
             "beruniy": { "ism": "Abu Rayhon Beruniy", "asarlar": { "hindiston": { "nomi": "Tahqiq ma lil-Hind", "file": "hindiston.json" } } }
         };
 
-        function init() { renderOlimlar(); }
+        let currentView = 'olimlar';
+        let currentOlim = null;
 
-        function changeFontSize(type, delta) {
-            const root = document.documentElement;
-            const variable = `--${type}-size`;
-            const currentSize = parseInt(getComputedStyle(root).getPropertyValue(variable));
-            root.style.setProperty(variable, (currentSize + delta) + "px");
+        // FUNKSIYALAR
+        function renderOlimlar() {
+            currentView = 'olimlar';
+            document.getElementById('back-btn').classList.add('hidden');
+            document.getElementById('controls').classList.add('hidden');
+            
+            let html = '<div class="selection-grid">';
+            for (let key in database) {
+                html += `<div class="item-card" onclick="selectOlim('${key}')"><h2>${database[key].ism}</h2></div>`;
+            }
+            html += '</div>';
+            document.getElementById('app-container').innerHTML = html;
+        }
+
+        function selectOlim(key) {
+            currentOlim = key;
+            currentView = 'asarlar';
+            document.getElementById('back-btn').classList.remove('hidden');
+            
+            let html = '<div class="selection-grid">';
+            for (let asarKey in database[key].asarlar) {
+                html += `<div class="item-card" onclick="selectAsar('${key}', '${asarKey}')"><h2>${database[key].asarlar[asarKey].nomi}</h2></div>`;
+            }
+            html += '</div>';
+            document.getElementById('app-container').innerHTML = html;
+        }
+
+        async function selectAsar(olimKey, asarKey) {
+            currentView = 'boblar';
+            try {
+                const res = await fetch(`sources/${olimKey}/${database[olimKey].asarlar[asarKey].file}`);
+                const data = await res.json();
+                let html = '<div class="selection-grid">';
+                data.forEach((bob) => {
+                    const matnlar = JSON.stringify(bob.matnlar).replace(/"/g, '&quot;');
+                    html += `<div class="item-card" onclick="renderReader(${matnlar}, '${bob.bob_nomi}')"><h2>${bob.bob_nomi}</h2></div>`;
+                });
+                html += '</div>';
+                document.getElementById('app-container').innerHTML = html;
+            } catch(e) { 
+                alert("Fayl topilmadi! (sources/" + olimKey + " papkasini tekshiring)"); 
+            }
+        }
+
+        function renderReader(matnlar, bobNomi) {
+            currentView = 'matn';
+            document.getElementById('controls').classList.remove('hidden');
+            
+            let html = '<div class="max-w-4xl mx-auto pt-32 px-6 pb-20">';
+            matnlar.forEach(d => {
+                html += `
+                    <div class="content-card">
+                        <div class="arab-text">${d.arabcha_matn}</div>
+                        <div class="uzb-text">
+                            <p>${d.tarjima}</p>
+                            ${d.izoh ? `<p class="mt-4 text-sm italic opacity-60">Izoh: ${d.izoh}</p>` : ''}
+                        </div>
+                    </div>`;
+            });
+            html += '</div>';
+            document.getElementById('app-container').innerHTML = html;
+            window.scrollTo(0, 0);
+        }
+
+        function goBack() {
+            if (currentView === 'asarlar') renderOlimlar();
+            else if (currentView === 'boblar' || currentView === 'matn') selectOlim(currentOlim);
         }
 
         function liveSearch() {
@@ -78,57 +144,11 @@
             });
         }
 
-        function renderOlimlar() {
-            currentState = 'olimlar';
-            history = [];
-            updateNav("AVODOD | Olimlar", false);
-            let html = '<div class="selection-grid">';
-            for (let key in database) html += `<div class="item-card" onclick="selectOlim('${key}')"><h2>${database[key].ism}</h2></div>`;
-            document.getElementById('app-container').innerHTML = html + '</div>';
-        }
-
-        function selectOlim(key) {
-            history.push('olimlar');
-            currentState = 'asarlar';
-            updateNav(database[key].ism, true);
-            let html = '<div class="selection-grid">';
-            for (let asarKey in database[key].asarlar) html += `<div class="item-card" onclick="selectAsar('${key}', '${asarKey}')"><h2>${database[key].asarlar[asarKey].nomi}</h2></div>`;
-            document.getElementById('app-container').innerHTML = html + '</div>';
-        }
-
-        async function selectAsar(olimKey, asarKey) {
-            history.push('asarlar');
-            currentState = 'boblar';
-            try {
-                const res = await fetch(`sources/${olimKey}/${database[olimKey].asarlar[asarKey].file}`);
-                const data = await res.json();
-                let html = '<div class="selection-grid">';
-                data.forEach((bob, i) => html += `<div class="item-card" onclick="renderReader(${JSON.stringify(bob.matnlar).replace(/"/g, '&quot;')}, '${bob.bob_nomi}')"><h2>${bob.bob_nomi}</h2></div>`);
-                document.getElementById('app-container').innerHTML = html + '</div>';
-            } catch(e) { console.error(e); alert("Fayl topilmadi!"); }
-        }
-
-        function renderReader(matnlar, bobNomi) {
-            history.push('boblar');
-            currentState = 'matn';
-            updateNav(bobNomi, true);
-            document.getElementById('controls').classList.remove('hidden');
-            let html = '<div class="max-w-4xl mx-auto pt-32 px-6 pb-20">';
-            matnlar.forEach(d => html += `<div class="content-card"><div class="arab-text">${d.arabcha_matn}</div><div class="uzb-text"><p>${d.tarjima}</p>${d.izoh ? `<span class="izoh-text">Izoh: ${d.izoh}</span>` : ''}</div></div>`);
-            document.getElementById('app-container').innerHTML = html + '</div>';
-        }
-
-        function updateNav(title, showBack) {
-            document.getElementById('nav-title').innerText = title;
-            document.getElementById('back-btn').style.display = showBack ? 'block' : 'none';
-        }
-
-        function goBack() {
-            history.pop();
-            const last = history[history.length - 1];
-            if (!last) renderOlimlar();
-            else if (last === 'olimlar') renderOlimlar();
-            else if (last === 'asarlar') history.length=0; // Sodda logikaga qaytish
+        function changeFontSize(type, delta) {
+            const root = document.documentElement;
+            const variable = `--${type}-size`;
+            const currentSize = parseInt(getComputedStyle(root).getPropertyValue(variable));
+            root.style.setProperty(variable, (currentSize + delta) + "px");
         }
 
         function setTheme(mode) {
@@ -136,6 +156,9 @@
             document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
             document.getElementById('t-' + mode).classList.add('active');
         }
+
+        // Ilovani ishga tushirish
+        document.addEventListener('DOMContentLoaded', renderOlimlar);
     </script>
 </body>
 </html>
