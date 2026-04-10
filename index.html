@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AVODOD | Islomiy Meros</title>
+    <title>AVODOD | Mukammal Kutubxona</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Lora&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        /* Rejimlar uchun ranglar */
         :root { --bg: #ffffff; --text: #111827; --card: #f9fafb; --border: #e5e7eb; --ornament: #059669; }
         .dark-mode { --bg: #121212; --text: #e5e7eb; --card: #1e1e1e; --border: #374151; --ornament: #10b981; }
         .book-mode { --bg: #f4ece0; --text: #433422; --card: #ece2d0; --border: #d4c5a9; --ornament: #854d0e; }
@@ -17,74 +16,77 @@
         .font-serif { font-family: 'Lora', serif; }
 
         .page-view { display: none; }
-        .page-view.active { display: block; animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        /* Naqshinkor hoshiya (Faqat Kitob rejimida chiqadi) */
-        .book-frame { display: none; }
-        .book-mode .book-frame { 
-            display: block; position: fixed; inset: 10px; border: 2px solid var(--ornament); 
-            pointer-events: none; z-index: 1000; opacity: 0.3;
-            mask-image: radial-gradient(circle, transparent 70%, black 100%);
-        }
+        .page-view.active { display: block; animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .item-card {
             background-color: var(--card); border: 1px solid var(--border);
-            padding: 24px; border-radius: 12px; margin-bottom: 15px; cursor: pointer; transition: 0.2s;
+            padding: 24px; border-radius: 12px; margin-bottom: 15px; cursor: pointer; 
+            display: flex; justify-content: space-between; align-items: center;
         }
-        .item-card:hover { border-color: var(--ornament); }
+        .item-card:hover { border-color: var(--ornament); transform: translateX(5px); }
 
-        /* Pastki Menyu */
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; width: 100%;
             background: var(--bg); border-top: 1px solid var(--border); display: flex; z-index: 100;
         }
-        .mode-tab { flex: 1; text-align: center; padding: 15px 0; font-size: 12px; font-weight: 900; color: #9ca3af; cursor: pointer; }
-        .mode-tab.active { color: var(--ornament); border-top: 3px solid var(--ornament); }
+        .mode-tab { flex: 1; text-align: center; padding: 18px 0; font-size: 11px; font-weight: 900; color: #9ca3af; cursor: pointer; }
+        .mode-tab.active { color: var(--ornament); border-top: 3px solid var(--ornament); background: rgba(0,0,0,0.02); }
 
-        /* Tepada rejim tugmalari */
-        .theme-switcher { display: flex; justify-content: center; gap: 8px; padding: 15px; }
-        .t-btn { padding: 5px 15px; border-radius: 20px; font-size: 10px; font-weight: bold; border: 1px solid var(--border); }
+        .theme-switcher { display: flex; justify-content: center; gap: 8px; padding: 15px; background: var(--bg); }
+        .t-btn { padding: 6px 16px; border-radius: 20px; font-size: 10px; font-weight: bold; border: 1px solid var(--border); }
         .t-btn.active { background: var(--ornament); color: white; border-color: var(--ornament); }
+        
+        .sticky-top { position: sticky; top: 0; background: var(--bg); z-index: 110; }
     </style>
 </head>
 <body>
 
-    <div class="book-frame"></div> <!-- Naqsh hoshiyasi -->
-
-    <!-- Rejimlar paneli -->
-    <div class="theme-switcher sticky top-0 bg-[var(--bg)] z-[110]">
-        <button onclick="setTheme('day')" id="t-day" class="t-btn active">KUN</button>
-        <button onclick="setTheme('book')" id="t-book" class="t-btn text-yellow-800">KITOB</button>
-        <button onclick="setTheme('night')" id="t-night" class="t-btn">TUN</button>
+    <!-- 0. REJIMLAR (Hamma sahifada tursin) -->
+    <div class="sticky-top border-b border-[var(--border)]">
+        <div class="theme-switcher">
+            <button onclick="setTheme('day')" id="t-day" class="t-btn active">KUN</button>
+            <button onclick="setTheme('book')" id="t-book" class="t-btn">KITOB</button>
+            <button onclick="setTheme('night')" id="t-night" class="t-btn">TUN</button>
+        </div>
     </div>
 
-    <!-- 1. OLIMLAR -->
+    <!-- 1. OLIMLAR SAHIFASI -->
     <section id="page-scholars" class="page-view active">
-        <header class="py-10 text-center">
-            <h1 class="text-3xl font-black tracking-widest uppercase italic border-b-2 border-[var(--ornament)] inline-block pb-2">Avodod</h1>
+        <header class="py-12 text-center">
+            <h1 class="text-4xl font-black tracking-[0.2em] uppercase italic italic">Avodod</h1>
+            <p class="text-[10px] opacity-40 mt-2 tracking-widest uppercase text-center">Ajdodlar Merosi Portali</p>
         </header>
         <main class="max-w-xl mx-auto px-6">
-            <div class="item-card" onclick="openWorks('xorazmiy', 'Al-Xorazmiy')">📜 Al-Xorazmiy</div>
-            <div class="item-card" onclick="openWorks('beruniy', 'Abu Rayhon Beruniy')">📜 Abu Rayhon Beruniy</div>
-            <div class="item-card" onclick="openWorks('ibnsino', 'Ibn Sino')">📜 Ibn Sino</div>
+            <div class="item-card" onclick="openWorks('xorazmiy', 'Al-Xorazmiy')"><span>Al-Xorazmiy</span> <span>→</span></div>
+            <div class="item-card" onclick="openWorks('beruniy', 'Abu Rayhon Beruniy')"><span>Beruniy</span> <span>→</span></div>
+            <div class="item-card" onclick="openWorks('ibnsino', 'Ibn Sino')"><span>Ibn Sino</span> <span>→</span></div>
         </main>
     </section>
 
-    <!-- 2. ASARLAR -->
+    <!-- 2. ASARLAR SAHIFASI -->
     <section id="page-works" class="page-view">
         <header class="p-6 flex items-center border-b border-[var(--border)]">
             <button onclick="showPage('page-scholars')" class="mr-4 text-2xl">←</button>
-            <h2 id="scholar-title" class="font-bold text-sm uppercase tracking-widest">Asarlar</h2>
+            <h2 id="scholar-title" class="font-bold text-xs uppercase tracking-widest">Asarlar</h2>
         </header>
         <main id="works-list" class="max-w-xl mx-auto px-6 py-10"></main>
     </section>
 
-    <!-- 3. READER -->
-    <section id="page-reader" class="page-view">
-        <header class="p-6 flex items-center border-b border-[var(--border)] sticky top-[60px] bg-[var(--bg)] z-50">
+    <!-- 3. BOBLAR SAHIFASI -->
+    <section id="page-chapters" class="page-view">
+        <header class="p-6 flex items-center border-b border-[var(--border)]">
             <button onclick="showPage('page-works')" class="mr-4 text-2xl">←</button>
-            <h2 id="work-title" class="font-bold text-xs uppercase truncate">Matn</h2>
+            <h2 id="work-title" class="font-bold text-xs uppercase tracking-widest">Kitob Boblari</h2>
+        </header>
+        <main id="chapters-list" class="max-w-xl mx-auto px-6 py-10"></main>
+    </section>
+
+    <!-- 4. READER (MATN) SAHIFASI -->
+    <section id="page-reader" class="page-view">
+        <header class="p-6 flex items-center border-b border-[var(--border)] sticky top-[62px] bg-[var(--bg)] z-50">
+            <button onclick="showPage('page-chapters')" class="mr-4 text-2xl">←</button>
+            <h2 id="chapter-title" class="font-bold text-xs uppercase truncate tracking-tighter">Matn</h2>
         </header>
         <main class="max-w-xl mx-auto px-6 py-10 pb-32">
             <div id="win-arab" class="hidden"></div>
@@ -100,20 +102,23 @@
 
     <script>
         let currentFolder = "";
-        let currentData = [];
+        let fullBookData = [];
 
+        // 1. REJIMLAR
         function setTheme(mode) {
             document.body.className = mode === 'day' ? '' : mode + '-mode';
             document.querySelectorAll('.t-btn').forEach(b => b.classList.remove('active'));
             document.getElementById('t-' + mode).classList.add('active');
         }
 
+        // 2. NAVIGATSIYA
         function showPage(id) {
             document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             window.scrollTo(0,0);
         }
 
+        // 3. ASARLARNI YUKLASH
         function openWorks(folder, name) {
             currentFolder = folder;
             document.getElementById('scholar-title').innerText = name;
@@ -123,22 +128,36 @@
                 'ibnsino': [{file:'qonun', title:'Al-Qonun fit-tib'}]
             };
             document.getElementById('works-list').innerHTML = (works[folder] || []).map(w => `
-                <div class="item-card" onclick="loadContent('${w.file}', '${w.title}')">${w.title}</div>
+                <div class="item-card" onclick="loadChapters('${w.file}', '${w.title}')"><span>${w.title}</span> <span>→</span></div>
             `).join('');
             showPage('page-works');
         }
 
-        async function loadContent(file, title) {
+        // 4. BOBLARNI YUKLASH
+        async function loadChapters(file, title) {
             document.getElementById('work-title').innerText = title;
             try {
                 const res = await fetch(`sources/${currentFolder}/${file}.json`);
-                currentData = await res.json();
-                renderContent();
-                showPage('page-reader');
-                switchMode('tarjima');
-            } catch (e) { alert("Fayl topilmadi!"); }
+                fullBookData = await res.json(); // Bu yerda JSON ichida Boblar bo'lishi kerak
+                
+                document.getElementById('chapters-list').innerHTML = fullBookData.map((bob, index) => `
+                    <div class="item-card" onclick="openReader(${index})"><span>${bob.bob_nomi}</span> <span>📖</span></div>
+                `).join('');
+                showPage('page-chapters');
+            } catch (e) { alert("Xatolik: JSON fayl topilmadi!"); }
         }
 
+        // 5. READERNI OCHISH
+        function openReader(bobIndex) {
+            const bob = fullBookData[bobIndex];
+            document.getElementById('chapter-title').innerText = bob.bob_nomi;
+            
+            renderContent(bob.matnlar);
+            showPage('page-reader');
+            switchMode('tarjima');
+        }
+
+        // 6. REJIMLARNI ALMASHTIRISH (Arab/Tarj/Izoh)
         function switchMode(m) {
             document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
             document.getElementById('tab-' + m).classList.add('active');
@@ -148,10 +167,15 @@
             window.scrollTo(0,0);
         }
 
-        function renderContent() {
-            document.getElementById('win-arab').innerHTML = currentData.map(d => `<p class="font-arab text-4xl text-right leading-[2.5] mb-10 border-b border-[var(--border)] pb-6">${d.arabcha_matn}</p>`).join('');
-            document.getElementById('win-tarjima').innerHTML = currentData.map(d => `<p class="font-serif text-2xl leading-relaxed mb-10 border-b border-[var(--border)] pb-6">${d.tarjima}</p>`).join('');
-            document.getElementById('win-izoh').innerHTML = currentData.map(d => `<div class="bg-[var(--card)] p-6 rounded-xl italic mb-6 border-l-4 border-[var(--ornament)]">${d.izoh || 'Izoh yo‘q'}</div>`).join('');
+        // 7. MATNNI CHIZISH
+        function renderContent(matnlar) {
+            document.getElementById('win-arab').innerHTML = matnlar.map(d => `<p class="font-arab text-4xl text-right leading-[2.6] mb-12 border-b border-[var(--border)] pb-8">${d.arabcha_matn}</p>`).join('');
+            document.getElementById('win-tarjima').innerHTML = matnlar.map((d, i) => `
+                <div class="mb-12 border-b border-[var(--border)] pb-8">
+                    <span class="text-[10px] opacity-30 font-bold uppercase tracking-widest block mb-4">${i+1}-band</span>
+                    <p class="font-serif text-2xl leading-relaxed text-[var(--text)]">${d.tarjima}</p>
+                </div>`).join('');
+            document.getElementById('win-izoh').innerHTML = matnlar.map(d => `<div class="bg-[var(--card)] p-8 rounded-2xl italic mb-8 border-l-4 border-[var(--ornament)] text-lg opacity-80">${d.izoh || 'Ushbu band uchun izoh mavjud emas.'}</div>`).join('');
         }
     </script>
 </body>
