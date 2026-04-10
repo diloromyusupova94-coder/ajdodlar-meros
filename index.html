@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AVODOD | Al-Xorazmiy</title>
+    <title>AVODOD | Meros Portali</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Lora&family=Inter:wght@400;900&display=swap" rel="stylesheet">
     <style>
@@ -20,148 +20,177 @@
             --ornament: #EAB308; --border: #1E293B; --card: #0F172A;
         }
 
-        body { background-color: var(--bg); color: var(--text); transition: 0.5s; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); transition: 0.5s; font-family: 'Inter', sans-serif; min-height: 100vh; }
         
-        /* SIDEBAR */
-        #sidebar {
-            position: fixed; top: 0; left: 0; bottom: 0; width: 300px;
-            background: var(--sidebar); border-right: 3px solid var(--ornament);
-            z-index: 1000; transform: translateX(-100%); transition: 0.4s;
-        }
-        #sidebar.open { transform: translateX(0); }
-        @media (min-width: 1024px) { #sidebar { transform: translateX(0); } main { margin-left: 300px; } }
-
-        .chapter-item {
-            padding: 18px 25px; border-bottom: 1px solid var(--border);
-            cursor: pointer; transition: 0.3s; font-size: 14px;
-        }
-        .chapter-item.active { background: var(--bg); border-left: 10px solid var(--ornament); font-weight: 900; }
-
-        /* HEADER */
-        header {
-            position: fixed; top: 0; right: 0; left: 0; height: 80px;
+        /* NAVIGATION BAR */
+        .top-nav {
+            position: fixed; top: 0; left: 0; right: 0; height: 70px;
             background: var(--bg); border-bottom: 2px solid var(--ornament);
             display: flex; align-items: center; justify-content: space-between;
-            padding: 0 25px; z-index: 950;
+            padding: 0 20px; z-index: 1000;
         }
-        @media (min-width: 1024px) { header { left: 300px; } }
 
-        /* MATN BLOKLARI (JUFTLIK) */
+        /* GRID SYSTEM FOR SELECTION */
+        .selection-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px; padding: 100px 20px 40px;
+        }
+
+        .item-card {
+            background: var(--card); border: 2px solid var(--border);
+            padding: 30px; border-radius: 20px; cursor: pointer;
+            transition: 0.3s; position: relative; overflow: hidden;
+            text-align: center;
+        }
+        .item-card:hover { border-color: var(--ornament); transform: translateY(-5px); }
+        .item-card::after { content: "✦"; display: block; margin-top: 15px; color: var(--ornament); opacity: 0.3; }
+
+        /* READER STYLE */
         .content-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 40px;
-            margin-bottom: 50px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            position: relative;
-            overflow: hidden;
+            background: var(--card); border-radius: 25px;
+            padding: 40px; margin-bottom: 40px; border: 1px solid var(--border);
         }
-        /* Mehrob belgisi */
-        .content-card::before {
-            content: "✦"; position: absolute; top: 15px; left: 50%;
-            transform: translateX(-50%); color: var(--ornament); opacity: 0.5;
-        }
+        .arab-text { font-family: 'Amiri', serif; text-align: right; line-height: 2.5; margin-bottom: 25px; }
+        .uzb-text { font-family: 'Lora', serif; border-top: 1px dashed var(--border); padding-top: 20px; }
 
-        .arab-text { font-family: 'Amiri', serif; text-align: right; line-height: 2.5; margin-bottom: 30px; }
-        .uzb-text { font-family: 'Lora', serif; line-height: 1.8; border-top: 1px dashed var(--border); pt: 25px; }
-        .izoh-text { font-size: 14px; opacity: 0.7; font-style: italic; margin-top: 20px; color: var(--ornament); }
-
-        .theme-btn { padding: 5px 15px; font-size: 10px; font-weight: 900; border: 1px solid var(--ornament); cursor: pointer; border-radius: 5px; }
+        .hidden { display: none; }
+        .theme-btn { padding: 4px 12px; font-size: 10px; font-weight: 900; border: 1px solid var(--ornament); border-radius: 4px; }
         .theme-btn.active { background: var(--ornament); color: var(--bg); }
     </style>
 </head>
-<body class="day-mode">
+<body>
 
-    <!-- SIDEBAR -->
-    <aside id="sidebar">
-        <div class="p-10 border-b-4 border-double border-[var(--ornament)]">
-            <h1 class="text-xs tracking-[4px] opacity-50 uppercase mb-2">Al-Xorazmiy</h1>
-            <h2 class="text-xl font-black uppercase leading-tight">Al-Jabr va Al-Muqobala</h2>
-        </div>
-        <div id="chapters-list" class="overflow-y-auto h-full pb-40"></div>
-    </aside>
-
-    <!-- HEADER -->
-    <header>
-        <button onclick="toggleSidebar()" class="lg:hidden text-2xl">☰</button>
-        <div class="text-center lg:text-left">
-            <p class="text-[9px] font-bold tracking-[3px] opacity-50">HOZIRGI BOB:</p>
-            <h3 id="chapter-title" class="font-black text-sm uppercase">Yuklanmoqda...</h3>
-        </div>
+    <header class="top-nav">
+        <button id="back-btn" onclick="goBack()" class="hidden text-xl">←</button>
+        <h1 id="nav-title" class="font-black uppercase tracking-widest text-sm">Olimlar</h1>
         <div class="flex gap-2">
-            <button onclick="setTheme('day')" id="b-day" class="theme-btn active">KUN</button>
-            <button onclick="setTheme('book')" id="b-book" class="theme-btn">KITOB</button>
-            <button onclick="setTheme('night')" id="b-night" class="theme-btn">TUN</button>
+            <button onclick="setTheme('day')" id="t-day" class="theme-btn active">KUN</button>
+            <button onclick="setTheme('book')" id="t-book" class="theme-btn">KITOB</button>
+            <button onclick="setTheme('night')" id="t-night" class="theme-btn">TUN</button>
         </div>
     </header>
 
-    <!-- READER AREA -->
-    <main class="pt-32 pb-20 px-6 max-w-4xl mx-auto">
-        <div id="main-content">
-            <!-- Bu yerda Arabcha + Tarjima juftlikda chiqadi -->
-        </div>
+    <main id="app-container">
+        <!-- Dinamik kontent shu yerga tushadi -->
     </main>
 
     <script>
-        let fullBookData = [];
+        // BOSHQARUV HOLATI
+        let currentState = 'olimlar'; // olimlar -> asarlar -> boblar -> matn
+        let selectedOlim = null;
+        let selectedAsar = null;
 
-        async function initApp() {
+        // NAMUNAVIY MA'LUMOT (Buni alohida JSON qilish ham mumkin)
+        const database = {
+            "xorazmiy": {
+                "ism": "Muhammad al-Xorazmiy",
+                "asarlar": {
+                    "al-jabr": {
+                        "nomi": "Al-Jabr va Al-Muqobala",
+                        "file": "al-jabr.json" // Bu fayl ichida boblar va matnlar bor
+                    }
+                }
+            },
+            "beruniy": {
+                "ism": "Abu Rayhon Beruniy",
+                "asarlar": {
+                    "hindiston": { "nomi": "Tahqiq ma lil-Hind", "file": "hindiston.json" }
+                }
+            }
+        };
+
+        function init() { renderOlimlar(); }
+
+        // 1-BOSQICH: OLIMLAR
+        function renderOlimlar() {
+            currentState = 'olimlar';
+            updateNav("Olimlar", false);
+            let html = '<div class="selection-grid">';
+            for (let key in database) {
+                html += `<div class="item-card" onclick="selectOlim('${key}')">
+                            <h2 class="text-2xl font-black">${database[key].ism}</h2>
+                         </div>`;
+            }
+            html += '</div>';
+            document.getElementById('app-container').innerHTML = html;
+        }
+
+        // 2-BOSQICH: ASARLAR
+        function selectOlim(key) {
+            selectedOlim = database[key];
+            currentState = 'asarlar';
+            updateNav(selectedOlim.ism, true);
+            let html = '<div class="selection-grid">';
+            for (let asarKey in selectedOlim.asarlar) {
+                html += `<div class="item-card" onclick="selectAsar('${key}', '${asarKey}')">
+                            <h2 class="text-xl font-bold">${selectedOlim.asarlar[asarKey].nomi}</h2>
+                         </div>`;
+            }
+            html += '</div>';
+            document.getElementById('app-container').innerHTML = html;
+        }
+
+        // 3-BOSQICH: BOBLAR (JSONdan yuklanadi)
+        async function selectAsar(olimKey, asarKey) {
+            selectedAsar = database[olimKey].asarlar[asarKey];
+            currentState = 'boblar';
+            updateNav(selectedAsar.nomi, true);
+            
+            // JSON faylni yuklash
             try {
-                const res = await fetch(`sources/xorazmiy/al-jabr.json`);
-                fullBookData = await res.json();
-                renderSidebar();
-                openChapter(0);
-            } catch (e) { alert("Xatolik: JSON topilmadi"); }
+                const res = await fetch(`sources/${olimKey}/${selectedAsar.file}`);
+                const data = await res.json();
+                
+                let html = '<div class="selection-grid">';
+                data.forEach((bob, index) => {
+                    html += `<div class="item-card" onclick="renderReader(${JSON.stringify(bob.matnlar).replace(/"/g, '&quot;')}, '${bob.bob_nomi}')">
+                                <h2 class="text-lg font-bold">${bob.bob_nomi}</h2>
+                             </div>`;
+                });
+                html += '</div>';
+                document.getElementById('app-container').innerHTML = html;
+            } catch (e) { alert("Fayl topilmadi!"); }
         }
 
-        function renderSidebar() {
-            document.getElementById('chapters-list').innerHTML = fullBookData.map((bob, i) => `
-                <div class="chapter-item" id="ch-${i}" onclick="openChapter(${i})">
-                    ${bob.bob_nomi}
-                </div>
-            `).join('');
+        // 4-BOSQICH: MATNLAR (READER)
+        function renderReader(matnlar, bobNomi) {
+            currentState = 'matn';
+            updateNav(bobNomi, true);
+            let html = '<div class="max-w-4xl mx-auto pt-24 px-6 pb-20">';
+            matnlar.forEach(d => {
+                html += `
+                    <div class="content-card shadow-xl">
+                        <span class="text-[10px] opacity-30 font-black tracking-widest block mb-4">№ ${d.id}</span>
+                        <div class="arab-text text-4xl md:text-5xl">${d.arabcha_matn}</div>
+                        <div class="uzb-text">
+                            <p class="text-2xl md:text-3xl font-serif">${d.tarjima}</p>
+                            ${d.izoh ? `<p class="mt-4 text-sm italic opacity-60">Izoh: ${d.izoh}</p>` : ''}
+                        </div>
+                    </div>`;
+            });
+            html += '</div>';
+            document.getElementById('app-container').innerHTML = html;
         }
 
-        function openChapter(index) {
-            const bob = fullBookData[index];
-            if (!bob.matnlar || bob.matnlar.length === 0) return alert("Bu bob bo'sh.");
-            
-            document.getElementById('chapter-title').innerText = bob.bob_nomi;
-            document.querySelectorAll('.chapter-item').forEach(el => el.classList.remove('active'));
-            document.getElementById(`ch-${index}`).classList.add('active');
-            
-            if (window.innerWidth < 1024) document.getElementById('sidebar').classList.remove('open');
-            
-            renderCards(bob.matnlar);
-            window.scrollTo({top: 0, behavior: 'smooth'});
+        // NAVIGATSIYA VA ORQAGA QAYTISH
+        function updateNav(title, showBack) {
+            document.getElementById('nav-title').innerText = title;
+            document.getElementById('back-btn').style.display = showBack ? 'block' : 'none';
         }
 
-        function renderCards(data) {
-            // ENG MUHIM O'ZGARISH: Arabcha va Tarjimani bitta "card" ichiga birlashtirdik
-            document.getElementById('main-content').innerHTML = data.map(d => `
-                <div class="content-card">
-                    <span class="text-[9px] font-black opacity-30 tracking-widest block mb-6">№ ${d.id}</span>
-                    
-                    <div class="arab-text text-4xl md:text-5xl">${d.arabcha_matn}</div>
-                    
-                    <div class="uzb-text">
-                        <p class="text-2xl md:text-3xl">${d.tarjima}</p>
-                        ${d.izoh ? `<p class="izoh-text">Izoh: ${d.izoh}</p>` : ''}
-                    </div>
-                </div>
-            `).join('');
+        function goBack() {
+            if (currentState === 'matn') selectOlim(Object.keys(database).find(k => database[k] === selectedOlim));
+            else if (currentState === 'boblar') selectOlim(Object.keys(database).find(k => database[k] === selectedOlim));
+            else if (currentState === 'asarlar') renderOlimlar();
         }
-
-        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
 
         function setTheme(mode) {
             document.body.className = mode + '-mode';
             document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('b-' + mode).classList.add('active');
+            document.getElementById('t-' + mode).classList.add('active');
         }
 
-        initApp();
+        init();
     </script>
 </body>
 </html>
