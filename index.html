@@ -21,11 +21,11 @@
         <div class="max-w-5xl mx-auto flex justify-between items-center">
             <div>
                 <h1 class="text-3xl font-black tracking-tighter text-amber-900 dark:text-amber-500">AVODOD 🏛️</h1>
-                <p class="text-[10px] uppercase tracking-widest opacity-60">Ajdodlar va Avlodlar Ko'prigi</p>
+                <p class="text-[10px] uppercase tracking-widest opacity-60 text-amber-800">Ajdodlar va avlodlar ko‘prigi</p>
             </div>
-            <!-- Kelajakda bu yerga olimlar ro'yxati (Dropdown) qo'shamiz -->
-            <div id="scholarTitle" class="hidden md:block text-sm font-bold opacity-40 italic">
-                Al-Xorazmiy rukni
+            <div class="flex gap-4">
+                <button onclick="setTheme('sepia')" class="text-xl">☀️</button>
+                <button onclick="setTheme('dark')" class="text-xl">🌙</button>
             </div>
         </div>
     </nav>
@@ -43,23 +43,19 @@
 
         async function initAvodod() {
             try {
-                // Nuqtani olib tashladik. sources papkasidan boshlab qidiradi.
-                // Kelajakda 'xorazmiy' so'zini o'zgaruvchi qilsak, boshqa olimlarni ham o'qiydi
+                // sources papkasidan olim faylini o'qiymiz
                 const res = await fetch('sources/xorazmiy/al-jabr.json');
                 
-                if (!res.ok) throw new Error('Fayl topilmadi yoki yo\'l xato.');
+                if (!res.ok) throw new Error('Fayl topilmadi');
 
                 const data = await res.json();
-                
-                // JSON strukturangga moslash (Ajdod -> Avlod tizimi uchun)
                 items = data.scholars ? data.scholars[0].works[0].items : (data.items || data);
                 render(items);
             } catch (e) {
                 document.getElementById('content').innerHTML = `
                     <div class="p-10 text-center bg-red-50 text-red-800 rounded-3xl border border-red-100">
-                        <b class="text-xl">Bog'lanishda uzilish!</b><br>
-                        <p class="mt-2">Tizim sources/xorazmiy/al-jabr.json faylini topa olmadi.</p>
-                        <p class="mt-4 text-xs opacity-50 italic">Maslahat: sources papkasi va index.html bitta joyda ekanini tekshiring.</p>
+                        <b class="text-xl block">Bog‘lanishda uzilish!</b>
+                        <p class="mt-2 text-sm text-center">sources/xorazmiy/al-jabr.json fayli topilmadi yoki ichida xatolik bor.</p>
                     </div>`;
             }
         }
@@ -68,27 +64,31 @@
             document.getElementById('content').innerHTML = data.map(i => `
                 <div class="bridge-card p-8 md:p-12 rounded-r-3xl bg-white/30 shadow-sm border border-black/5">
                     <div class="flex justify-between text-[10px] font-mono opacity-40 mb-8 uppercase tracking-widest">
-                        <span>${i.bob || 'Al-Jabr va Al-Muqobala'}</span>
+                        <span>${i.bob || 'Al-jabr va al-muqobala'}</span>
                         <span>ID: ${i.id}</span>
                     </div>
 
                     <div class="mb-10 text-right">
-                        <h4 class="text-[10px] font-bold text-amber-800 mb-4 tracking-widest uppercase">I. Al-Asl</h4>
+                        <h4 class="text-[10px] font-bold text-amber-800 mb-4 tracking-widest uppercase">Arabcha matn</h4>
                         <p class="text-4xl md:text-5xl font-arabic leading-[1.8] drop-shadow-sm" dir="rtl">${i.arabcha_matn}</p>
                     </div>
 
                     <div class="mb-10 pt-6 border-t border-amber-900/5">
-                        <h4 class="text-[10px] font-bold text-amber-800 mb-4 tracking-widest uppercase text-left">II. At-Tarjima</h4>
+                        <h4 class="text-[10px] font-bold text-amber-800 mb-4 tracking-widest uppercase text-left">Tarjima</h4>
                         <p class="text-xl md:text-2xl leading-relaxed italic opacity-90 text-left">"${i.tarjima}"</p>
                     </div>
 
                     ${i.izoh ? `
                     <div class="p-6 bg-amber-900/5 rounded-2xl border-l-4 border-amber-600/30">
-                        <h4 class="text-[10px] font-bold text-amber-800 mb-3 tracking-widest uppercase text-left">III. Al-Mantiq (Izoh)</h4>
+                        <h4 class="text-[10px] font-bold text-amber-800 mb-3 tracking-widest uppercase text-left">Izoh</h4>
                         <p class="text-sm leading-relaxed opacity-80 text-left">${i.izoh}</p>
                     </div>` : ''}
                 </div>
             `).join('');
+        }
+
+        function setTheme(m) { 
+            document.getElementById('appBody').className = m + '-mode font-main min-h-screen transition-all duration-500'; 
         }
 
         initAvodod();
