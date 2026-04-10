@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AVODOD | Ajdodlar Merosi Portali</title>
+    <title>AVODOD | Meros Portali</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Lora&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -21,12 +21,12 @@
         
         /* HEADER */
         .top-nav { 
-            position: fixed; top: 0; left: 0; right: 0; height: 80px; 
+            position: fixed; top: 0; left: 0; right: 0; height: 85px; 
             background: var(--bg); border-bottom: 3px solid var(--ornament); 
             display: flex; align-items: center; justify-content: space-between; 
             padding: 0 20px; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
-        .logo-text { font-weight: 900; font-size: 24px; letter-spacing: -0.5px; line-height: 1; }
+        .logo-text { font-weight: 900; font-size: 22px; letter-spacing: -0.5px; line-height: 1; }
 
         /* SETTINGS PANEL */
         #settings-panel {
@@ -42,10 +42,10 @@
         /* CONTENT */
         .selection-grid { 
             display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
-            gap: 20px; padding: 120px 20px 40px; max-width: 1200px; margin: 0 auto;
+            gap: 20px; padding: 125px 20px 40px; max-width: 1200px; margin: 0 auto;
         }
         .item-card { 
-            background: var(--card); border: 2px solid var(--border); padding: 40px; 
+            background: var(--card); border: 2px solid var(--border); padding: 35px; 
             border-radius: 20px; cursor: pointer; text-align: center; 
             transition: 0.3s; 
         }
@@ -53,10 +53,15 @@
         
         .content-card { 
             background: var(--card); border-radius: 25px; padding: 35px; 
-            margin-bottom: 30px; border: 1px solid var(--border); 
+            margin-bottom: 30px; border: 1.5px solid var(--border); 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
         }
-        .arab-text { font-family: 'Amiri', serif; text-align: right; line-height: 2; font-size: var(--arab-size); }
-        .uzb-text { font-family: 'Lora', serif; border-top: 1px dashed var(--border); padding-top: 25px; margin-top: 25px; font-size: var(--uzb-size); }
+        .arab-text { font-family: 'Amiri', serif; text-align: right; line-height: 1.8; font-size: var(--arab-size); margin-bottom: 25px; }
+        .uzb-text { 
+            font-family: 'Lora', serif; border-top: 2px solid var(--border); 
+            padding-top: 25px; font-size: var(--uzb-size); color: var(--text);
+            display: block !important; opacity: 1 !important;
+        }
 
         /* SETTINGS UI */
         .setting-item { margin-bottom: 30px; }
@@ -75,75 +80,65 @@
     <!-- HEADER -->
     <header class="top-nav">
         <div class="flex items-center gap-4">
-            <button id="back-btn" onclick="goBack()" class="hidden p-2 text-2xl font-black transition-transform hover:scale-110">←</button>
+            <button id="back-btn" onclick="goBack()" class="hidden p-2 text-2xl font-black">←</button>
             <div class="flex items-center gap-3">
-                <!-- PROFESSIONAL SVG LOGO (As seen in image_4.png) -->
-                <div class="w-14 h-14 flex items-center justify-center">
+                <!-- LOGO - SAKKIZ BURCHAKLI TO'G'RI SHAKL -->
+                <div class="w-16 h-16 flex items-center justify-center">
                     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                        <!-- Sakkiz qirrali naqsh -->
-                        <path d="M50 5 L62 38 L95 50 L62 62 L50 95 L38 62 L5 50 L38 38 Z" 
-                              fill="none" stroke="var(--ornament)" stroke-width="2.5" stroke-linejoin="round"/>
-                        
-                        <!-- Ichki dekorativ qatlam -->
-                        <path d="M50 15 L60 40 L85 50 L60 60 L50 85 L40 60 L15 50 L40 40 Z" 
-                              fill="var(--ornament)" opacity="0.1"/>
-                        
-                        <!-- Markazdagi kitob shakli -->
-                        <g transform="translate(30, 42)">
-                            <path d="M0 5 Q10 0 20 5 V20 Q10 15 0 20 Z" fill="var(--ornament)"/>
-                            <path d="M20 5 Q30 0 40 5 V20 Q30 15 20 20 Z" fill="var(--ornament)"/>
-                            <line x1="20" y1="5" x2="20" y2="22" stroke="var(--bg)" stroke-width="1.5"/>
+                        <!-- Sakkiz qirrali naqsh chiziqlari -->
+                        <path d="M50 5 L64 36 L95 50 L64 64 L50 95 L36 64 L5 50 L36 36 Z" 
+                              fill="none" stroke="var(--ornament)" stroke-width="3" stroke-linejoin="round"/>
+                        <!-- Markazdagi kitob -->
+                        <g transform="translate(30, 42)" fill="var(--ornament)">
+                            <path d="M2 2 C10 -2 18 2 20 4 V18 C18 16 10 12 2 16 Z"/>
+                            <path d="M20 4 C22 2 30 -2 38 2 V16 C30 12 22 16 20 18 Z"/>
+                            <rect x="19" y="4" width="2" height="15" fill="var(--bg)"/>
                         </g>
                     </svg>
                 </div>
                 <div class="flex flex-col">
                     <span class="logo-text">AVODOD</span>
-                    <span class="text-[9px] font-black opacity-60 tracking-[0.2em] uppercase mt-1">Meros Portali</span>
+                    <span class="text-[9px] font-black opacity-60 tracking-[0.2em] uppercase">Meros Portali</span>
                 </div>
             </div>
         </div>
         
-        <button onclick="toggleSettings(true)" class="p-2 text-[var(--ornament)] hover:rotate-90 transition-all duration-500">
+        <button onclick="toggleSettings(true)" class="p-2 text-[var(--ornament)]">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
         </button>
     </header>
 
-    <!-- SETTINGS -->
+    <!-- SETTINGS PANEL -->
     <div id="overlay" class="overlay" onclick="toggleSettings(false)"></div>
     <aside id="settings-panel">
         <div class="flex justify-between items-center mb-10">
             <h3 class="font-black text-xl">SOZLAMALAR</h3>
             <button onclick="toggleSettings(false)" class="text-3xl">&times;</button>
         </div>
-
-        <div class="setting-item" id="search-container">
-            <span class="setting-label">Izlash</span>
-            <input type="text" id="search-input" onkeyup="liveSearch()" placeholder="Kalit so'z..." class="w-full p-4 rounded-xl border-2 border-[var(--ornament)] bg-transparent outline-none font-bold text-sm">
+        <!-- Izlash faqat o'qish rejimida ko'rinadi -->
+        <div class="setting-item hidden" id="search-container">
+            <span class="setting-label">Matndan izlash</span>
+            <input type="text" id="search-input" onkeyup="liveSearch()" placeholder="So'z yozing..." class="w-full p-4 rounded-xl border-2 border-[var(--ornament)] bg-transparent outline-none font-bold text-sm">
         </div>
-
         <div class="setting-item">
-            <span class="setting-label">Rejim</span>
+            <span class="setting-label">Ranglar mavzusi</span>
             <div class="btn-group">
                 <button onclick="setTheme('day')" id="t-day" class="btn-opt">KUN</button>
                 <button onclick="setTheme('book')" id="t-book" class="btn-opt active">KITOB</button>
                 <button onclick="setTheme('night')" id="t-night" class="btn-opt">TUN</button>
             </div>
         </div>
-
         <div class="setting-item">
-            <span class="setting-label">Arabcha matn hajmi</span>
+            <span class="setting-label">Arabcha matn: <span id="arab-val">38</span>px</span>
             <div class="size-ctrl">
                 <button onclick="changeFontSize('arab', -2)" class="circle-btn">－</button>
-                <span id="arab-val" class="font-black">38</span>
                 <button onclick="changeFontSize('arab', 2)" class="circle-btn">＋</button>
             </div>
         </div>
-
         <div class="setting-item">
-            <span class="setting-label">O'zbekcha matn hajmi</span>
+            <span class="setting-label">Izoh hajmi: <span id="uzb-val">20</span>px</span>
             <div class="size-ctrl">
                 <button onclick="changeFontSize('uzb', -2)" class="circle-btn">－</button>
-                <span id="uzb-val" class="font-black">20</span>
                 <button onclick="changeFontSize('uzb', 2)" class="circle-btn">＋</button>
             </div>
         </div>
@@ -154,6 +149,7 @@
     <script>
         let currentView = 'olimlar';
         let currentOlim = null;
+        let currentAsar = null;
 
         const database = {
             "xorazmiy": { "ism": "Muhammad al-Xorazmiy", "asarlar": { "al-jabr": { "nomi": "Al-Jabr va Al-Muqobala", "file": "al-jabr.json" } } },
@@ -173,7 +169,7 @@
             document.getElementById('search-container').classList.add('hidden');
             let html = '<div class="selection-grid">';
             for (let key in database) {
-                html += `<div class="item-card" onclick="selectOlim('${key}')"><h2 class="text-xl font-bold">${database[key].ism}</h2></div>`;
+                html += `<div class="item-card" onclick="selectOlim('${key}')"><h2 class="text-xl font-bold">${database[key].ism}</h2><p class="text-[10px] mt-2 opacity-50 uppercase tracking-widest">Olim haqida</p></div>`;
             }
             document.getElementById('app-container').innerHTML = html + '</div>';
         }
@@ -182,6 +178,7 @@
             currentOlim = key;
             currentView = 'asarlar';
             document.getElementById('back-btn').classList.remove('hidden');
+            document.getElementById('search-container').classList.add('hidden');
             let html = '<div class="selection-grid">';
             for (let asarKey in database[key].asarlar) {
                 html += `<div class="item-card" onclick="selectAsar('${key}', '${asarKey}')"><h2 class="text-lg font-bold">${database[key].asarlar[asarKey].nomi}</h2></div>`;
@@ -190,25 +187,30 @@
         }
 
         async function selectAsar(olimKey, asarKey) {
+            currentAsar = asarKey;
             currentView = 'boblar';
             try {
                 const res = await fetch(`sources/${olimKey}/${database[olimKey].asarlar[asarKey].file}`);
                 const data = await res.json();
                 let html = '<div class="selection-grid">';
-                data.forEach(bob => {
-                    const matnlar = JSON.stringify(bob.matnlar).replace(/"/g, '&quot;');
-                    html += `<div class="item-card" onclick="renderReader(${matnlar}, '${bob.bob_nomi}')"><h2 class="font-bold">${bob.bob_nomi}</h2></div>`;
+                data.forEach((bob, index) => {
+                    const matnlarStr = encodeURIComponent(JSON.stringify(bob.matnlar));
+                    html += `<div class="item-card" onclick="renderReader('${matnlarStr}')"><h2 class="font-bold">${bob.bob_nomi}</h2></div>`;
                 });
                 document.getElementById('app-container').innerHTML = html + '</div>';
-            } catch(e) { alert("JSON topilmadi!"); }
+            } catch(e) { alert("JSON fayl topilmadi!"); }
         }
 
-        function renderReader(matnlar, bobNomi) {
+        function renderReader(matnlarStr) {
             currentView = 'matn';
+            const matnlar = JSON.parse(decodeURIComponent(matnlarStr));
             document.getElementById('search-container').classList.remove('hidden');
-            let html = '<div class="max-w-4xl mx-auto pt-32 px-5 pb-20">';
+            let html = '<div class="max-w-4xl mx-auto pt-32 px-5 pb-24">';
             matnlar.forEach(d => {
-                html += `<div class="content-card"><div class="arab-text">${d.arabcha_matn}</div><div class="uzb-text">${d.tarjima}</div></div>`;
+                html += `<div class="content-card">
+                            <div class="arab-text">${d.arabcha_matn}</div>
+                            <div class="uzb-text">${d.tarjima}</div>
+                         </div>`;
             });
             document.getElementById('app-container').innerHTML = html + '</div>';
             window.scrollTo(0,0);
@@ -216,7 +218,8 @@
 
         function goBack() {
             if (currentView === 'asarlar') renderOlimlar();
-            else if (currentView === 'boblar' || currentView === 'matn') selectOlim(currentOlim);
+            else if (currentView === 'boblar') selectOlim(currentOlim);
+            else if (currentView === 'matn') selectAsar(currentOlim, currentAsar);
         }
 
         function liveSearch() {
