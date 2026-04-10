@@ -9,128 +9,78 @@
     <style>
         :root { 
             --bg: #FDF8E1; --text: #451A03; --ornament: #B45309; --border: #FDE68A; --card: #FFFCF0; 
-            --arab-size: 38px; --uzb-size: 20px; 
+            --arab-size: 36px; --uzb-size: 19px; 
         }
         body.day-mode { --bg: #F0F9FF; --text: #075985; --ornament: #0284C7; --border: #BAE6FD; --card: #ffffff; }
         body.night-mode { --bg: #020617; --text: #BAE6FD; --ornament: #EAB308; --border: #1E293B; --card: #0F172A; }
 
-        body { 
-            background-color: var(--bg); color: var(--text); transition: 0.3s; 
-            font-family: 'Inter', sans-serif; margin: 0;
-        }
+        body { background-color: var(--bg); color: var(--text); transition: 0.3s; font-family: 'Inter', sans-serif; margin: 0; }
         
-        /* HEADER */
-        .top-nav { 
-            position: fixed; top: 0; left: 0; right: 0; height: 85px; 
-            background: var(--bg); border-bottom: 3px solid var(--ornament); 
-            display: flex; align-items: center; justify-content: space-between; 
-            padding: 0 20px; z-index: 1000;
-        }
-        .logo-text { font-weight: 900; font-size: 22px; line-height: 1; }
-
-        /* LOGO SVG - MUKAMMAL SAKKIZ BURCHAK */
-        .logo-container { width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; }
-
-        /* CONTENT AREA */
-        .selection-grid { 
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
-            gap: 20px; padding: 120px 20px 40px; max-width: 1200px; margin: 0 auto;
-        }
-        .item-card { 
-            background: var(--card); border: 2px solid var(--border); padding: 35px; 
-            border-radius: 20px; cursor: pointer; text-align: center; transition: 0.3s; 
-        }
-        .item-card:hover { border-color: var(--ornament); transform: translateY(-5px); }
+        /* HEADER - Logotipsiz, faqat matn */
+        .top-nav { position: fixed; top: 0; left: 0; right: 0; height: 75px; background: var(--bg); border-bottom: 3px solid var(--ornament); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 1000; }
         
-        .content-card { 
-            background: var(--card); border-radius: 25px; padding: 35px; 
-            margin-bottom: 30px; border: 2px solid var(--border); 
-        }
-        .arab-text { font-family: 'Amiri', serif; text-align: right; line-height: 2; font-size: var(--arab-size); margin-bottom: 20px; }
+        .selection-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 110px 20px 40px; max-width: 1200px; margin: 0 auto; }
+        .item-card { background: var(--card); border: 2px solid var(--border); padding: 30px; border-radius: 20px; cursor: pointer; text-align: center; transition: 0.3s; }
+        .item-card:hover { border-color: var(--ornament); transform: translateY(-3px); }
+        
+        .content-card { background: var(--card); border-radius: 20px; padding: 30px; margin-bottom: 25px; border: 1.5px solid var(--border); }
+        .arab-text { font-family: 'Amiri', serif; text-align: right; line-height: 1.8; font-size: var(--arab-size); margin-bottom: 20px; direction: rtl; }
+        
         .uzb-text { 
-            font-family: 'Lora', serif; border-top: 2px solid var(--border); 
-            padding-top: 20px; font-size: var(--uzb-size); color: var(--text);
-            display: block !important;
+            font-family: 'Lora', serif; 
+            border-top: 2px solid var(--border); 
+            padding-top: 20px; 
+            font-size: var(--uzb-size); 
+            color: var(--text); 
+            display: block !important; 
+            line-height: 1.6;
         }
 
-        /* SETTINGS */
-        #settings-panel {
-            position: fixed; top: 0; right: -320px; width: 310px; height: 100%;
-            background: var(--card); border-left: 5px solid var(--ornament);
-            z-index: 2000; transition: 0.4s ease; padding: 40px 25px;
-        }
+        #settings-panel { position: fixed; top: 0; right: -320px; width: 310px; height: 100%; background: var(--card); border-left: 4px solid var(--ornament); z-index: 2000; transition: 0.4s; padding: 30px; }
         #settings-panel.open { right: 0; }
-        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1500; display: none; }
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1500; display: none; }
         .overlay.active { display: block; }
-
-        .btn-opt { flex: 1; padding: 10px; border: 2px solid var(--ornament); border-radius: 10px; font-weight: 900; font-size: 11px; cursor: pointer; background: transparent; color: var(--text); }
+        
+        .btn-opt { flex: 1; padding: 10px; border: 2px solid var(--ornament); border-radius: 8px; font-weight: 800; font-size: 11px; background: transparent; color: var(--text); }
         .btn-opt.active { background: var(--ornament); color: white; }
-        .circle-btn { width: 40px; height: 40px; border-radius: 50%; background: var(--ornament); color: white; border: none; font-size: 20px; cursor: pointer; }
-
+        
         .hidden { display: none !important; }
     </style>
 </head>
-<body onload="init()" class="book-mode">
+<body onload="init()" class="day-mode">
 
-    <!-- HEADER -->
     <header class="top-nav">
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-4">
             <button id="back-btn" onclick="goBack()" class="hidden text-2xl font-black p-2">←</button>
-            <div class="logo-container">
-                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Geometrik sakkiz burchak -->
-                    <path d="M50 5 L65 35 L95 50 L65 65 L50 95 L35 65 L5 50 L35 35 Z" 
-                          fill="none" stroke="var(--ornament)" stroke-width="3" stroke-linejoin="round"/>
-                    <!-- Kitob -->
-                    <g transform="translate(30, 42)" fill="var(--ornament)">
-                        <path d="M2 2 C10 -2 18 2 20 4 V18 C18 16 10 12 2 16 Z"/>
-                        <path d="M20 4 C22 2 30 -2 38 2 V16 C30 12 22 16 20 18 Z"/>
-                        <rect x="19" y="4" width="2" height="15" fill="var(--bg)"/>
-                    </g>
-                </svg>
-            </div>
             <div class="flex flex-col">
-                <span class="logo-text">AVODOD</span>
-                <span class="text-[9px] font-black opacity-60 tracking-widest uppercase">Meros Portali</span>
+                <span class="font-black text-2xl tracking-tighter leading-none">AVODOD</span>
+                <span class="text-[10px] font-bold opacity-60 tracking-[0.3em] uppercase mt-1">Meros Portali</span>
             </div>
         </div>
         <button onclick="toggleSettings(true)" class="p-2 text-[var(--ornament)]">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
         </button>
     </header>
 
-    <!-- SETTINGS PANEL -->
     <div id="overlay" class="overlay" onclick="toggleSettings(false)"></div>
     <aside id="settings-panel">
-        <h3 class="font-black text-xl mb-8">SOZLAMALAR</h3>
-        
-        <div class="mb-8" id="search-container">
-            <span class="text-[10px] font-bold uppercase opacity-50 block mb-2">Qidiruv</span>
-            <input type="text" id="search-input" onkeyup="liveSearch()" placeholder="Matndan izlash..." class="w-full p-3 rounded-lg border-2 border-[var(--ornament)] bg-transparent outline-none font-bold text-sm">
+        <h3 class="font-black text-xl mb-6">SOZLAMALAR</h3>
+        <div class="mb-6 hidden" id="search-div">
+            <input type="text" id="search-input" onkeyup="liveSearch()" placeholder="Matndan izlash..." class="w-full p-3 rounded-xl border-2 border-[var(--ornament)] bg-transparent outline-none">
         </div>
-
-        <div class="mb-8">
-            <span class="text-[10px] font-bold uppercase opacity-50 block mb-2">Rejim</span>
+        <div class="mb-6">
+            <span class="text-[10px] font-bold block mb-2 opacity-50 uppercase">Mavzu</span>
             <div class="flex gap-2">
-                <button onclick="setTheme('day')" id="t-day" class="btn-opt">KUN</button>
-                <button onclick="setTheme('book')" id="t-book" class="btn-opt active">KITOB</button>
+                <button onclick="setTheme('day')" id="t-day" class="btn-opt active">KUN</button>
+                <button onclick="setTheme('book')" id="t-book" class="btn-opt">KITOB</button>
                 <button onclick="setTheme('night')" id="t-night" class="btn-opt">TUN</button>
             </div>
         </div>
-
-        <div class="mb-8">
-            <span class="text-[10px] font-bold uppercase opacity-50 block mb-2">Arabcha: <span id="arab-val">38</span>px</span>
-            <div class="flex items-center justify-between bg-black/5 p-2 rounded-xl">
-                <button onclick="changeFontSize('arab', -2)" class="circle-btn">－</button>
-                <button onclick="changeFontSize('arab', 2)" class="circle-btn">＋</button>
-            </div>
-        </div>
-
-        <div class="mb-8">
-            <span class="text-[10px] font-bold uppercase opacity-50 block mb-2">Izohlar: <span id="uzb-val">20</span>px</span>
-            <div class="flex items-center justify-between bg-black/5 p-2 rounded-xl">
-                <button onclick="changeFontSize('uzb', -2)" class="circle-btn">－</button>
-                <button onclick="changeFontSize('uzb', 2)" class="circle-btn">＋</button>
+        <div class="mb-6">
+            <span class="text-[10px] font-bold block mb-2 opacity-50 uppercase">Matn Hajmi: <span id="uzb-val">19</span>px</span>
+            <div class="flex justify-between items-center bg-black/5 p-2 rounded-lg">
+                <button onclick="changeFontSize('uzb', -1)" class="w-10 h-10 rounded-full bg-[var(--ornament)] text-white font-bold">－</button>
+                <button onclick="changeFontSize('uzb', 1)" class="w-10 h-10 rounded-full bg-[var(--ornament)] text-white font-bold">＋</button>
             </div>
         </div>
     </aside>
@@ -138,9 +88,8 @@
     <main id="app-container"></main>
 
     <script>
-        let currentView = 'olimlar';
-        let state = { olim: null, asar: null };
-
+        let view = 'olimlar';
+        let state = { o: '', a: '' };
         const db = {
             "xorazmiy": { ism: "Muhammad al-Xorazmiy", asarlar: { "al-jabr": { nomi: "Al-Jabr va Al-Muqobala", file: "al-jabr.json" } } },
             "beruniy": { ism: "Abu Rayhon Beruniy", asarlar: { "hindiston": { nomi: "Tahqiq ma lil-Hind", file: "hindiston.json" } } }
@@ -148,51 +97,51 @@
 
         function init() { renderOlimlar(); }
 
-        function toggleSettings(open) {
-            document.getElementById('settings-panel').classList.toggle('open', open);
-            document.getElementById('overlay').classList.toggle('active', open);
+        function toggleSettings(s) {
+            document.getElementById('settings-panel').classList.toggle('open', s);
+            document.getElementById('overlay').classList.toggle('active', s);
         }
 
         function renderOlimlar() {
-            currentView = 'olimlar';
+            view = 'olimlar';
             document.getElementById('back-btn').classList.add('hidden');
-            document.getElementById('search-container').classList.add('hidden');
+            document.getElementById('search-div').classList.add('hidden');
             let h = '<div class="selection-grid">';
             for(let k in db) h += `<div class="item-card" onclick="selectOlim('${k}')"><h2 class="font-black text-xl">${db[k].ism}</h2></div>`;
             document.getElementById('app-container').innerHTML = h + '</div>';
         }
 
         function selectOlim(k) {
-            state.olim = k; currentView = 'asarlar';
+            state.o = k; view = 'asarlar';
             document.getElementById('back-btn').classList.remove('hidden');
             let h = '<div class="selection-grid">';
             for(let a in db[k].asarlar) h += `<div class="item-card" onclick="loadAsar('${k}','${a}')"><h2 class="font-bold text-lg">${db[k].asarlar[a].nomi}</h2></div>`;
             document.getElementById('app-container').innerHTML = h + '</div>';
         }
 
-        async function loadAsar(ok, ak) {
-            state.asar = ak; currentView = 'boblar';
+        async function loadAsar(o, a) {
+            state.a = a; view = 'boblar';
             try {
-                const r = await fetch(`sources/${ok}/${db[ok].asarlar[ak].file}`);
-                const data = await r.json();
+                const res = await fetch(`sources/${o}/${db[o].asarlar[a].file}`);
+                const data = await res.json();
                 let h = '<div class="selection-grid">';
-                data.forEach((b, i) => {
+                data.forEach((b) => {
                     const m = btoa(unescape(encodeURIComponent(JSON.stringify(b.matnlar))));
                     h += `<div class="item-card" onclick="renderMatn('${m}')"><h2 class="font-bold">${b.bob_nomi}</h2></div>`;
                 });
                 document.getElementById('app-container').innerHTML = h + '</div>';
-            } catch(e) { alert("Xatolik: Fayl topilmadi!"); }
+            } catch(e) { alert("Xatolik: JSON fayli topilmadi!"); }
         }
 
         function renderMatn(mStr) {
-            currentView = 'matn';
+            view = 'matn';
             const matnlar = JSON.parse(decodeURIComponent(escape(atob(mStr))));
-            document.getElementById('search-container').classList.remove('hidden');
-            let h = '<div class="max-w-4xl mx-auto pt-32 px-5 pb-20">';
-            matnlar.forEach(item => {
+            document.getElementById('search-div').classList.remove('hidden');
+            let h = '<div class="max-w-4xl mx-auto pt-28 px-5 pb-20">';
+            matnlar.forEach(i => {
                 h += `<div class="content-card">
-                        <div class="arab-text">${item.arabcha_matn}</div>
-                        <div class="uzb-text">${item.tarjima}</div>
+                        <div class="arab-text">${i.arabcha_matn}</div>
+                        <div class="uzb-text">${i.tarjima}</div>
                       </div>`;
             });
             document.getElementById('app-container').innerHTML = h + '</div>';
@@ -200,21 +149,21 @@
         }
 
         function goBack() {
-            if(currentView==='asarlar') renderOlimlar();
-            else if(currentView==='boblar') selectOlim(state.olim);
-            else if(currentView==='matn') loadAsar(state.olim, state.asar);
+            if(view==='asarlar') renderOlimlar();
+            else if(view==='boblar') selectOlim(state.o);
+            else if(view==='matn') loadAsar(state.o, state.a);
         }
 
         function liveSearch() {
-            let val = document.getElementById('search-input').value.toLowerCase();
+            let v = document.getElementById('search-input').value.toLowerCase();
             document.querySelectorAll('.content-card').forEach(c => {
-                c.style.display = c.innerText.toLowerCase().includes(val) ? "block" : "none";
+                c.style.display = c.innerText.toLowerCase().includes(v) ? "block" : "none";
             });
         }
 
         function changeFontSize(t, d) {
             let r = document.documentElement, v = `--${t}-size`;
-            let s = Math.max(12, Math.min(70, parseInt(getComputedStyle(r).getPropertyValue(v)) + d));
+            let s = Math.max(12, Math.min(60, parseInt(getComputedStyle(r).getPropertyValue(v)) + d));
             r.style.setProperty(v, s + "px");
             document.getElementById(t+'-val').innerText = s;
         }
