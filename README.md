@@ -7,21 +7,22 @@ Ilm — bu uzilmas zanjir. Bizning maqsadimiz buyuk olimlarimiz (Xorazmiy, Berun
 
 ## 🏗️ "The Bridge" (Ko‘prik) konsepsiyasi
 Ilova interfeysi uchta asosiy qatlamdan iborat bo‘ladi:
-1. **Al-Asl (Original):** Qo‘lyozmaning skanerlangan varianti yoki asl arabcha matni.
-2. **At-Tarjima (Akademik):** O‘zbek tilidagi so‘zma-so‘z va aniq ilmiy tarjima.
-3. **Al-Mantiq (Izoh):** Matndagi formulalarning zamonaviy ko‘rinishi, algoritmlar va vizual chizmalar.
 
-## 🛠️ Texnik poydevor
-- **Brend nomi:** AVODOD
-- **Ma’lumotlar formati:** JSON (Arxivlangan matnlar va mantiqiy bog‘lamalar uchun).
-- **Platforma:** Cloudflare ekotizimi (Workers, D1 Database).
-- **Imlo standarti:** O‘zbek lotin alifbosi (O‘, G‘ harflari va tutuq belgisi qat’iy saqlanadi).
+1.  **Al-Asl (Original):** Qo‘lyozmaning skanerlangan varianti yoki asl arabcha matni.
+2.  **At-Tarjima (Akademik):** O‘zbek tilidagi so‘zma-so‘z va aniq ilmiy tarjima.
+3.  **Al-Mantiq (Izoh):** Matndagi formulalarning zamonaviy dasturlash tillari (Python/JS) va vizual tushuntirishlar bilan tahlili.
 
-## 📂 Loyiha strukturasi
-- `/data`: Olimlarning asarlari strukturaviy JSON formatida.
-- `/docs`: Tadqiqotlar, tarjima materiallari va PDF manbalar.
-- `/design`: Ilovaning vizual interfeysi va UX chizmalari.
-- `/src`: Frontend va backend dasturiy kodi.
+## 📚 Mavjud manbalar
+Ushbu bo‘limda har bir allomaning asarlari va ularning bibliografik manbalari bilan tanishishingiz mumkin:
+
+*   👉 [Muhammad ibn Muso al-Xorazmiy](./sources/xorazmiy/)
+*   👉 [Abu Ali ibn Sino](./sources/ibn-sino/)
+*   👉 [Abu Rayhon Beruniy](./sources/beruniy/)
+*   👉 [Ahmad al-Farg‘oniy](./sources/fargoni/)
+
+## ✍️ Loyiha muallifi
+**Dilorom Yusupova Husan qizi**
+*Filolog, tadqiqotchi va dasturchi*
 
 ---
-*“Vaqt o‘tishi bilan ilm eskirishi mumkin, lekin uning mantiqiy poydevori abadiydir.”*
+*Loyiha ustida ish davom etmoqda. Har bir qadam ilmiy va texnik tahlil asosida qo‘yilmoqda.*
