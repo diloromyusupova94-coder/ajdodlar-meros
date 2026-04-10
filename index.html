@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Al-Xorazmiy: Al-Jabr</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        .font-arabic { font-family: 'Amiri', serif; }
+        .sepia-mode { background-color: #f4ecd8; color: #5d4037; font-family: 'Lora', serif; }
+        .sepia-card { background-color: #fdfaf1; border-color: #d7ccc8; }
+        .dark-mode { background-color: #0f172a; color: #f1f5f9; }
+        .dark-card { background-color: #1e293b; border-color: #334155; }
+    </style>
+</head>
+<body id="body" class="sepia-mode transition-colors duration-500">
+
+    <!-- Navigatsiya -->
+    <nav class="sticky top-0 z-50 border-b border-opacity-20 border-gray-500 backdrop-blur-md p-4 flex justify-between items-center">
+        <h1 class="text-xl font-bold tracking-tight">AL-XORAZMIY</h1>
+        <div class="flex gap-2 bg-black bg-opacity-5 p-1 rounded-lg">
+            <button onclick="setTheme('light')" class="px-3 py-1 rounded hover:bg-white transition shadow-sm">☀️</button>
+            <button onclick="setTheme('dark')" class="px-3 py-1 rounded hover:bg-gray-700 transition shadow-sm">🌙</button>
+            <button onclick="setTheme('sepia')" class="px-3 py-1 rounded hover:bg-[#dccfb2] transition shadow-sm">📖</button>
+        </div>
+    </nav>
+
+    <!-- Kontent -->
+    <main id="content" class="max-w-4xl mx-auto p-6 space-y-6">
+        <!-- Ma'lumotlar JS orqali shu yerga tushadi -->
+    </main>
+
+    <script>
+        // Sening JSON ma'lumotlaring
+        const data = [
+            {
+                "id": "01-MUQ-001",
+                "arabcha_matn": "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ.",
+                "tarjima": "Mehribon va rahmli Alloh nomi bilan (boshlayman).",
+                "izoh": "Klassik islomiy va ilmiy asarlarning an’anaviy boshlanishi (Basmala)."
+            },
+            {
+                "id": "01-MUQ-027",
+                "arabcha_matn": "فَسَأَلَنِي أَنْ أُؤَلِّفَ مِنْ حِسَابِ الْجَبْرِ وَالْمُقَابَلَةِ كِتَابًا مُخْتَصَرًا.",
+                "tarjima": "Shunday qilib, u (xalifa) mendan «Al-jabr va al-muqobala» hisobi haqida ixcham bir kitob tasnif etishimni so‘radi.",
+                "izoh": "Bu dunyo ilm-fanidagi «Algebra» faniga asos solgan tarixiy topshiriqning bayonidir."
+            }
+            // Qolgan gaplarni ham shu tartibda qo'shish mumkin
+        ];
+
+        function setTheme(theme) {
+            const body = document.getElementById('body');
+            body.className = 'transition-colors duration-500 ' + theme + '-mode';
+            renderContent(theme);
+        }
+
+        function renderContent(theme) {
+            const container = document.getElementById('content');
+            container.innerHTML = data.map(item => `
+                <div class="p-6 rounded-xl border-2 transition-all hover:shadow-lg ${theme}-card">
+                    <div class="flex flex-col md:flex-row-reverse gap-6">
+                        <div class="md:w-1/2 text-right">
+                            <p class="text-3xl leading-loose font-arabic" dir="rtl">${item.arabcha_matn}</p>
+                            <span class="text-xs opacity-40 font-mono tracking-widest">${item.id}</span>
+                        </div>
+                        <div class="md:w-1/2 flex flex-col justify-center">
+                            <p class="text-xl leading-relaxed font-medium">${item.tarjima}</p>
+                            <div class="mt-4 p-3 rounded-lg bg-black bg-opacity-5 text-sm italic opacity-80">
+                                <strong>Izoh:</strong> ${item.izoh}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Ilk yuklanganda render qilish
+        renderContent('sepia');
+    </script>
+</body>
+</html>
