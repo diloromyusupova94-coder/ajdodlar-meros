@@ -13,27 +13,29 @@
 
         body { background-color: var(--bg); color: var(--text); transition: 0.5s; font-family: 'Inter', sans-serif; min-height: 100vh; margin: 0; }
         
+        /* HEADER */
         .top-nav { position: fixed; top: 0; left: 0; right: 0; height: 80px; background: var(--bg); border-bottom: 2px solid var(--ornament); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 1000; }
+        .logo { font-weight: 900; font-size: 18px; letter-spacing: -1px; }
+        
+        /* GRID */
         .selection-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; padding: 110px 20px 40px; }
         .item-card { background: var(--card); border: 2px solid var(--border); padding: 40px; border-radius: 20px; cursor: pointer; transition: 0.3s; text-align: center; }
         .item-card:hover { border-color: var(--ornament); transform: translateY(-5px); }
         
+        /* READER */
         .content-card { background: var(--card); border-radius: 25px; padding: 45px; margin-bottom: 40px; border: 1px solid var(--border); }
         .arab-text { font-family: 'Amiri', serif; text-align: right; line-height: 2.2; margin-bottom: 30px; font-size: var(--arab-size); }
         .uzb-text { font-family: 'Lora', serif; border-top: 1px dashed var(--border); padding-top: 25px; font-size: var(--uzb-size); }
-        
         .font-control { display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.05); padding: 4px 12px; border-radius: 8px; border: 1px solid var(--border); }
         .theme-btn { padding: 6px 14px; font-size: 10px; font-weight: 900; border: 1px solid var(--ornament); border-radius: 6px; cursor: pointer; }
         .theme-btn.active { background: var(--ornament); color: var(--bg); }
         .size-btn { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; background: var(--ornament); color: white; border-radius: 4px; cursor: pointer; border: none; }
     </style>
 </head>
-<body>
-
-    <header class="top-nav">
+<body onload="init()"> <header class="top-nav">
         <div class="flex items-center gap-4">
             <button id="back-btn" onclick="goBack()" class="hidden text-2xl">←</button>
-            <h1 id="nav-title" class="font-black uppercase tracking-[2px] text-[10px]">Olimlar</h1>
+            <div class="logo">AVODOD</div>
         </div>
 
         <div id="controls" class="hidden flex gap-3">
@@ -53,12 +55,14 @@
 
     <script>
         let currentState = 'olimlar';
-        let selectedOlimKey = null;
-
+        let history = []; // Orqaga qaytish uchun tarix
+        
         const database = {
             "xorazmiy": { "ism": "Muhammad al-Xorazmiy", "asarlar": { "al-jabr": { "nomi": "Al-Jabr va Al-Muqobala", "file": "al-jabr.json" } } },
             "beruniy": { "ism": "Abu Rayhon Beruniy", "asarlar": { "hindiston": { "nomi": "Tahqiq ma lil-Hind", "file": "hindiston.json" } } }
         };
+
+        function init() { renderOlimlar(); }
 
         function changeFontSize(type, delta) {
             const root = document.documentElement;
@@ -76,14 +80,15 @@
 
         function renderOlimlar() {
             currentState = 'olimlar';
-            updateNav("Olimlar", false);
+            history = [];
+            updateNav("AVODOD | Olimlar", false);
             let html = '<div class="selection-grid">';
-            for (let key in database) html += `<div class="item-card" onclick="selectOlim('${key}')"><h2 class="text-xl">${database[key].ism}</h2></div>`;
+            for (let key in database) html += `<div class="item-card" onclick="selectOlim('${key}')"><h2>${database[key].ism}</h2></div>`;
             document.getElementById('app-container').innerHTML = html + '</div>';
         }
 
         function selectOlim(key) {
-            selectedOlimKey = key;
+            history.push('olimlar');
             currentState = 'asarlar';
             updateNav(database[key].ism, true);
             let html = '<div class="selection-grid">';
@@ -92,6 +97,7 @@
         }
 
         async function selectAsar(olimKey, asarKey) {
+            history.push('asarlar');
             currentState = 'boblar';
             try {
                 const res = await fetch(`sources/${olimKey}/${database[olimKey].asarlar[asarKey].file}`);
@@ -99,10 +105,11 @@
                 let html = '<div class="selection-grid">';
                 data.forEach((bob, i) => html += `<div class="item-card" onclick="renderReader(${JSON.stringify(bob.matnlar).replace(/"/g, '&quot;')}, '${bob.bob_nomi}')"><h2>${bob.bob_nomi}</h2></div>`);
                 document.getElementById('app-container').innerHTML = html + '</div>';
-            } catch(e) { alert("Xatolik!"); }
+            } catch(e) { console.error(e); alert("Fayl topilmadi!"); }
         }
 
         function renderReader(matnlar, bobNomi) {
+            history.push('boblar');
             currentState = 'matn';
             updateNav(bobNomi, true);
             document.getElementById('controls').classList.remove('hidden');
@@ -114,12 +121,14 @@
         function updateNav(title, showBack) {
             document.getElementById('nav-title').innerText = title;
             document.getElementById('back-btn').style.display = showBack ? 'block' : 'none';
-            if(!showBack) document.getElementById('controls').classList.add('hidden');
         }
 
         function goBack() {
-            if(currentState === 'matn') selectAsar(selectedOlimKey, 'al-jabr'); // Sodda qaytish
-            else renderOlimlar();
+            history.pop();
+            const last = history[history.length - 1];
+            if (!last) renderOlimlar();
+            else if (last === 'olimlar') renderOlimlar();
+            else if (last === 'asarlar') history.length=0; // Sodda logikaga qaytish
         }
 
         function setTheme(mode) {
@@ -127,8 +136,6 @@
             document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
             document.getElementById('t-' + mode).classList.add('active');
         }
-
-        init();
     </script>
 </body>
 </html>
