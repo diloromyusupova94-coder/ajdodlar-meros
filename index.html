@@ -10,6 +10,9 @@
         :root {
             --bg: #F0F9FF; --text: #075985; --sidebar: #E0F2FE;
             --ornament: #D4AF37; --border: #BAE6FD; --card: #ffffff;
+            /* Default shrift o'lchamlari */
+            --arab-size: 48px;
+            --uzb-size: 28px;
         }
         body.book-mode {
             --bg: #FDF8E1; --text: #451A03; --sidebar: #FEF3C7;
@@ -24,13 +27,13 @@
         
         /* NAVIGATION BAR */
         .top-nav {
-            position: fixed; top: 0; left: 0; right: 0; height: 70px;
+            position: fixed; top: 0; left: 0; right: 0; height: 80px;
             background: var(--bg); border-bottom: 2px solid var(--ornament);
             display: flex; align-items: center; justify-content: space-between;
             padding: 0 20px; z-index: 1000;
         }
 
-        /* GRID SYSTEM FOR SELECTION */
+        /* GRID SYSTEM */
         .selection-grid {
             display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 25px; padding: 100px 20px 40px;
@@ -39,30 +42,58 @@
         .item-card {
             background: var(--card); border: 2px solid var(--border);
             padding: 30px; border-radius: 20px; cursor: pointer;
-            transition: 0.3s; position: relative; overflow: hidden;
-            text-align: center;
+            transition: 0.3s; text-align: center;
         }
         .item-card:hover { border-color: var(--ornament); transform: translateY(-5px); }
-        .item-card::after { content: "✦"; display: block; margin-top: 15px; color: var(--ornament); opacity: 0.3; }
 
         /* READER STYLE */
         .content-card {
             background: var(--card); border-radius: 25px;
             padding: 40px; margin-bottom: 40px; border: 1px solid var(--border);
         }
-        .arab-text { font-family: 'Amiri', serif; text-align: right; line-height: 2.5; margin-bottom: 25px; }
-        .uzb-text { font-family: 'Lora', serif; border-top: 1px dashed var(--border); padding-top: 20px; }
+        /* Dinamik o'lchamli shriftlar */
+        .arab-text { 
+            font-family: 'Amiri', serif; text-align: right; line-height: 2.2; margin-bottom: 25px; 
+            font-size: var(--arab-size);
+        }
+        .uzb-text { 
+            font-family: 'Lora', serif; border-top: 1px dashed var(--border); padding-top: 20px; 
+            font-size: var(--uzb-size);
+        }
+
+        .font-control {
+            display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.05);
+            padding: 5px 15px; border-radius: 10px; border: 1px solid var(--border);
+        }
 
         .hidden { display: none; }
         .theme-btn { padding: 4px 12px; font-size: 10px; font-weight: 900; border: 1px solid var(--ornament); border-radius: 4px; }
         .theme-btn.active { background: var(--ornament); color: var(--bg); }
+        .size-btn { font-weight: bold; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; background: var(--ornament); color: white; border-radius: 5px; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <header class="top-nav">
-        <button id="back-btn" onclick="goBack()" class="hidden text-xl">←</button>
-        <h1 id="nav-title" class="font-black uppercase tracking-widest text-sm">Olimlar</h1>
+        <div class="flex items-center gap-4">
+            <button id="back-btn" onclick="goBack()" class="hidden text-xl">←</button>
+            <h1 id="nav-title" class="font-black uppercase tracking-widest text-xs">Olimlar</h1>
+        </div>
+
+        <!-- Shrift boshqaruvi (Faqat matn o'qishda ko'rinadi) -->
+        <div id="font-tools" class="hidden flex gap-4">
+            <div class="font-control">
+                <span class="text-[10px] font-bold">ع</span>
+                <button onclick="changeFontSize('arab', -4)" class="size-btn text-sm">-</button>
+                <button onclick="changeFontSize('arab', 4)" class="size-btn text-sm">+</button>
+            </div>
+            <div class="font-control">
+                <span class="text-[10px] font-bold">UZ</span>
+                <button onclick="changeFontSize('uzb', -2)" class="size-btn text-sm">-</button>
+                <button onclick="changeFontSize('uzb', 2)" class="size-btn text-sm">+</button>
+            </div>
+        </div>
+
         <div class="flex gap-2">
             <button onclick="setTheme('day')" id="t-day" class="theme-btn active">KUN</button>
             <button onclick="setTheme('book')" id="t-book" class="theme-btn">KITOB</button>
@@ -71,24 +102,19 @@
     </header>
 
     <main id="app-container">
-        <!-- Dinamik kontent shu yerga tushadi -->
+        <!-- Kontent -->
     </main>
 
     <script>
-        // BOSHQARUV HOLATI
-        let currentState = 'olimlar'; // olimlar -> asarlar -> boblar -> matn
+        let currentState = 'olimlar';
         let selectedOlim = null;
         let selectedAsar = null;
 
-        // NAMUNAVIY MA'LUMOT (Buni alohida JSON qilish ham mumkin)
         const database = {
             "xorazmiy": {
                 "ism": "Muhammad al-Xorazmiy",
                 "asarlar": {
-                    "al-jabr": {
-                        "nomi": "Al-Jabr va Al-Muqobala",
-                        "file": "al-jabr.json" // Bu fayl ichida boblar va matnlar bor
-                    }
+                    "al-jabr": { "nomi": "Al-Jabr va Al-Muqobala", "file": "al-jabr.json" }
                 }
             },
             "beruniy": {
@@ -101,69 +127,68 @@
 
         function init() { renderOlimlar(); }
 
-        // 1-BOSQICH: OLIMLAR
+        // SHRIFTNI O'ZGARTIRISH FUNKSIYASI
+        function changeFontSize(type, delta) {
+            const root = document.documentElement;
+            const variable = `--${type}-size`;
+            const currentSize = parseInt(getComputedStyle(root).getPropertyValue(variable));
+            root.style.setProperty(variable, (currentSize + delta) + "px");
+        }
+
         function renderOlimlar() {
             currentState = 'olimlar';
             updateNav("Olimlar", false);
+            document.getElementById('font-tools').classList.add('hidden');
             let html = '<div class="selection-grid">';
             for (let key in database) {
-                html += `<div class="item-card" onclick="selectOlim('${key}')">
-                            <h2 class="text-2xl font-black">${database[key].ism}</h2>
-                         </div>`;
+                html += `<div class="item-card" onclick="selectOlim('${key}')"><h2 class="text-2xl font-black">${database[key].ism}</h2></div>`;
             }
             html += '</div>';
             document.getElementById('app-container').innerHTML = html;
         }
 
-        // 2-BOSQICH: ASARLAR
         function selectOlim(key) {
             selectedOlim = database[key];
             currentState = 'asarlar';
             updateNav(selectedOlim.ism, true);
+            document.getElementById('font-tools').classList.add('hidden');
             let html = '<div class="selection-grid">';
             for (let asarKey in selectedOlim.asarlar) {
-                html += `<div class="item-card" onclick="selectAsar('${key}', '${asarKey}')">
-                            <h2 class="text-xl font-bold">${selectedOlim.asarlar[asarKey].nomi}</h2>
-                         </div>`;
+                html += `<div class="item-card" onclick="selectAsar('${key}', '${asarKey}')"><h2 class="text-xl font-bold">${selectedOlim.asarlar[asarKey].nomi}</h2></div>`;
             }
             html += '</div>';
             document.getElementById('app-container').innerHTML = html;
         }
 
-        // 3-BOSQICH: BOBLAR (JSONdan yuklanadi)
         async function selectAsar(olimKey, asarKey) {
             selectedAsar = database[olimKey].asarlar[asarKey];
             currentState = 'boblar';
             updateNav(selectedAsar.nomi, true);
-            
-            // JSON faylni yuklash
+            document.getElementById('font-tools').classList.add('hidden');
             try {
                 const res = await fetch(`sources/${olimKey}/${selectedAsar.file}`);
                 const data = await res.json();
-                
                 let html = '<div class="selection-grid">';
                 data.forEach((bob, index) => {
-                    html += `<div class="item-card" onclick="renderReader(${JSON.stringify(bob.matnlar).replace(/"/g, '&quot;')}, '${bob.bob_nomi}')">
-                                <h2 class="text-lg font-bold">${bob.bob_nomi}</h2>
-                             </div>`;
+                    html += `<div class="item-card" onclick="renderReader(${JSON.stringify(bob.matnlar).replace(/"/g, '&quot;')}, '${bob.bob_nomi}')"><h2 class="text-lg font-bold">${bob.bob_nomi}</h2></div>`;
                 });
                 html += '</div>';
                 document.getElementById('app-container').innerHTML = html;
-            } catch (e) { alert("Fayl topilmadi!"); }
+            } catch (e) { alert("Xato!"); }
         }
 
-        // 4-BOSQICH: MATNLAR (READER)
         function renderReader(matnlar, bobNomi) {
             currentState = 'matn';
             updateNav(bobNomi, true);
-            let html = '<div class="max-w-4xl mx-auto pt-24 px-6 pb-20">';
+            document.getElementById('font-tools').classList.remove('hidden'); // Shrift asboblarini ko'rsatish
+            let html = '<div class="max-w-4xl mx-auto pt-28 px-6 pb-20">';
             matnlar.forEach(d => {
                 html += `
                     <div class="content-card shadow-xl">
                         <span class="text-[10px] opacity-30 font-black tracking-widest block mb-4">№ ${d.id}</span>
-                        <div class="arab-text text-4xl md:text-5xl">${d.arabcha_matn}</div>
+                        <div class="arab-text">${d.arabcha_matn}</div>
                         <div class="uzb-text">
-                            <p class="text-2xl md:text-3xl font-serif">${d.tarjima}</p>
+                            <p class="font-serif">${d.tarjima}</p>
                             ${d.izoh ? `<p class="mt-4 text-sm italic opacity-60">Izoh: ${d.izoh}</p>` : ''}
                         </div>
                     </div>`;
@@ -172,7 +197,6 @@
             document.getElementById('app-container').innerHTML = html;
         }
 
-        // NAVIGATSIYA VA ORQAGA QAYTISH
         function updateNav(title, showBack) {
             document.getElementById('nav-title').innerText = title;
             document.getElementById('back-btn').style.display = showBack ? 'block' : 'none';
