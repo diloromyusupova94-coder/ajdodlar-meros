@@ -3,80 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Al-Xorazmiy: Al-Jabr</title>
+    <title>Ajdodlar Merosi | Al-Xorazmiy</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <style>
         .font-arabic { font-family: 'Amiri', serif; }
-        .sepia-mode { background-color: #f4ecd8; color: #5d4037; font-family: 'Lora', serif; }
-        .sepia-card { background-color: #fdfaf1; border-color: #d7ccc8; }
+        .font-main { font-family: 'Lora', serif; }
+        .sepia-mode { background-color: #f4ecd8; color: #5d4037; }
         .dark-mode { background-color: #0f172a; color: #f1f5f9; }
-        .dark-card { background-color: #1e293b; border-color: #334155; }
+        .book-mode { background-color: #ffffff; color: #1a1a1a; }
+        .card { transition: all 0.3s ease; }
+        .sepia-mode .card { background: rgba(255, 255, 255, 0.4); border: 1px solid #d7ccc8; }
+        .dark-mode .card { background: rgba(30, 41, 59, 0.7); border: 1px solid #334155; }
+        .book-mode .card { background: #f9f9f9; border: 1px solid #e5e5e5; }
+        /* Gorizontal menyu uchun scrollni yashirish */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body id="body" class="sepia-mode transition-colors duration-500">
+<body id="appBody" class="sepia-mode font-main min-h-screen">
 
-    <!-- Navigatsiya -->
-    <nav class="sticky top-0 z-50 border-b border-opacity-20 border-gray-500 backdrop-blur-md p-4 flex justify-between items-center">
-        <h1 class="text-xl font-bold tracking-tight">AL-XORAZMIY</h1>
-        <div class="flex gap-2 bg-black bg-opacity-5 p-1 rounded-lg">
-            <button onclick="setTheme('light')" class="px-3 py-1 rounded hover:bg-white transition shadow-sm">☀️</button>
-            <button onclick="setTheme('dark')" class="px-3 py-1 rounded hover:bg-gray-700 transition shadow-sm">🌙</button>
-            <button onclick="setTheme('sepia')" class="px-3 py-1 rounded hover:bg-[#dccfb2] transition shadow-sm">📖</button>
+    <!-- Navigatsiya va Mavzular -->
+    <nav class="sticky top-0 z-50 backdrop-blur-md border-b border-black/10 p-4 mb-4">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold tracking-widest">AL-XORAZMIY</h1>
+            <div class="flex gap-2">
+                <button onclick="setTheme('book')" class="p-2 grayscale hover:grayscale-0">📖</button>
+                <button onclick="setTheme('sepia')" class="p-2 grayscale hover:grayscale-0">☀️</button>
+                <button onclick="setTheme('dark')" class="p-2 grayscale hover:grayscale-0">🌙</button>
+            </div>
         </div>
     </nav>
 
-    <!-- Kontent -->
-    <main id="content" class="max-w-4xl mx-auto p-6 space-y-6">
-        <!-- Ma'lumotlar JS orqali shu yerga tushadi -->
-    </main>
+    <div class="max-w-4xl mx-auto px-4">
+        <!-- Qidiruv paneli -->
+        <div class="mb-6">
+            <input type="text" id="searchBar" 
+                   placeholder="Arabcha matnni harakatsiz ham qidiravering..." 
+                   class="w-full p-4 rounded-2xl bg-black/5 border-2 border-amber-600/20 focus:border-amber-600 outline-none transition shadow-inner">
+        </div>
+
+        <!-- Boblar menyusi -->
+        <div id="categoryMenu" class="flex gap-3 overflow-x-auto no-scrollbar mb-8 pb-2">
+            <button onclick="filterByBob('Hammasi')" class="bob-btn px-6 py-2 rounded-full bg-amber-600 text-white whitespace-nowrap shadow-md">Hammasi</button>
+            <button onclick="filterByBob('Muqaddima')" class="bob-btn px-6 py-2 rounded-full bg-black/5 whitespace-nowrap">Muqaddima</button>
+            <button onclick="filterByBob('Adadlar')" class="bob-btn px-6 py-2 rounded-full bg-black/5 whitespace-nowrap">Adadlar haqida</button>
+            <button onclick="filterByBob('Al-jabr')" class="bob-btn px-6 py-2 rounded-full bg-black/5 whitespace-nowrap">Al-jabr mantiqi</button>
+        </div>
+
+        <!-- Ma'lumotlar chiqadigan joy -->
+        <div id="results" class="space-y-8 pb-20">
+            <div class="text-center py-10 opacity-50">Yuklanmoqda...</div>
+        </div>
+    </div>
 
     <script>
-        // Sening JSON ma'lumotlaring
-        const data = [
-            {
-                "id": "01-MUQ-001",
-                "arabcha_matn": "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ.",
-                "tarjima": "Mehribon va rahmli Alloh nomi bilan (boshlayman).",
-                "izoh": "Klassik islomiy va ilmiy asarlarning an’anaviy boshlanishi (Basmala)."
-            },
-            {
-                "id": "01-MUQ-027",
-                "arabcha_matn": "فَسَأَلَنِي أَنْ أُؤَلِّفَ مِنْ حِسَابِ الْجَبْرِ وَالْمُقَابَلَةِ كِتَابًا مُخْتَصَرًا.",
-                "tarjima": "Shunday qilib, u (xalifa) mendan «Al-jabr va al-muqobala» hisobi haqida ixcham bir kitob tasnif etishimni so‘radi.",
-                "izoh": "Bu dunyo ilm-fanidagi «Algebra» faniga asos solgan tarixiy topshiriqning bayonidir."
-            }
-            // Qolgan gaplarni ham shu tartibda qo'shish mumkin
-        ];
+        let fullData = [];
 
-        function setTheme(theme) {
-            const body = document.getElementById('body');
-            body.className = 'transition-colors duration-500 ' + theme + '-mode';
-            renderContent(theme);
+        // Arabcha harakatlarni olib tashlash funksiyasi
+        const normalize = (text) => text.replace(/[\u064B-\u0652]/g, "").toLowerCase();
+
+        // 1. Ma'lumotlarni al-jabr.json faylidan yuklash
+        async function initApp() {
+            try {
+                // Sening tayyor faylingdan ma'lumotlarni olamiz
+                const response = await fetch('al-jabr.json');
+                const data = await response.json();
+                
+                // JSON strukturangga qarab yo'lni to'g'irlaymiz
+                fullData = data.scholars ? data.scholars[0].works[0].items : data.items;
+                
+                render(fullData);
+            } catch (error) {
+                document.getElementById('results').innerHTML = `
+                    <div class="text-red-500 text-center p-10 bg-red-100 rounded-xl">
+                        <b>Xatolik:</b> al-jabr.json fayli topilmadi yoki xato yozilgan.
+                    </div>`;
+                console.error("Yuklashda xato:", error);
+            }
         }
 
-        function renderContent(theme) {
-            const container = document.getElementById('content');
-            container.innerHTML = data.map(item => `
-                <div class="p-6 rounded-xl border-2 transition-all hover:shadow-lg ${theme}-card">
-                    <div class="flex flex-col md:flex-row-reverse gap-6">
-                        <div class="md:w-1/2 text-right">
-                            <p class="text-3xl leading-loose font-arabic" dir="rtl">${item.arabcha_matn}</p>
-                            <span class="text-xs opacity-40 font-mono tracking-widest">${item.id}</span>
-                        </div>
-                        <div class="md:w-1/2 flex flex-col justify-center">
-                            <p class="text-xl leading-relaxed font-medium">${item.tarjima}</p>
-                            <div class="mt-4 p-3 rounded-lg bg-black bg-opacity-5 text-sm italic opacity-80">
-                                <strong>Izoh:</strong> ${item.izoh}
-                            </div>
-                        </div>
+        // 2. Kartochkalarni chizish
+        function render(items) {
+            const container = document.getElementById('results');
+            if (items.length === 0) {
+                container.innerHTML = `<p class="text-center py-10 opacity-50">Hech narsa topilmadi...</p>`;
+                return;
+            }
+
+            container.innerHTML = items.map(item => `
+                <div class="card p-8 rounded-3xl shadow-sm border border-transparent hover:border-amber-500/30 transition-all">
+                    <div class="flex justify-between items-center mb-6">
+                        <span class="px-3 py-1 bg-amber-600/10 text-amber-600 text-xs font-bold rounded-full">${item.bob || 'Boshqa'}</span>
+                        <span class="text-xs font-mono opacity-30">${item.id}</span>
                     </div>
+                    <p class="text-4xl font-arabic text-right leading-[1.8] mb-8" dir="rtl">${item.arabcha_matn}</p>
+                    <p class="text-xl leading-relaxed mb-6 font-main">${item.tarjima}</p>
+                    ${item.izoh ? `
+                        <div class="p-4 bg-black/5 rounded-xl text-sm italic opacity-80 border-l-4 border-amber-600">
+                            <strong>Izoh:</strong> ${item.izoh}
+                        </div>` : ''}
                 </div>
             `).join('');
         }
 
-        // Ilk yuklanganda render qilish
-        renderContent('sepia');
+        // 3. Boblar bo'yicha filtr
+        function filterByBob(name) {
+            // Tugma rangini o'zgartirish
+            document.querySelectorAll('.bob-btn').forEach(btn => {
+                btn.classList.remove('bg-amber-600', 'text-white');
+                btn.classList.add('bg-black/5');
+            });
+            event.target.classList.add('bg-amber-600', 'text-white');
+
+            if (name === 'Hammasi') {
+                render(fullData);
+            } else {
+                const filtered = fullData.filter(i => i.bob && i.bob.includes(name));
+                render(filtered);
+            }
+        }
+
+        // 4. Aqlli qidiruv (Harakatlar bilan yoki harakatlarsiz)
+        document.getElementById('searchBar').addEventListener('input', (e) => {
+            const query = normalize(e.target.value);
+            const filtered = fullData.filter(item => 
+                normalize(item.arabcha_matn).includes(query) || 
+                item.tarjima.toLowerCase().includes(query)
+            );
+            render(filtered);
+        });
+
+        // 5. Mavzuni almashtirish
+        function setTheme(theme) {
+            document.getElementById('appBody').className = `${theme}-mode font-main min-h-screen`;
+        }
+
+        // Oflayn rejim uchun Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
+
+        // Ilovani ishga tushirish
+        initApp();
     </script>
 </body>
 </html>
