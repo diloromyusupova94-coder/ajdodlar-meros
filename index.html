@@ -12,7 +12,7 @@
         .night-mode { --bg: #0f172a; --text: #f1f5f9; --card: #1e293b; --accent: #fbbf24; }
         .book-mode { --bg: #f4ecd8; --text: #5d4037; --card: #e8dfc4; --accent: #8d6e63; }
 
-        body { background-color: var(--bg); color: var(--text); transition: all 0.5s ease; min-height: 100-vh; }
+        body { background-color: var(--bg); color: var(--text); transition: all 0.5s ease; min-height: 100vh; }
         .font-arabic { font-family: 'Amiri', serif; }
         .font-main { font-family: 'Lora', serif; }
         .font-title { font-family: 'Playfair Display', serif; }
@@ -20,81 +20,102 @@
         .manuscript-card {
             background-color: var(--card);
             border-left: 5px solid var(--accent);
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
         }
-        .mode-btn { border: 1px solid var(--accent); padding: 6px 16px; border-radius: 20px; font-size: 13px; transition: 0.3s; }
-        .mode-btn:hover { background: var(--accent); color: white; }
+        .scholar-link {
+            padding: 8px 20px;
+            border-bottom: 2px solid transparent;
+            transition: 0.3s;
+            cursor: pointer;
+            opacity: 0.5;
+        }
+        .scholar-link.active {
+            opacity: 1;
+            border-color: var(--accent);
+            font-weight: bold;
+        }
     </style>
 </head>
 <body class="day-mode font-main">
 
     <nav class="sticky top-0 z-50 bg-inherit border-b border-black/5 p-5 backdrop-blur-md">
-        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="text-center md:text-left">
-                <h1 class="font-title text-4xl font-black text-amber-900 tracking-tight">AVODOD 🏛️</h1>
-                <p class="text-[10px] uppercase tracking-[0.3em] opacity-70">Ajdodlar va avlodlar ko‘prigi</p>
+        <div class="max-w-6xl mx-auto flex flex-col gap-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="text-center md:text-left">
+                    <h1 class="font-title text-4xl font-black text-amber-900 tracking-tight">AVODOD 🏛️</h1>
+                    <p class="text-[10px] uppercase tracking-[0.3em] opacity-70">Ajdodlar va avlodlar ko‘prigi</p>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="changeMode('day')" class="px-4 py-1 border border-amber-800/30 rounded-full text-xs">Kun</button>
+                    <button onclick="changeMode('book')" class="px-4 py-1 border border-amber-800/30 rounded-full text-xs">Kitob</button>
+                    <button onclick="changeMode('night')" class="px-4 py-1 border border-amber-800/30 rounded-full text-xs">Tun</button>
+                </div>
             </div>
-            <div class="flex gap-2">
-                <button onclick="changeMode('day')" class="mode-btn">Kun</button>
-                <button onclick="changeMode('book')" class="mode-btn">Kitob</button>
-                <button onclick="changeMode('night')" class="mode-btn">Tun</button>
+
+            <!-- Olimlar bo‘limi (Tabs) -->
+            <div class="flex justify-center md:justify-start gap-6 text-sm overflow-x-auto pb-2">
+                <span class="scholar-link active" onclick="loadScholar('xorazmiy', this)">Al-Xorazmiy</span>
+                <span class="scholar-link" onclick="loadScholar('beruniy', this)">Al-Beruniy</span>
+                <span class="scholar-link" onclick="loadScholar('ibnsino', this)">Ibn Sino</span>
             </div>
         </div>
     </nav>
 
     <main class="max-w-4xl mx-auto px-6 py-12">
         <div id="content" class="space-y-16">
-            <div class="text-center py-20 opacity-40 italic">Xazina yuklanmoqda...</div>
+            <div class="text-center py-20 opacity-40 italic">Meros yuklanmoqda...</div>
         </div>
     </main>
 
     <script>
         let items = [];
 
-        async function initAvodod() {
+        // Olim ma'lumotlarini yuklash
+        async function loadScholar(folder, element) {
+            // Vizual aktivlikni o'zgartirish
+            document.querySelectorAll('.scholar-link').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML = '<div class="text-center py-20 opacity-40 italic">Sahifa varaqlanmoqda...</div>';
+
             try {
-                // Nuqtasiz yo'l - bu eng xavfsiz usul
-                const res = await fetch('sources/xorazmiy/al-jabr.json');
+                // Folder o'zgaruvchisiga qarab JSON faylni topadi
+                // Agar fayl sources/xorazmiy/al-jabr.json bo'lsa
+                const res = await fetch(`sources/${folder}/al-jabr.json`);
                 
-                if (!res.ok) {
-                    throw new Error(`Fayl topilmadi. Status: ${res.status}`);
-                }
+                if (!res.ok) throw new Error("Fayl topilmadi");
 
                 const data = await res.json();
                 items = data.scholars ? data.scholars[0].works[0].items : (data.items || data);
                 render(items);
-
             } catch (e) {
-                document.getElementById('content').innerHTML = `
-                    <div class="p-12 manuscript-card rounded-[2rem] text-center border-red-200 bg-red-50/50">
-                        <h2 class="text-2xl font-title text-red-800 mb-4">Bog‘lanishda uzilish</h2>
-                        <p class="text-sm opacity-70">Xatolik: ${e.message}</p>
-                        <p class="mt-4 text-xs font-mono bg-white/50 p-2 rounded">Yo‘l: sources/xorazmiy/al-jabr.json</p>
-                    </div>`;
+                contentDiv.innerHTML = `
+                <div class="p-10 manuscript-card rounded-[2rem] text-center">
+                    <h2 class="text-2xl font-title text-red-800 mb-4">Ma'lumot topilmadi</h2>
+                    <p class="opacity-70 text-sm">Hozircha faqat Al-Xorazmiy bo‘limi tayyorlangan.</p>
+                </div>`;
             }
         }
 
         function render(data) {
             document.getElementById('content').innerHTML = data.map(i => `
                 <article class="manuscript-card p-10 md:p-14 rounded-[3rem]">
-                    <div class="flex justify-between items-center mb-10 opacity-30 text-[10px] uppercase tracking-widest font-bold">
-                        <span>${i.bob || 'Ilmiy meros'}</span>
-                        <span>Tartib: ${i.id}</span>
+                    <div class="flex justify-between items-center mb-10 opacity-30 text-[10px] tracking-widest font-bold">
+                        <span>${i.bob || 'Ilmiy asar'}</span>
+                        <span>Kod: ${i.id}</span>
                     </div>
-
                     <div class="mb-12">
-                        <h4 class="text-[10px] font-bold text-amber-800 mb-4 tracking-widest uppercase">Arabcha matn</h4>
+                        <h4 class="text-[10px] font-bold text-amber-800 mb-4 uppercase">Arabcha matn</h4>
                         <p class="text-4xl md:text-5xl font-arabic text-right leading-[1.8]" dir="rtl">${i.arabcha_matn}</p>
                     </div>
-
-                    <div class="mb-10 pt-8 border-t border-black/5 text-left">
-                        <h4 class="text-[10px] font-bold text-amber-800 mb-4 tracking-widest uppercase">Tarjima</h4>
+                    <div class="mb-10 pt-8 border-t border-black/5">
+                        <h4 class="text-[10px] font-bold text-amber-800 mb-4 uppercase">Tarjima</h4>
                         <p class="text-2xl md:text-3xl leading-relaxed italic opacity-90">${i.tarjima}</p>
                     </div>
-
                     ${i.izoh ? `
-                    <div class="p-8 bg-black/5 rounded-[2rem] border border-black/5 text-left">
-                        <h4 class="text-[10px] font-bold text-amber-800 mb-3 tracking-widest uppercase">Izoh</h4>
+                    <div class="p-8 bg-black/5 rounded-[2rem] border border-black/5">
+                        <h4 class="text-[10px] font-bold text-amber-800 mb-3 uppercase">Izoh</h4>
                         <p class="text-base leading-relaxed opacity-80">${i.izoh}</p>
                     </div>` : ''}
                 </article>
@@ -103,7 +124,8 @@
 
         function changeMode(m) { document.body.className = m + '-mode font-main'; }
 
-        initAvodod();
+        // Birinchi bo'lib Xorazmiyni yuklash
+        loadScholar('xorazmiy', document.querySelector('.scholar-link'));
     </script>
 </body>
 </html>
