@@ -26,11 +26,11 @@
             display: flex; align-items: center; justify-content: space-between; 
             padding: 0 15px; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
-        .logo-text { font-weight: 900; font-size: 20px; letter-spacing: 0.5px; }
+        .logo-text { font-weight: 900; font-size: 22px; letter-spacing: 0.5px; line-height: 1; }
 
-        /* SOZLAMALAR PANELI */
+        /* SETTINGS PANEL */
         #settings-panel {
-            position: fixed; top: 0; right: -320px; width: 300px; height: 100%;
+            position: fixed; top: 0; right: -320px; width: 310px; height: 100%;
             background: var(--card); border-left: 4px solid var(--ornament);
             z-index: 2000; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             padding: 40px 20px; box-shadow: -15px 0 40px rgba(0,0,0,0.15);
@@ -39,10 +39,10 @@
         .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 1500; display: none; }
         .overlay.active { display: block; }
 
-        /* KARTALAR */
+        /* CARDS & CONTENT */
         .selection-grid { 
             display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
-            gap: 20px; padding: 105px 20px 40px; max-width: 1200px; margin: 0 auto;
+            gap: 20px; padding: 110px 20px 40px; max-width: 1200px; margin: 0 auto;
         }
         .item-card { 
             background: var(--card); border: 2px solid var(--border); padding: 35px; 
@@ -50,9 +50,7 @@
             transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.02);
         }
         .item-card:hover { border-color: var(--ornament); transform: translateY(-5px); }
-        .item-card:active { transform: scale(0.95); }
-
-        /* READER MATNLARI */
+        
         .content-card { 
             background: var(--card); border-radius: 25px; padding: 35px; 
             margin-bottom: 30px; border: 1px solid var(--border); 
@@ -61,14 +59,14 @@
         .arab-text { font-family: 'Amiri', serif; text-align: right; line-height: 1.9; font-size: var(--arab-size); }
         .uzb-text { font-family: 'Lora', serif; border-top: 1px dashed var(--border); padding-top: 25px; margin-top: 25px; font-size: var(--uzb-size); }
 
-        /* SOZLAMALAR ELEMENTLARI */
+        /* CONTROLS */
         .setting-item { margin-bottom: 30px; }
-        .setting-label { font-size: 11px; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; display: block; letter-spacing: 1px; }
+        .setting-label { font-size: 11px; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; display: block; opacity: 0.7; }
         .btn-group { display: flex; gap: 8px; }
-        .btn-opt { flex: 1; padding: 12px; border: 1px solid var(--ornament); border-radius: 10px; font-size: 10px; font-weight: 900; background: transparent; color: var(--text); transition: 0.3s; }
+        .btn-opt { flex: 1; padding: 12px; border: 1px solid var(--ornament); border-radius: 10px; font-size: 10px; font-weight: 900; background: transparent; color: var(--text); }
         .btn-opt.active { background: var(--ornament); color: white; }
-        .size-ctrl { display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.04); padding: 12px; border-radius: 12px; }
-        .circle-btn { width: 38px; height: 38px; border-radius: 50%; background: var(--ornament); color: white; border: none; font-size: 20px; font-weight: bold; cursor: pointer; }
+        .size-ctrl { display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.04); padding: 10px; border-radius: 12px; }
+        .circle-btn { width: 40px; height: 40px; border-radius: 50%; background: var(--ornament); color: white; border: none; font-size: 22px; cursor: pointer; }
 
         .hidden { display: none !important; }
     </style>
@@ -79,38 +77,49 @@
     <header class="top-nav">
         <div class="flex items-center gap-3">
             <button id="back-btn" onclick="goBack()" class="hidden p-2 text-2xl font-bold">←</button>
-            <div class="flex items-center gap-3">
-                <!-- Logo joyi (rasm bo'lsa src="..." ga qo'yiladi) -->
-                <div class="w-12 h-12 rounded-full border-2 border-[var(--ornament)] flex items-center justify-center bg-white overflow-hidden shadow-inner">
-                   <span class="text-xl">📖</span> 
+            <div class="flex items-center gap-2">
+                <!-- SVG LOGO -->
+                <div class="w-12 h-12 flex items-center justify-center">
+                    <svg viewBox="0 0 100 100" class="w-full h-full">
+                        <!-- Sakkiz qirrali naqsh -->
+                        <path d="M50 5 L62 38 L95 50 L62 62 L50 95 L38 62 L5 50 L38 38 Z" fill="none" stroke="var(--ornament)" stroke-width="3"/>
+                        <!-- Kitob shakli -->
+                        <path d="M30 48 Q50 42 70 48 V68 Q50 62 30 68 Z" fill="var(--ornament)"/>
+                        <path d="M50 45 V65" stroke="var(--bg)" stroke-width="1.5"/>
+                        <!-- Nur nuqtalari -->
+                        <circle cx="50" cy="25" r="2" fill="var(--ornament)"/>
+                        <circle cx="75" cy="50" r="2" fill="var(--ornament)"/>
+                        <circle cx="50" cy="75" r="2" fill="var(--ornament)"/>
+                        <circle cx="25" cy="50" r="2" fill="var(--ornament)"/>
+                    </svg>
                 </div>
-                <div class="flex flex-col leading-none">
+                <div class="flex flex-col">
                     <span class="logo-text">AVODOD</span>
-                    <span class="text-[9px] font-bold opacity-70 tracking-tighter uppercase mt-1">Meros Portali</span>
+                    <span class="text-[9px] font-bold opacity-60 tracking-widest uppercase">Meros Portali</span>
                 </div>
             </div>
         </div>
         
         <button onclick="toggleSettings(true)" class="p-2 text-[var(--ornament)]">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
         </button>
     </header>
 
-    <!-- SETTINGS OVERLAY & PANEL -->
+    <!-- SETTINGS -->
     <div id="overlay" class="overlay" onclick="toggleSettings(false)"></div>
     <aside id="settings-panel">
         <div class="flex justify-between items-center mb-10">
-            <h3 class="font-black text-xl tracking-tight">SOZLAMALAR</h3>
+            <h3 class="font-black text-xl">SOZLAMALAR</h3>
             <button onclick="toggleSettings(false)" class="text-3xl">&times;</button>
         </div>
 
         <div class="setting-item" id="search-container">
-            <span class="setting-label">Matn ichidan izlash</span>
-            <input type="text" id="search-input" onkeyup="liveSearch()" placeholder="Kalit so'z yozing..." class="w-full p-4 rounded-2xl border-2 border-[var(--ornament)] bg-transparent outline-none font-medium text-sm">
+            <span class="setting-label">Izlash</span>
+            <input type="text" id="search-input" onkeyup="liveSearch()" placeholder="Kalit so'z..." class="w-full p-4 rounded-2xl border-2 border-[var(--ornament)] bg-transparent outline-none font-bold text-sm">
         </div>
 
         <div class="setting-item">
-            <span class="setting-label">O'qish rejimi</span>
+            <span class="setting-label">Mavzu</span>
             <div class="btn-group">
                 <button onclick="setTheme('day')" id="t-day" class="btn-opt">KUN</button>
                 <button onclick="setTheme('book')" id="t-book" class="btn-opt active">KITOB</button>
@@ -119,7 +128,7 @@
         </div>
 
         <div class="setting-item">
-            <span class="setting-label">Arabcha shrift: <span id="arab-val" class="ml-2 opacity-50">38</span>px</span>
+            <span class="setting-label">Arabcha: <span id="arab-val">38</span>px</span>
             <div class="size-ctrl">
                 <button onclick="changeFontSize('arab', -2)" class="circle-btn">－</button>
                 <button onclick="changeFontSize('arab', 2)" class="circle-btn">＋</button>
@@ -127,7 +136,7 @@
         </div>
 
         <div class="setting-item">
-            <span class="setting-label">O'zbekcha shrift: <span id="uzb-val" class="ml-2 opacity-50">20</span>px</span>
+            <span class="setting-label">O'zbekcha: <span id="uzb-val">20</span>px</span>
             <div class="size-ctrl">
                 <button onclick="changeFontSize('uzb', -2)" class="circle-btn">－</button>
                 <button onclick="changeFontSize('uzb', 2)" class="circle-btn">＋</button>
@@ -135,14 +144,12 @@
         </div>
     </aside>
 
-    <!-- MAIN CONTENT -->
     <main id="app-container"></main>
 
     <script>
         let currentView = 'olimlar';
         let currentOlim = null;
 
-        // Ma'lumotlar bazasi (Buni JSON'dan yuklash ham mumkin)
         const database = {
             "xorazmiy": { "ism": "Muhammad al-Xorazmiy", "asarlar": { "al-jabr": { "nomi": "Al-Jabr va Al-Muqobala", "file": "al-jabr.json" } } },
             "beruniy": { "ism": "Abu Rayhon Beruniy", "asarlar": { "hindiston": { "nomi": "Tahqiq ma lil-Hind", "file": "hindiston.json" } } }
@@ -159,7 +166,6 @@
             currentView = 'olimlar';
             document.getElementById('back-btn').classList.add('hidden');
             document.getElementById('search-container').classList.add('hidden');
-            
             let html = '<div class="selection-grid">';
             for (let key in database) {
                 html += `<div class="item-card" onclick="selectOlim('${key}')"><h2 class="text-xl font-bold">${database[key].ism}</h2><p class="text-[10px] mt-2 opacity-50 uppercase tracking-widest">Olim haqida</p></div>`;
@@ -171,10 +177,9 @@
             currentOlim = key;
             currentView = 'asarlar';
             document.getElementById('back-btn').classList.remove('hidden');
-            
             let html = '<div class="selection-grid">';
             for (let asarKey in database[key].asarlar) {
-                html += `<div class="item-card" onclick="selectAsar('${key}', '${asarKey}')"><h2 class="text-lg font-bold">${database[key].asarlar[asarKey].nomi}</h2><p class="text-[10px] mt-2 opacity-50 uppercase tracking-widest">Asarlar to'plami</p></div>`;
+                html += `<div class="item-card" onclick="selectAsar('${key}', '${asarKey}')"><h2 class="text-lg font-bold">${database[key].asarlar[asarKey].nomi}</h2></div>`;
             }
             document.getElementById('app-container').innerHTML = html + '</div>';
         }
@@ -190,7 +195,7 @@
                     html += `<div class="item-card" onclick="renderReader(${matnlar}, '${bob.bob_nomi}')"><h2 class="font-bold">${bob.bob_nomi}</h2></div>`;
                 });
                 document.getElementById('app-container').innerHTML = html + '</div>';
-            } catch(e) { alert("Fayl topilmadi! sources/ papkasini tekshiring."); }
+            } catch(e) { alert("JSON fayl topilmadi!"); }
         }
 
         function renderReader(matnlar, bobNomi) {
@@ -198,11 +203,7 @@
             document.getElementById('search-container').classList.remove('hidden');
             let html = '<div class="max-w-3xl mx-auto pt-28 px-5 pb-20">';
             matnlar.forEach(d => {
-                html += `<div class="content-card">
-                    <div class="arab-text">${d.arabcha_matn}</div>
-                    <div class="uzb-text">${d.tarjima}</div>
-                    ${d.izoh ? `<p class="mt-4 text-xs italic opacity-50">Izoh: ${d.izoh}</p>` : ''}
-                </div>`;
+                html += `<div class="content-card"><div class="arab-text">${d.arabcha_matn}</div><div class="uzb-text">${d.tarjima}</div></div>`;
             });
             document.getElementById('app-container').innerHTML = html + '</div>';
             window.scrollTo(0,0);
@@ -224,7 +225,7 @@
             const root = document.documentElement;
             const variable = `--${type}-size`;
             const currentSize = parseInt(getComputedStyle(root).getPropertyValue(variable));
-            const newSize = Math.max(12, Math.min(72, currentSize + delta));
+            const newSize = currentSize + delta;
             root.style.setProperty(variable, newSize + "px");
             document.getElementById(`${type}-val`).innerText = newSize;
         }
