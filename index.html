@@ -3,148 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ajdodlar Merosi | Al-Xorazmiy</title>
+    <title>AVODOD | Raqamli Ko'prik</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <style>
         .font-arabic { font-family: 'Amiri', serif; }
         .font-main { font-family: 'Lora', serif; }
-        .sepia-mode { background-color: #f4ecd8; color: #5d4037; }
-        .dark-mode { background-color: #0f172a; color: #f1f5f9; }
-        .book-mode { background-color: #ffffff; color: #1a1a1a; }
-        .card { transition: all 0.3s ease; }
-        .sepia-mode .card { background: rgba(255, 255, 255, 0.4); border: 1px solid #d7ccc8; }
-        .dark-mode .card { background: rgba(30, 41, 59, 0.7); border: 1px solid #334155; }
-        .book-mode .card { background: #f9f9f9; border: 1px solid #e5e5e5; }
-        /* Gorizontal menyu uchun scrollni yashirish */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .sepia-mode { background-color: #fcf9f2; color: #433422; }
+        .dark-mode { background-color: #121212; color: #e0e0e0; }
+        .bridge-card { transition: 0.4s ease; border-left: 4px solid #b45309; }
+        .bridge-card:hover { transform: translateX(10px); background: rgba(180, 83, 9, 0.05); }
     </style>
 </head>
 <body id="appBody" class="sepia-mode font-main min-h-screen">
 
-    <!-- Navigatsiya va Mavzular -->
-    <nav class="sticky top-0 z-50 backdrop-blur-md border-b border-black/10 p-4 mb-4">
-        <div class="max-w-4xl mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-bold tracking-widest">AL-XORAZMIY</h1>
-            <div class="flex gap-2">
-                <button onclick="setTheme('book')" class="p-2 grayscale hover:grayscale-0">📖</button>
-                <button onclick="setTheme('sepia')" class="p-2 grayscale hover:grayscale-0">☀️</button>
-                <button onclick="setTheme('dark')" class="p-2 grayscale hover:grayscale-0">🌙</button>
+    <nav class="border-b border-amber-900/10 p-6 sticky top-0 bg-inherit z-50">
+        <div class="max-w-5xl mx-auto flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-black tracking-tighter text-amber-900 dark:text-amber-500">AVODOD 🏛️</h1>
+                <p class="text-[10px] uppercase tracking-widest opacity-60">Ajdodlar va Avlodlar Ko'prigi</p>
+            </div>
+            <div class="flex gap-4">
+                <button onclick="setTheme('sepia')" class="text-xl">☀️</button>
+                <button onclick="setTheme('dark')" class="text-xl">🌙</button>
             </div>
         </div>
     </nav>
 
-    <div class="max-w-4xl mx-auto px-4">
+    <main class="max-w-5xl mx-auto px-6 py-10">
         <!-- Qidiruv paneli -->
-        <div class="mb-6">
-            <input type="text" id="searchBar" 
-                   placeholder="Arabcha matnni harakatsiz ham qidiravering..." 
-                   class="w-full p-4 rounded-2xl bg-black/5 border-2 border-amber-600/20 focus:border-amber-600 outline-none transition shadow-inner">
+        <div class="mb-12">
+            <input type="text" id="search" placeholder="Al-Asl yoki At-Tarjimadan qidirish..." 
+                   class="w-full p-5 rounded-2xl bg-white/50 border-2 border-amber-600/10 focus:border-amber-600 outline-none transition shadow-sm">
         </div>
 
-        <!-- Boblar menyusi -->
-        <div id="categoryMenu" class="flex gap-3 overflow-x-auto no-scrollbar mb-8 pb-2">
-            <button onclick="filterByBob('Hammasi')" class="bob-btn px-6 py-2 rounded-full bg-amber-600 text-white whitespace-nowrap shadow-md">Hammasi</button>
-            <button onclick="filterByBob('Muqaddima')" class="bob-btn px-6 py-2 rounded-full bg-black/5 whitespace-nowrap">Muqaddima</button>
-            <button onclick="filterByBob('Adadlar')" class="bob-btn px-6 py-2 rounded-full bg-black/5 whitespace-nowrap">Adadlar haqida</button>
-            <button onclick="filterByBob('Al-jabr')" class="bob-btn px-6 py-2 rounded-full bg-black/5 whitespace-nowrap">Al-jabr mantiqi</button>
+        <div id="content" class="space-y-16">
+            <div class="text-center py-20 opacity-40 italic font-serif text-xl">
+                Ilm zanjiri ulanmoqda...
+            </div>
         </div>
-
-        <!-- Ma'lumotlar chiqadigan joy -->
-        <div id="results" class="space-y-8 pb-20">
-            <div class="text-center py-10 opacity-50">Yuklanmoqda...</div>
-        </div>
-    </div>
+    </main>
 
     <script>
-        let fullData = [];
+        let items = [];
+        const clean = (t) => t.replace(/[\u064B-\u0652]/g, "").toLowerCase();
 
-        // Arabcha harakatlarni olib tashlash funksiyasi
-        const normalize = (text) => text.replace(/[\u064B-\u0652]/g, "").toLowerCase();
-
-        // 1. Ma'lumotlarni al-jabr.json faylidan yuklash
-        async function initApp() {
+        async function initAvodod() {
             try {
-                // Sening tayyor faylingdan ma'lumotlarni olamiz
-                const response = await fetch('al-jabr.json');
-                const data = await response.json();
+                // DIQQAT: Fayl yo'li sening strukturangga ko'ra mana bunday bo'lishi kerak:
+                const res = await fetch('./sources/xorazmiy/al-jabr.json');
+                const data = await res.json();
                 
-                // JSON strukturangga qarab yo'lni to'g'irlaymiz
-                fullData = data.scholars ? data.scholars[0].works[0].items : data.items;
-                
-                render(fullData);
-            } catch (error) {
-                document.getElementById('results').innerHTML = `
-                    <div class="text-red-500 text-center p-10 bg-red-100 rounded-xl">
-                        <b>Xatolik:</b> al-jabr.json fayli topilmadi yoki xato yozilgan.
+                // Agar json scholars strukturasi bilan bo'lsa
+                items = data.scholars ? data.scholars[0].works[0].items : (data.items || data);
+                render(items);
+            } catch (e) {
+                document.getElementById('content').innerHTML = `
+                    <div class="p-10 text-center bg-red-50 text-red-800 rounded-3xl border border-red-100">
+                        <b class="text-xl">Bog'lanishda uzilish!</b><br>
+                        <p class="mt-2">./sources/xorazmiy/al-jabr.json fayli topilmadi yoki ichida xatolik bor.</p>
                     </div>`;
-                console.error("Yuklashda xato:", error);
             }
         }
 
-        // 2. Kartochkalarni chizish
-        function render(items) {
-            const container = document.getElementById('results');
-            if (items.length === 0) {
-                container.innerHTML = `<p class="text-center py-10 opacity-50">Hech narsa topilmadi...</p>`;
-                return;
-            }
-
-            container.innerHTML = items.map(item => `
-                <div class="card p-8 rounded-3xl shadow-sm border border-transparent hover:border-amber-500/30 transition-all">
-                    <div class="flex justify-between items-center mb-6">
-                        <span class="px-3 py-1 bg-amber-600/10 text-amber-600 text-xs font-bold rounded-full">${item.bob || 'Boshqa'}</span>
-                        <span class="text-xs font-mono opacity-30">${item.id}</span>
+        function render(data) {
+            document.getElementById('content').innerHTML = data.map(i => `
+                <div class="bridge-card p-8 md:p-12 rounded-r-3xl bg-white/20 shadow-sm">
+                    <div class="flex justify-between text-[10px] font-mono opacity-40 mb-8 uppercase tracking-widest">
+                        <span>${i.bob || 'Xorazmiy: Al-Jabr'}</span>
+                        <span>ID: ${i.id}</span>
                     </div>
-                    <p class="text-4xl font-arabic text-right leading-[1.8] mb-8" dir="rtl">${item.arabcha_matn}</p>
-                    <p class="text-xl leading-relaxed mb-6 font-main">${item.tarjima}</p>
-                    ${item.izoh ? `
-                        <div class="p-4 bg-black/5 rounded-xl text-sm italic opacity-80 border-l-4 border-amber-600">
-                            <strong>Izoh:</strong> ${item.izoh}
-                        </div>` : ''}
+
+                    <!-- 1. Al-Asl (Original) -->
+                    <div class="mb-10">
+                        <h4 class="text-[10px] font-bold text-amber-800 mb-4 tracking-widest uppercase">I. Al-Asl</h4>
+                        <p class="text-4xl md:text-5xl font-arabic text-right leading-[1.8]" dir="rtl">${i.arabcha_matn}</p>
+                    </div>
+
+                    <!-- 2. At-Tarjima (Akademik) -->
+                    <div class="mb-10 pt-6 border-t border-amber-900/5">
+                        <h4 class="text-[10px] font-bold text-amber-800 mb-4 tracking-widest uppercase">II. At-Tarjima</h4>
+                        <p class="text-xl md:text-2xl leading-relaxed italic opacity-90">"${i.tarjima}"</p>
+                    </div>
+
+                    <!-- 3. Al-Mantiq (Izoh) -->
+                    ${i.izoh ? `
+                    <div class="p-6 bg-amber-900/5 rounded-2xl border-l-4 border-amber-600/30">
+                        <h4 class="text-[10px] font-bold text-amber-800 mb-3 tracking-widest uppercase">III. Al-Mantiq</h4>
+                        <p class="text-sm leading-relaxed opacity-80">${i.izoh}</p>
+                    </div>` : ''}
                 </div>
             `).join('');
         }
 
-        // 3. Boblar bo'yicha filtr
-        function filterByBob(name) {
-            // Tugma rangini o'zgartirish
-            document.querySelectorAll('.bob-btn').forEach(btn => {
-                btn.classList.remove('bg-amber-600', 'text-white');
-                btn.classList.add('bg-black/5');
-            });
-            event.target.classList.add('bg-amber-600', 'text-white');
-
-            if (name === 'Hammasi') {
-                render(fullData);
-            } else {
-                const filtered = fullData.filter(i => i.bob && i.bob.includes(name));
-                render(filtered);
-            }
-        }
-
-        // 4. Aqlli qidiruv (Harakatlar bilan yoki harakatlarsiz)
-        document.getElementById('searchBar').addEventListener('input', (e) => {
-            const query = normalize(e.target.value);
-            const filtered = fullData.filter(item => 
-                normalize(item.arabcha_matn).includes(query) || 
-                item.tarjima.toLowerCase().includes(query)
-            );
+        document.getElementById('search').addEventListener('input', (e) => {
+            const q = clean(e.target.value);
+            const filtered = items.filter(i => clean(i.arabcha_matn).includes(q) || i.tarjima.toLowerCase().includes(q));
             render(filtered);
         });
 
-        // 5. Mavzuni almashtirish
-        function setTheme(theme) {
-            document.getElementById('appBody').className = `${theme}-mode font-main min-h-screen`;
-        }
+        function setTheme(m) { document.getElementById('appBody').className = m + '-mode font-main min-h-screen transition-all duration-500'; }
 
-        // Oflayn rejim uchun Service Worker
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js');
-        }
-
-        // Ilovani ishga tushirish
-        initApp();
+        initAvodod();
     </script>
 </body>
 </html>
