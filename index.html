@@ -3,51 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AVODOD | Ajdodlar va avlodlar ko‘prigi</title>
+    <title>AVODOD | Raqamli ko‘prik</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Lora:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #ffffff; --text: #1a1a1a; --card: #f8f9fa; --accent: #b45309; }
-        
-        /* Rejimlar */
+        :root { --bg: #ffffff; --text: #1a1a1a; --card: #f9fafb; --accent: #b45309; }
         .day-mode { --bg: #ffffff; --text: #1a1a1a; --card: #f3f4f6; --accent: #b45309; }
         .night-mode { --bg: #0f172a; --text: #f1f5f9; --card: #1e293b; --accent: #fbbf24; }
         .book-mode { --bg: #f4ecd8; --text: #5d4037; --card: #e8dfc4; --accent: #8d6e63; }
 
-        body { background-color: var(--bg); color: var(--text); transition: all 0.5s ease; }
+        body { background-color: var(--bg); color: var(--text); transition: all 0.5s ease; min-height: 100-vh; }
         .font-arabic { font-family: 'Amiri', serif; }
         .font-main { font-family: 'Lora', serif; }
         .font-title { font-family: 'Playfair Display', serif; }
 
-        /* Professional "Kitob varaqlari" effekti */
         .manuscript-card {
             background-color: var(--card);
-            border-left: 6px solid var(--accent);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
+            border-left: 5px solid var(--accent);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
         }
-        .manuscript-card:hover { transform: scale(1.01); }
-
-        .mode-btn { 
-            padding: 8px 15px; 
-            border-radius: 20px; 
-            border: 1px solid var(--accent); 
-            font-size: 12px;
-            transition: 0.3s;
-        }
+        .mode-btn { border: 1px solid var(--accent); padding: 6px 16px; border-radius: 20px; font-size: 13px; transition: 0.3s; }
         .mode-btn:hover { background: var(--accent); color: white; }
     </style>
 </head>
-<body class="day-mode font-main min-h-screen">
+<body class="day-mode font-main">
 
-    <!-- Navigatsiya va Rejimlar paneli -->
-    <nav class="sticky top-0 z-50 bg-inherit border-b border-black/5 p-4 backdrop-blur-md">
+    <nav class="sticky top-0 z-50 bg-inherit border-b border-black/5 p-5 backdrop-blur-md">
         <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="text-center md:text-left">
                 <h1 class="font-title text-4xl font-black text-amber-900 tracking-tight">AVODOD 🏛️</h1>
                 <p class="text-[10px] uppercase tracking-[0.3em] opacity-70">Ajdodlar va avlodlar ko‘prigi</p>
             </div>
-            
             <div class="flex gap-2">
                 <button onclick="changeMode('day')" class="mode-btn">Kun</button>
                 <button onclick="changeMode('book')" class="mode-btn">Kitob</button>
@@ -57,59 +43,57 @@
     </nav>
 
     <main class="max-w-4xl mx-auto px-6 py-12">
-        <!-- Qidiruv -->
-        <div class="mb-16">
-            <input type="text" id="search" placeholder="Xazinadan qidirish..." 
-                   class="w-full p-5 rounded-2xl bg-white/10 border-2 border-amber-600/20 focus:border-amber-600 outline-none transition shadow-inner">
-        </div>
-
-        <!-- Ma'lumotlar -->
-        <div id="content" class="space-y-20">
-            <div class="text-center py-20 opacity-40 italic">Xazina ochilmoqda...</div>
+        <div id="content" class="space-y-16">
+            <div class="text-center py-20 opacity-40 italic">Xazina yuklanmoqda...</div>
         </div>
     </main>
 
     <script>
         let items = [];
 
-        async function init() {
+        async function initAvodod() {
             try {
+                // Nuqtasiz yo'l - bu eng xavfsiz usul
                 const res = await fetch('sources/xorazmiy/al-jabr.json');
+                
+                if (!res.ok) {
+                    throw new Error(`Fayl topilmadi. Status: ${res.status}`);
+                }
+
                 const data = await res.json();
                 items = data.scholars ? data.scholars[0].works[0].items : (data.items || data);
                 render(items);
+
             } catch (e) {
                 document.getElementById('content').innerHTML = `
-                <div class="p-10 manuscript-card rounded-3xl text-center">
-                    <h2 class="text-2xl font-title mb-4">Bog‘lanishda uzilish</h2>
-                    <p>JSON fayli topilmadi yoki yo‘l noto‘g‘ri.</p>
-                </div>`;
+                    <div class="p-12 manuscript-card rounded-[2rem] text-center border-red-200 bg-red-50/50">
+                        <h2 class="text-2xl font-title text-red-800 mb-4">Bog‘lanishda uzilish</h2>
+                        <p class="text-sm opacity-70">Xatolik: ${e.message}</p>
+                        <p class="mt-4 text-xs font-mono bg-white/50 p-2 rounded">Yo‘l: sources/xorazmiy/al-jabr.json</p>
+                    </div>`;
             }
         }
 
         function render(data) {
             document.getElementById('content').innerHTML = data.map(i => `
-                <article class="manuscript-card p-8 md:p-14 rounded-[2rem] relative overflow-hidden">
-                    <div class="flex justify-between items-center mb-10 opacity-40 font-mono text-[10px] uppercase">
+                <article class="manuscript-card p-10 md:p-14 rounded-[3rem]">
+                    <div class="flex justify-between items-center mb-10 opacity-30 text-[10px] uppercase tracking-widest font-bold">
                         <span>${i.bob || 'Ilmiy meros'}</span>
-                        <span>Kod: ${i.id}</span>
+                        <span>Tartib: ${i.id}</span>
                     </div>
 
-                    <!-- Arabcha matn -->
                     <div class="mb-12">
                         <h4 class="text-[10px] font-bold text-amber-800 mb-4 tracking-widest uppercase">Arabcha matn</h4>
                         <p class="text-4xl md:text-5xl font-arabic text-right leading-[1.8]" dir="rtl">${i.arabcha_matn}</p>
                     </div>
 
-                    <!-- Tarjima -->
-                    <div class="mb-10 pt-8 border-t border-black/5">
+                    <div class="mb-10 pt-8 border-t border-black/5 text-left">
                         <h4 class="text-[10px] font-bold text-amber-800 mb-4 tracking-widest uppercase">Tarjima</h4>
                         <p class="text-2xl md:text-3xl leading-relaxed italic opacity-90">${i.tarjima}</p>
                     </div>
 
-                    <!-- Izoh -->
                     ${i.izoh ? `
-                    <div class="p-6 md:p-10 bg-black/5 rounded-3xl mt-6 border border-black/5">
+                    <div class="p-8 bg-black/5 rounded-[2rem] border border-black/5 text-left">
                         <h4 class="text-[10px] font-bold text-amber-800 mb-3 tracking-widest uppercase">Izoh</h4>
                         <p class="text-base leading-relaxed opacity-80">${i.izoh}</p>
                     </div>` : ''}
@@ -117,19 +101,9 @@
             `).join('');
         }
 
-        function changeMode(mode) {
-            document.body.className = mode + '-mode font-main min-h-screen';
-        }
+        function changeMode(m) { document.body.className = m + '-mode font-main'; }
 
-        document.getElementById('search').addEventListener('input', (e) => {
-            const q = e.target.value.toLowerCase();
-            const filtered = items.filter(i => 
-                i.arabcha_matn.includes(q) || i.tarjima.toLowerCase().includes(q)
-            );
-            render(filtered);
-        });
-
-        init();
+        initAvodod();
     </script>
 </body>
 </html>
