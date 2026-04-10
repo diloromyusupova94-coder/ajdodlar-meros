@@ -11,8 +11,8 @@
         .font-main { font-family: 'Lora', serif; }
         .sepia-mode { background-color: #fcf9f2; color: #433422; }
         .dark-mode { background-color: #121212; color: #e0e0e0; }
-        .bridge-card { transition: 0.4s ease; border-left: 4px solid #b45309; }
-        .bridge-card:hover { transform: translateX(10px); background: rgba(180, 83, 9, 0.05); }
+        .bridge-card { border-left: 4px solid #b45309; transition: 0.3s; }
+        .bridge-card:hover { transform: scale(1.01); background: rgba(180, 83, 9, 0.03); }
     </style>
 </head>
 <body id="appBody" class="sepia-mode font-main min-h-screen">
@@ -23,86 +23,73 @@
                 <h1 class="text-3xl font-black tracking-tighter text-amber-900 dark:text-amber-500">AVODOD 🏛️</h1>
                 <p class="text-[10px] uppercase tracking-widest opacity-60">Ajdodlar va Avlodlar Ko'prigi</p>
             </div>
-            <div class="flex gap-4">
-                <button onclick="setTheme('sepia')" class="text-xl">☀️</button>
-                <button onclick="setTheme('dark')" class="text-xl">🌙</button>
+            <!-- Kelajakda bu yerga olimlar ro'yxati (Dropdown) qo'shamiz -->
+            <div id="scholarTitle" class="hidden md:block text-sm font-bold opacity-40 italic">
+                Al-Xorazmiy rukni
             </div>
         </div>
     </nav>
 
     <main class="max-w-5xl mx-auto px-6 py-10">
-        <!-- Qidiruv paneli -->
-        <div class="mb-12">
-            <input type="text" id="search" placeholder="Al-Asl yoki At-Tarjimadan qidirish..." 
-                   class="w-full p-5 rounded-2xl bg-white/50 border-2 border-amber-600/10 focus:border-amber-600 outline-none transition shadow-sm">
-        </div>
-
-        <div id="content" class="space-y-16">
-            <div class="text-center py-20 opacity-40 italic font-serif text-xl">
-                Ilm zanjiri ulanmoqda...
+        <div id="content" class="space-y-12 pb-32">
+            <div class="text-center py-20 opacity-40 italic text-xl">
+                Ilm xazinasi ochilmoqda...
             </div>
         </div>
     </main>
 
     <script>
         let items = [];
-        const clean = (t) => t.replace(/[\u064B-\u0652]/g, "").toLowerCase();
 
         async function initAvodod() {
             try {
-                // DIQQAT: Fayl yo'li sening strukturangga ko'ra mana bunday bo'lishi kerak:
-                const res = await fetch('./sources/xorazmiy/al-jabr.json');
+                // Nuqtani olib tashladik. sources papkasidan boshlab qidiradi.
+                // Kelajakda 'xorazmiy' so'zini o'zgaruvchi qilsak, boshqa olimlarni ham o'qiydi
+                const res = await fetch('sources/xorazmiy/al-jabr.json');
+                
+                if (!res.ok) throw new Error('Fayl topilmadi yoki yo\'l xato.');
+
                 const data = await res.json();
                 
-                // Agar json scholars strukturasi bilan bo'lsa
+                // JSON strukturangga moslash (Ajdod -> Avlod tizimi uchun)
                 items = data.scholars ? data.scholars[0].works[0].items : (data.items || data);
                 render(items);
             } catch (e) {
                 document.getElementById('content').innerHTML = `
                     <div class="p-10 text-center bg-red-50 text-red-800 rounded-3xl border border-red-100">
                         <b class="text-xl">Bog'lanishda uzilish!</b><br>
-                        <p class="mt-2">./sources/xorazmiy/al-jabr.json fayli topilmadi yoki ichida xatolik bor.</p>
+                        <p class="mt-2">Tizim sources/xorazmiy/al-jabr.json faylini topa olmadi.</p>
+                        <p class="mt-4 text-xs opacity-50 italic">Maslahat: sources papkasi va index.html bitta joyda ekanini tekshiring.</p>
                     </div>`;
             }
         }
 
         function render(data) {
             document.getElementById('content').innerHTML = data.map(i => `
-                <div class="bridge-card p-8 md:p-12 rounded-r-3xl bg-white/20 shadow-sm">
+                <div class="bridge-card p-8 md:p-12 rounded-r-3xl bg-white/30 shadow-sm border border-black/5">
                     <div class="flex justify-between text-[10px] font-mono opacity-40 mb-8 uppercase tracking-widest">
-                        <span>${i.bob || 'Xorazmiy: Al-Jabr'}</span>
+                        <span>${i.bob || 'Al-Jabr va Al-Muqobala'}</span>
                         <span>ID: ${i.id}</span>
                     </div>
 
-                    <!-- 1. Al-Asl (Original) -->
-                    <div class="mb-10">
+                    <div class="mb-10 text-right">
                         <h4 class="text-[10px] font-bold text-amber-800 mb-4 tracking-widest uppercase">I. Al-Asl</h4>
-                        <p class="text-4xl md:text-5xl font-arabic text-right leading-[1.8]" dir="rtl">${i.arabcha_matn}</p>
+                        <p class="text-4xl md:text-5xl font-arabic leading-[1.8] drop-shadow-sm" dir="rtl">${i.arabcha_matn}</p>
                     </div>
 
-                    <!-- 2. At-Tarjima (Akademik) -->
                     <div class="mb-10 pt-6 border-t border-amber-900/5">
-                        <h4 class="text-[10px] font-bold text-amber-800 mb-4 tracking-widest uppercase">II. At-Tarjima</h4>
-                        <p class="text-xl md:text-2xl leading-relaxed italic opacity-90">"${i.tarjima}"</p>
+                        <h4 class="text-[10px] font-bold text-amber-800 mb-4 tracking-widest uppercase text-left">II. At-Tarjima</h4>
+                        <p class="text-xl md:text-2xl leading-relaxed italic opacity-90 text-left">"${i.tarjima}"</p>
                     </div>
 
-                    <!-- 3. Al-Mantiq (Izoh) -->
                     ${i.izoh ? `
                     <div class="p-6 bg-amber-900/5 rounded-2xl border-l-4 border-amber-600/30">
-                        <h4 class="text-[10px] font-bold text-amber-800 mb-3 tracking-widest uppercase">III. Al-Mantiq</h4>
-                        <p class="text-sm leading-relaxed opacity-80">${i.izoh}</p>
+                        <h4 class="text-[10px] font-bold text-amber-800 mb-3 tracking-widest uppercase text-left">III. Al-Mantiq (Izoh)</h4>
+                        <p class="text-sm leading-relaxed opacity-80 text-left">${i.izoh}</p>
                     </div>` : ''}
                 </div>
             `).join('');
         }
-
-        document.getElementById('search').addEventListener('input', (e) => {
-            const q = clean(e.target.value);
-            const filtered = items.filter(i => clean(i.arabcha_matn).includes(q) || i.tarjima.toLowerCase().includes(q));
-            render(filtered);
-        });
-
-        function setTheme(m) { document.getElementById('appBody').className = m + '-mode font-main min-h-screen transition-all duration-500'; }
 
         initAvodod();
     </script>
