@@ -3,129 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AVODOD | Raqamli ko‘prik</title>
+    <title>AVODOD | Ajdodlar va Avlodlar Ko'prigi</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Lora:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Lora&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #ffffff; --text: #1a1a1a; --card: #f9fafb; --accent: #b45309; }
-        .day-mode { --bg: #ffffff; --text: #1a1a1a; --card: #f3f4f6; --accent: #b45309; }
-        .night-mode { --bg: #0f172a; --text: #f1f5f9; --card: #1e293b; --accent: #fbbf24; }
-        .book-mode { --bg: #f4ecd8; --text: #5d4037; --card: #e8dfc4; --accent: #8d6e63; }
-
-        body { background-color: var(--bg); color: var(--text); transition: all 0.5s ease; min-height: 100vh; }
-        .font-arabic { font-family: 'Amiri', serif; }
+        body { font-family: 'Inter', sans-serif; background-color: #ffffff; color: #1a1a1a; scroll-behavior: smooth; }
+        .font-arab { font-family: 'Amiri', serif; }
         .font-main { font-family: 'Lora', serif; }
-        .font-title { font-family: 'Playfair Display', serif; }
+        
+        /* Bo'lim tugmalari (Tablar) */
+        .view-btn {
+            flex: 1;
+            text-align: center;
+            padding: 14px 0;
+            font-weight: 600;
+            font-size: 15px;
+            color: #6b7280;
+            border-bottom: 2px solid #f3f4f6;
+            transition: all 0.3s ease;
+        }
+        .view-btn.active {
+            color: #b45309; /* Jigarrang-to'q sariq (Ajdodlar uslubi) */
+            border-bottom: 2px solid #b45309;
+        }
 
-        .manuscript-card {
-            background-color: var(--card);
-            border-left: 5px solid var(--accent);
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
-        }
-        .scholar-link {
-            padding: 8px 20px;
-            border-bottom: 2px solid transparent;
-            transition: 0.3s;
-            cursor: pointer;
-            opacity: 0.5;
-        }
-        .scholar-link.active {
-            opacity: 1;
-            border-color: var(--accent);
-            font-weight: bold;
-        }
+        /* Olimlar ro'yxati */
+        .scholar-tab { cursor: pointer; padding-bottom: 4px; border-bottom: 2px solid transparent; transition: 0.3s; }
+        .scholar-tab.active { border-color: #1f2937; color: #1f2937; }
+        
+        .sticky-nav { position: sticky; top: 0; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(5px); z-index: 50; }
+        .ayah-card { transition: opacity 0.4s ease; }
     </style>
 </head>
-<body class="day-mode font-main">
+<body class="font-main">
 
-    <nav class="sticky top-0 z-50 bg-inherit border-b border-black/5 p-5 backdrop-blur-md">
-        <div class="max-w-6xl mx-auto flex flex-col gap-6">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-                <div class="text-center md:text-left">
-                    <h1 class="font-title text-4xl font-black text-amber-900 tracking-tight">AVODOD 🏛️</h1>
-                    <p class="text-[10px] uppercase tracking-[0.3em] opacity-70">Ajdodlar va avlodlar ko‘prigi</p>
-                </div>
-                <div class="flex gap-2">
-                    <button onclick="changeMode('day')" class="px-4 py-1 border border-amber-800/30 rounded-full text-xs">Kun</button>
-                    <button onclick="changeMode('book')" class="px-4 py-1 border border-amber-800/30 rounded-full text-xs">Kitob</button>
-                    <button onclick="changeMode('night')" class="px-4 py-1 border border-amber-800/30 rounded-full text-xs">Tun</button>
-                </div>
+    <!-- Header: Logo va Olimlar -->
+    <header class="border-b border-gray-100 bg-white">
+        <div class="max-w-2xl mx-auto px-4 py-8 text-center">
+            <h1 class="text-3xl font-bold tracking-[0.2em] text-gray-900 mb-8 uppercase">Avodod</h1>
+            <div class="flex justify-around text-[11px] font-bold uppercase tracking-widest text-gray-400">
+                <span class="scholar-tab active" onclick="loadData('xorazmiy', this)">Al-Xorazmiy</span>
+                <span class="scholar-tab" onclick="loadData('beruniy', this)">Al-Beruniy</span>
+                <span class="scholar-tab" onclick="loadData('ibnsino', this)">Ibn Sino</span>
             </div>
+        </div>
+    </header>
 
-            <!-- Olimlar bo‘limi (Tabs) -->
-            <div class="flex justify-center md:justify-start gap-6 text-sm overflow-x-auto pb-2">
-                <span class="scholar-link active" onclick="loadScholar('xorazmiy', this)">Al-Xorazmiy</span>
-                <span class="scholar-link" onclick="loadScholar('beruniy', this)">Al-Beruniy</span>
-                <span class="scholar-link" onclick="loadScholar('ibnsino', this)">Ibn Sino</span>
-            </div>
+    <!-- Navigatsiya: Arabcha, Tarjima, Izoh -->
+    <nav class="sticky-nav border-b border-gray-100 shadow-sm">
+        <div class="max-w-2xl mx-auto flex">
+            <button onclick="switchView('arab')" id="btn-arab" class="view-btn">Arabcha matn</button>
+            <button onclick="switchView('tarjima')" id="btn-tarjima" class="view-btn active">Tarjima</button>
+            <button onclick="switchView('izoh')" id="btn-izoh" class="view-btn">Izoh</button>
         </div>
     </nav>
 
-    <main class="max-w-4xl mx-auto px-6 py-12">
-        <div id="content" class="space-y-16">
-            <div class="text-center py-20 opacity-40 italic">Meros yuklanmoqda...</div>
+    <!-- Asosiy matn maydoni -->
+    <main id="app" class="max-w-2xl mx-auto px-6 py-10">
+        <div class="flex justify-center py-20">
+            <div class="animate-pulse text-gray-300">Yuklanmoqda...</div>
         </div>
     </main>
 
     <script>
-        let items = [];
+        let contentData = []; 
+        let currentMode = 'tarjima';
 
-        // Olim ma'lumotlarini yuklash
-        async function loadScholar(folder, element) {
-            // Vizual aktivlikni o'zgartirish
-            document.querySelectorAll('.scholar-link').forEach(el => el.classList.remove('active'));
-            element.classList.add('active');
-
-            const contentDiv = document.getElementById('content');
-            contentDiv.innerHTML = '<div class="text-center py-20 opacity-40 italic">Sahifa varaqlanmoqda...</div>';
+        // Ma'lumotni JSON dan olish
+        async function loadData(folder, el) {
+            // Aktiv olimni belgilash
+            document.querySelectorAll('.scholar-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
 
             try {
-                // Folder o'zgaruvchisiga qarab JSON faylni topadi
-                // Agar fayl sources/xorazmiy/al-jabr.json bo'lsa
-                const res = await fetch(`sources/${folder}/al-jabr.json`);
-                
-                if (!res.ok) throw new Error("Fayl topilmadi");
-
-                const data = await res.json();
-                items = data.scholars ? data.scholars[0].works[0].items : (data.items || data);
-                render(items);
-            } catch (e) {
-                contentDiv.innerHTML = `
-                <div class="p-10 manuscript-card rounded-[2rem] text-center">
-                    <h2 class="text-2xl font-title text-red-800 mb-4">Ma'lumot topilmadi</h2>
-                    <p class="opacity-70 text-sm">Hozircha faqat Al-Xorazmiy bo‘limi tayyorlangan.</p>
-                </div>`;
+                const response = await fetch(`sources/${folder}/al-jabr.json`);
+                if (!response.ok) throw new Error();
+                contentData = await response.json();
+                renderContent();
+            } catch (err) {
+                document.getElementById('app').innerHTML = `
+                    <div class="text-center py-20 text-gray-400">
+                        <p>Ma'lumot topilmadi yoki fayl yo'li xato.</p>
+                        <p class="text-[10px] mt-2 italic">sources/${folder}/al-jabr.json</p>
+                    </div>`;
             }
         }
 
-        function render(data) {
-            document.getElementById('content').innerHTML = data.map(i => `
-                <article class="manuscript-card p-10 md:p-14 rounded-[3rem]">
-                    <div class="flex justify-between items-center mb-10 opacity-30 text-[10px] tracking-widest font-bold">
-                        <span>${i.bob || 'Ilmiy asar'}</span>
-                        <span>Kod: ${i.id}</span>
-                    </div>
-                    <div class="mb-12">
-                        <h4 class="text-[10px] font-bold text-amber-800 mb-4 uppercase">Arabcha matn</h4>
-                        <p class="text-4xl md:text-5xl font-arabic text-right leading-[1.8]" dir="rtl">${i.arabcha_matn}</p>
-                    </div>
-                    <div class="mb-10 pt-8 border-t border-black/5">
-                        <h4 class="text-[10px] font-bold text-amber-800 mb-4 uppercase">Tarjima</h4>
-                        <p class="text-2xl md:text-3xl leading-relaxed italic opacity-90">${i.tarjima}</p>
-                    </div>
-                    ${i.izoh ? `
-                    <div class="p-8 bg-black/5 rounded-[2rem] border border-black/5">
-                        <h4 class="text-[10px] font-bold text-amber-800 mb-3 uppercase">Izoh</h4>
-                        <p class="text-base leading-relaxed opacity-80">${i.izoh}</p>
-                    </div>` : ''}
-                </article>
-            `).join('');
+        // Ko'rinish rejimini almashtirish
+        function switchView(mode) {
+            currentMode = mode;
+            
+            // Tugmalar rangini yangilash
+            document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('btn-' + mode).classList.add('active');
+            
+            renderContent();
         }
 
-        function changeMode(m) { document.body.className = m + '-mode font-main'; }
+        // Matnni shakllantirish
+        function renderContent() {
+            const container = document.getElementById('app');
+            if (contentData.length === 0) return;
 
-        // Birinchi bo'lib Xorazmiyni yuklash
-        loadScholar('xorazmiy', document.querySelector('.scholar-link'));
+            container.innerHTML = contentData.map((item, index) => {
+                let segment = "";
+
+                if (currentMode === 'arab') {
+                    // FAQAT ARABCHA MATN REJIMIDAGI KO'RINISh
+                    segment = `<p class="font-arab text-4xl text-right leading-[2.5] text-gray-800" dir="rtl">${item.arabcha_matn} <span class="text-xs font-sans opacity-20 border border-gray-300 rounded-full px-2 py-1 ml-2 inline-block">${index + 1}</span></p>`;
+                } 
+                else if (currentMode === 'tarjima') {
+                    // ARABCHA + TARJIMA REJIMIDAGI KO'RINISh
+                    segment = `
+                        <p class="font-arab text-2xl text-right opacity-30 mb-6" dir="rtl">${item.arabcha_matn}</p>
+                        <div class="flex gap-4">
+                            <span class="text-amber-700 font-bold text-lg">${index + 1}.</span>
+                            <p class="text-xl leading-relaxed text-gray-900">${item.tarjima}</p>
+                        </div>`;
+                } 
+                else if (currentMode === 'izoh') {
+                    // FAQAT IZOH REJIMIDAGI KO'RINISh
+                    segment = `
+                        <div class="border-l-2 border-gray-200 pl-6 py-2">
+                            <span class="text-[10px] uppercase tracking-widest text-gray-400 block mb-3">Tushuntirish ${index + 1}</span>
+                            <p class="text-gray-600 text-lg leading-relaxed italic font-light">${item.izoh || "Ushbu qismga izoh berilmagan."}</p>
+                        </div>`;
+                }
+
+                return `<div class="ayah-card mb-16 animate-in fade-in duration-500">${segment}</div>`;
+            }).join('');
+
+            window.scrollTo({top: 0});
+        }
+
+        // Sahifa yuklanganda birinchi olimni yuklash
+        window.onload = () => {
+            loadData('xorazmiy', document.querySelector('.scholar-tab'));
+        };
     </script>
 </body>
 </html>
