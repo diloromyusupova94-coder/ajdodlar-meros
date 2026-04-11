@@ -22,7 +22,7 @@
         .acc-item { border-bottom: 1px solid rgba(0,0,0,0.05); }
         .acc-trigger { width: 100%; padding: 20px 0; display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text); }
         .acc-content { max-height: 0; overflow: hidden; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0; }
-        .acc-content.open { max-height: 800px; opacity: 1; padding-bottom: 25px; }
+        .acc-content.open { max-height: 1200px; opacity: 1; padding-bottom: 25px; }
         .rotate-icon { transition: 0.3s; opacity: 0.5; }
         .rotated { transform: rotate(180deg); opacity: 1; }
 
@@ -116,18 +116,27 @@
                 <svg class="w-4 h-4 rotate-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"/></svg>
             </button>
             <div id="acc-about" class="acc-content">
-                <div class="bg-black/5 p-5 rounded-2xl space-y-4 text-justify">
+                <div class="bg-black/5 p-5 rounded-2xl space-y-5 text-justify">
                     <p class="text-[11px] leading-relaxed">
-                        <b>AVODOD</b> — ajdodlarimizning ilmiy merosini zamonaviy texnologiyalar bilan bog‘lovchi <b>"raqamli ko‘prik"</b>.
+                        <b>AVODOD</b> — bu ajdodlarimizning bebaho ilmiy merosini zamonaviy texnologiyalar yordamida bugungi avlodga yetkazuvchi <b>"raqamli ko‘prik"</b>. Loyiha nomi <b>Ajdod</b> va <b>Avlod</b> so‘zlarining birlashmasidan hosil bo‘lgan bo‘lib, ilmning asrlar osha davomiyligini anglatadi.
                     </p>
+                    
                     <div class="space-y-2">
-                        <h4 class="text-[10px] font-black uppercase text-[var(--ornament)]">🌟 Falsafa</h4>
-                        <p class="text-[10px] leading-relaxed opacity-80">Ilm — uzilmas zanjir. Maqsadimiz qo‘lyozmalarni interfaol formatga o‘tkazishdir.</p>
+                        <h4 class="text-[10px] font-black uppercase text-[var(--ornament)]">🌟 Loyiha falsafasi</h4>
+                        <p class="text-[10px] leading-relaxed opacity-80">
+                            Ilm — bu uzilmas zanjir. Bizning maqsadimiz buyuk olimlarimiz tomonidan yaratilgan murakkab qo‘lyozmalarni bugungi dasturchilar va talabalar uchun tushunarli bo‘lgan interfaol formatga o‘tkazishdir.
+                        </p>
                     </div>
+
                     <div class="space-y-2">
-                        <h4 class="text-[10px] font-black uppercase text-[var(--ornament)]">🏗️ Konsepsiya</h4>
-                        <p class="text-[10px] leading-relaxed opacity-80 italic">Arabcha matn ➔ Tarjima ➔ Ilmiy izoh.</p>
+                        <h4 class="text-[10px] font-black uppercase text-[var(--ornament)]">🏗️ "Ko‘prik" konsepsiyasi</h4>
+                        <ul class="text-[10px] space-y-1 opacity-80">
+                            <li>• <b>Arabcha matn:</b> Qo‘lyozmaning asl varianti.</li>
+                            <li>• <b>Tarjima:</b> O‘zbek tilidagi aniq ilmiy tarjima.</li>
+                            <li>• <b>Izoh:</b> Matndagi tushunarsiz joylar va tahlillar.</li>
+                        </ul>
                     </div>
+
                     <div class="pt-4 border-t border-black/10">
                         <span class="text-[9px] font-black opacity-40 uppercase block mb-1">Muallif</span>
                         <b class="text-[12px] block">Dilorom Yusupova Husan qizi</b>
@@ -181,7 +190,7 @@
         function selectOlim(k) {
             state.o = k; view = 'asarlar';
             document.getElementById('back-btn').classList.remove('hidden');
-            let h = '<div class="selection-grid">';
+            let h = `<div class="selection-grid">`;
             for(let a in db[k].asarlar) h += `<div class="item-card" onclick="loadAsar('${k}','${a}')"><h2 class="font-bold text-lg">${db[k].asarlar[a].nomi}</h2></div>`;
             document.getElementById('app-container').innerHTML = h + '</div>';
         }
