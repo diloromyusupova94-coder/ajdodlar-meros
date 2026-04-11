@@ -1,6 +1,11 @@
 [
-   {
-    "asar_haqida": "Ushbu asar VIII asrda yozilgan bo‘lib, algebra faniga mustaqil fan sifatida asos solgan. Unda tenglamalarni yechishning 'al-jabr' va 'al-muqobala' usullari bayon etilgan."
+{
+    "asar_haqida": "Ushbu asar Muhammad ibn Muso al-Xorazmiy tomonidan 820-yillarda yozilgan bo‘lib, algebra faniga mustaqil fan sifatida asos solgan...",
+    "manbalar": [
+      "Asl matn: الخوارزمي، محمد بن موسى. (١٩٣٧). كتاب المختصر في حساب الجبر والمقابلة. القاهرة: مطبعة بول باربيه.",
+      "Nashr ma’lumoti: Muhammad ibn Muso al-Xorazmiy. Kitob al-muxtasar fi hisob al-jabr val-muqobala. — Qohira: 'Pol Barbe' matbaasi, 1937-yil.",
+      "Manba: Al-Xorazmiy, M. (1937). Al-Jabr val-Muqobala. Arabcha matn tahriri, so‘zboshi va izohlar mualliflari: Ali Mustafo Musharrafa va Muhammad Mursi Ahmad. Qohira: Misr universiteti, Fan fakulteti."
+    ]
   },
   {
     "bob_nomi": "Muqaddima",
