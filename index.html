@@ -22,14 +22,15 @@
         .arab-text { font-family: 'Amiri', serif; text-align: right; line-height: 1.8; font-size: var(--arab-size); direction: rtl; transition: 0.2s; }
         .uzb-text { font-family: 'Lora', serif; font-size: var(--uzb-size); line-height: 1.6; transition: 0.2s; }
         
-        /* Yaxlit mutolaa rejimi */
         .full-text-mode { font-family: 'Lora', serif; font-size: var(--uzb-size); line-height: 2; text-align: justify; }
         .full-text-mode p { margin-bottom: 20px; text-indent: 25px; }
 
-        /* Kartochkalar va Tablar */
+        /* Kartochkalar */
         .selection-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 20px; max-width: 1200px; margin: 0 auto; }
         .item-card { background: var(--card); border: 2px solid var(--border); padding: 30px; border-radius: 20px; cursor: pointer; text-align: center; transition: 0.3s; }
-        .content-card { background: var(--card); border-radius: 20px; padding: 25px; margin-bottom: 25px; border: 1.5px solid var(--border); }
+        .item-card:hover { border-color: var(--ornament); transform: translateY(-3px); }
+
+        .about-card { background: var(--card); border: 2px solid var(--ornament); border-radius: 24px; padding: 30px; margin-bottom: 40px; box-shadow: 0 10px 30px -10px rgba(180,83,9,0.1); }
         
         .tab-wrapper { display: flex; gap: 5px; margin-bottom: 20px; background: rgba(0,0,0,0.03); padding: 5px; border-radius: 12px; }
         .tab-trigger { flex: 1; padding: 10px 2px; border-radius: 8px; font-size: 10px; font-weight: 900; text-transform: uppercase; cursor: pointer; border: none; background: transparent; color: var(--text); opacity: 0.6; }
@@ -37,7 +38,7 @@
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
 
-        /* Sozlamalar */
+        /* Sozlamalar paneli */
         #settings-panel { position: fixed; top: 0; right: -320px; width: 310px; height: 100%; background: var(--card); border-left: 4px solid var(--ornament); z-index: 2000; transition: 0.4s; padding: 30px; }
         #settings-panel.open { right: 0; }
         .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1500; display: none; }
@@ -65,7 +66,6 @@
     <div id="overlay" class="overlay" onclick="toggleSettings(false)"></div>
     <aside id="settings-panel">
         <h3 class="font-black text-xl mb-6">SOZLAMALAR</h3>
-        
         <div class="mb-6">
             <span class="text-[10px] font-bold block mb-2 opacity-50 uppercase">Mavzu</span>
             <div class="flex gap-2">
@@ -74,7 +74,6 @@
                 <button onclick="setTheme('night')" id="t-night" class="btn-opt">TUN</button>
             </div>
         </div>
-
         <div class="mb-6">
             <span class="text-[10px] font-bold block mb-2 opacity-50 uppercase">Arabcha shrift: <span id="arab-val">36</span>px</span>
             <div class="flex gap-2">
@@ -82,7 +81,6 @@
                 <button onclick="changeFontSize('arab', 2)" class="btn-opt">＋</button>
             </div>
         </div>
-
         <div class="mb-6">
             <span class="text-[10px] font-bold block mb-2 opacity-50 uppercase">O'zbekcha shrift: <span id="uzb-val">19</span>px</span>
             <div class="flex gap-2">
@@ -113,9 +111,29 @@
         function renderOlimlar() {
             view = 'olimlar';
             document.getElementById('back-btn').classList.add('hidden');
-            let h = '<div class="selection-grid">';
+            
+            let h = `
+            <div class="max-w-4xl mx-auto px-5">
+                <div class="about-card">
+                    <h1 class="text-3xl font-black mb-4">AVODOD 🏛️</h1>
+                    <p class="text-sm leading-relaxed mb-6">
+                        <b>AVODOD</b> — bu ajdodlarimizning bebaho ilmiy merosini zamonaviy texnologiyalar yordamida bugungi avlodga yetkazuvchi "raqamli ko‘prik". 
+                        Loyiha nomi <b>Ajdod</b> va <b>Avlod</b> so‘zlarining birlashmasidan hosil bo‘lgan.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-[12px] opacity-80">
+                        <div class="bg-black/5 p-3 rounded-lg border-l-4 border-[var(--ornament)]">
+                            <b>Falsafa:</b> Ilm — bu uzilmas zanjir. Maqsadimiz murakkab qo‘lyozmalarni interfaol formatga o‘tkazishdir.
+                        </div>
+                        <div class="bg-black/5 p-3 rounded-lg border-l-4 border-[var(--ornament)]">
+                            <b>Muallif:</b> Dilorom Yusupova Husan qizi<br><i>Filolog, tadqiqotchi va dasturchi</i>
+                        </div>
+                    </div>
+                </div>
+                <h2 class="text-xs font-black opacity-40 tracking-[0.3em] uppercase mb-6 ml-2">Allomalar merosi</h2>
+                <div class="selection-grid" style="padding:0;">`;
+            
             for(let k in db) h += `<div class="item-card" onclick="selectOlim('${k}')"><h2 class="font-black text-xl">${db[k].ism}</h2></div>`;
-            document.getElementById('app-container').innerHTML = h + '</div>';
+            document.getElementById('app-container').innerHTML = h + '</div></div>';
         }
 
         function selectOlim(k) {
@@ -132,24 +150,26 @@
                 const res = await fetch(`sources/${o}/${db[o].asarlar[a].file}`);
                 const data = await res.json();
                 
-                // Annotatsiya JSON ichidagi "asar_haqida" kalitidan olinadi
-                const annotatsiya = data[0].asar_haqida || "Ushbu asar haqida ma'lumot kiritilmagan.";
-                
+                const annotatsiya = data[0].asar_haqida || "Ma'lumot mavjud emas.";
+                const manbalar = data[0].manbalar || [];
+
                 let h = `
                 <div class="max-w-4xl mx-auto px-5 mb-10">
-                    <div class="bg-[var(--ornament)]/10 p-6 rounded-2xl border-l-4 border-[var(--ornament)]">
-                        <h3 class="font-bold text-lg mb-2">Asar haqida</h3>
-                        <p class="text-sm italic opacity-80">${annotatsiya}</p>
+                    <div class="bg-[var(--card)] p-6 rounded-2xl border-2 border-[var(--border)]">
+                        <h3 class="font-black text-lg mb-2 text-[var(--ornament)]">ASAR HAQIDA</h3>
+                        <p class="text-sm opacity-80 mb-4 italic leading-relaxed">${annotatsiya}</p>
+                        ${manbalar.length > 0 ? `
+                            <h4 class="text-[10px] font-bold opacity-50 uppercase tracking-widest mb-2">Manbalar:</h4>
+                            <ul class="text-[11px] list-disc pl-5 opacity-70">
+                                ${manbalar.map(m => `<li class="mb-1">${m}</li>`).join('')}
+                            </ul>` : ''}
                     </div>
                 </div>
                 <div class="selection-grid" style="padding-top:0;">`;
                 
-                // Boblarni chiqarish (JSON'da annotatsiya birinchi ob'ektda bo'lsa, data.slice(1) ishlatishingiz mumkin)
-                data.forEach((b, index) => {
-                    if(b.bob_nomi) {
-                        const m = btoa(unescape(encodeURIComponent(JSON.stringify(b.matnlar))));
-                        h += `<div class="item-card" onclick="renderMatn('${m}')"><h2 class="font-bold">${b.bob_nomi}</h2></div>`;
-                    }
+                data.slice(1).forEach((b) => {
+                    const m = btoa(unescape(encodeURIComponent(JSON.stringify(b.matnlar))));
+                    h += `<div class="item-card" onclick="renderMatn('${m}')"><h2 class="font-bold">${b.bob_nomi}</h2></div>`;
                 });
                 document.getElementById('app-container').innerHTML = h + '</div>';
             } catch(e) { alert("Xatolik: JSON yuklanmadi!"); }
@@ -158,7 +178,6 @@
         function renderMatn(mStr) {
             view = 'matn';
             const matnlar = JSON.parse(decodeURIComponent(escape(atob(mStr))));
-            
             let h = `
             <div class="max-w-4xl mx-auto px-5">
                 <div class="flex justify-center mb-10 gap-2">
@@ -169,7 +188,7 @@
             
             matnlar.forEach((item, index) => {
                 h += `
-                <div class="content-card">
+                <div class="bg-[var(--card)] border border-[var(--border)] rounded-3xl p-6 mb-6">
                     <div class="tab-wrapper">
                         <button class="tab-trigger active" onclick="showTab(this, 'ar-${index}')">Matn</button>
                         <button class="tab-trigger" onclick="showTab(this, 'uz-${index}')">Tarjima</button>
@@ -177,7 +196,7 @@
                     </div>
                     <div id="ar-${index}" class="tab-panel active"><div class="arab-text">${item.arabcha_matn}</div></div>
                     <div id="uz-${index}" class="tab-panel"><div class="uzb-text">${item.tarjima}</div></div>
-                    <div id="iz-${index}" class="tab-panel"><div class="p-4 bg-[var(--ornament)]/5 italic text-sm border-l-2 border-[var(--ornament)]">${item.izoh || item.sharh || "Izoh yo'q."}</div></div>
+                    <div id="iz-${index}" class="tab-panel"><div class="p-4 bg-[var(--ornament)]/5 italic text-sm border-l-2 border-[var(--ornament)]">${item.izoh || "Izoh yo'q."}</div></div>
                 </div>`;
             });
 
@@ -197,7 +216,7 @@
         }
 
         function showTab(btn, panelId) {
-            const parent = btn.closest('.content-card');
+            const parent = btn.closest('div.bg-[var(--card)]');
             parent.querySelectorAll('.tab-trigger').forEach(t => t.classList.remove('active'));
             btn.classList.add('active');
             parent.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
@@ -215,9 +234,8 @@
 
         function setTheme(m) {
             document.body.className = m + '-mode';
-            document.querySelectorAll('.btn-opt').forEach(b => b.classList.remove('active'));
-            const target = document.getElementById('t-'+m);
-            if(target) target.classList.add('active');
+            document.querySelectorAll('#settings-panel .btn-opt').forEach(b => b.classList.remove('active'));
+            document.getElementById('t-'+m).classList.add('active');
         }
 
         function goBack() {
