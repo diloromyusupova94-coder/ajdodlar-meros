@@ -18,29 +18,32 @@
         body { background-color: var(--bg); color: var(--text); transition: 0.3s; font-family: 'Inter', sans-serif; margin: 0; }
         .top-nav { position: fixed; top: 0; left: 0; right: 0; height: 75px; background: var(--bg); border-bottom: 3px solid var(--ornament); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 1000; }
         
-        /* Sozlamalar menyusi uslubi */
+        /* Akkordeon uslubi */
         .acc-item { border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .acc-trigger { width: 100%; padding: 20px 0; display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
-        .acc-content { max-height: 0; overflow: hidden; transition: 0.3s ease-out; opacity: 0; }
-        .acc-content.open { max-height: 500px; opacity: 1; padding-bottom: 20px; }
-        .rotate-icon { transition: 0.3s; }
-        .rotated { transform: rotate(180deg); }
+        .acc-trigger { width: 100%; padding: 20px 0; display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text); }
+        .acc-content { max-height: 0; overflow: hidden; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0; }
+        .acc-content.open { max-height: 800px; opacity: 1; padding-bottom: 25px; }
+        .rotate-icon { transition: 0.3s; opacity: 0.5; }
+        .rotated { transform: rotate(180deg); opacity: 1; }
 
-        .btn-opt { flex: 1; padding: 12px; border: 2px solid var(--ornament); border-radius: 12px; font-weight: 800; font-size: 11px; color: var(--text); background: transparent; }
+        .btn-opt { flex: 1; padding: 12px; border: 2px solid var(--ornament); border-radius: 12px; font-weight: 800; font-size: 11px; color: var(--text); background: transparent; transition: 0.2s; }
         .btn-opt.active { background: var(--ornament); color: white; }
 
-        #settings-panel { position: fixed; top: 0; right: -360px; width: 350px; height: 100%; background: var(--card); border-left: 4px solid var(--ornament); z-index: 2000; transition: 0.4s; padding: 25px; overflow-y: auto; }
+        #settings-panel { position: fixed; top: 0; right: -380px; width: 360px; height: 100%; background: var(--card); border-left: 5px solid var(--ornament); z-index: 2000; transition: 0.4s; padding: 25px; overflow-y: auto; box-shadow: -10px 0 30px rgba(0,0,0,0.1); }
         #settings-panel.open { right: 0; }
-        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1500; display: none; }
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1500; display: none; backdrop-filter: blur(2px); }
         .overlay.active { display: block; }
 
-        /* Matnlar uchun */
+        /* Matn uslublari */
         .arab-text { font-family: 'Amiri', serif; text-align: right; line-height: 1.8; font-size: var(--arab-size); direction: rtl; }
         .uzb-text { font-family: 'Lora', serif; font-size: var(--uzb-size); line-height: 1.6; }
         .selection-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 20px; max-width: 1200px; margin: 0 auto; }
         .item-card { background: var(--card); border: 2px solid var(--border); padding: 30px; border-radius: 20px; cursor: pointer; text-align: center; transition: 0.3s; }
-        .item-card:hover { border-color: var(--ornament); transform: translateY(-3px); }
-        .tab-trigger.active { background: var(--ornament); color: white !important; }
+        .item-card:hover { border-color: var(--ornament); transform: translateY(-4px); }
+        
+        .tab-wrapper { display: flex; gap: 5px; margin-bottom: 20px; background: rgba(0,0,0,0.05); padding: 5px; border-radius: 12px; }
+        .tab-trigger { flex: 1; padding: 10px 2px; border-radius: 8px; font-size: 10px; font-weight: 900; text-transform: uppercase; cursor: pointer; border: none; color: var(--text); opacity: 0.6; }
+        .tab-trigger.active { background: var(--ornament); color: white !important; opacity: 1; }
         .tab-panel { display: none; }
         .tab-panel.active { display: block !important; }
         .hidden { display: none !important; }
@@ -50,13 +53,13 @@
 
     <header class="top-nav">
         <div class="flex items-center gap-4">
-            <button id="back-btn" onclick="goBack()" class="hidden text-2xl font-black p-2">←</button>
+            <button id="back-btn" onclick="goBack()" class="hidden text-2xl font-black p-2 hover:opacity-50 transition">←</button>
             <div class="flex flex-col">
                 <span class="font-black text-2xl tracking-tighter leading-none">AVODOD</span>
                 <span class="text-[10px] font-bold opacity-60 tracking-[0.3em] uppercase mt-1">Meros Portali</span>
             </div>
         </div>
-        <button onclick="toggleSettings(true)" class="p-2 text-[var(--ornament)]">
+        <button onclick="toggleSettings(true)" class="p-2 text-[var(--ornament)] hover:rotate-90 transition-transform duration-500">
             <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
         </button>
     </header>
@@ -64,13 +67,13 @@
     <div id="overlay" class="overlay" onclick="toggleSettings(false)"></div>
     <aside id="settings-panel">
         <div class="flex justify-between items-center mb-8">
-            <h3 class="font-black text-2xl italic">SOZLAMALAR</h3>
-            <button onclick="toggleSettings(false)" class="p-2 opacity-50 text-2xl">✕</button>
+            <h3 class="font-black text-2xl italic text-[var(--ornament)]">SOZLAMALAR</h3>
+            <button onclick="toggleSettings(false)" class="p-2 opacity-30 text-2xl hover:opacity-100 transition">✕</button>
         </div>
 
         <div class="acc-item">
             <button class="acc-trigger" onclick="toggleAcc('acc-mode', this)">
-                O'qish turi
+                <span>🌓 O'qish turi</span>
                 <svg class="w-4 h-4 rotate-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"/></svg>
             </button>
             <div id="acc-mode" class="acc-content">
@@ -84,11 +87,11 @@
 
         <div class="acc-item">
             <button class="acc-trigger" onclick="toggleAcc('acc-font', this)">
-                Shriftlar hajmi
+                <span>📏 Shriftlar hajmi</span>
                 <svg class="w-4 h-4 rotate-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"/></svg>
             </button>
             <div id="acc-font" class="acc-content">
-                <div class="space-y-4">
+                <div class="space-y-5">
                     <div>
                         <span class="text-[10px] font-bold block mb-2 opacity-40 uppercase">Arabcha: <span id="arab-val">36</span>px</span>
                         <div class="flex gap-2">
@@ -109,23 +112,31 @@
 
         <div class="acc-item">
             <button class="acc-trigger" onclick="toggleAcc('acc-about', this)">
-                Loyiha haqida
+                <span>🌟 Loyiha haqida</span>
                 <svg class="w-4 h-4 rotate-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"/></svg>
             </button>
             <div id="acc-about" class="acc-content">
-                <div class="bg-black/5 p-4 rounded-xl space-y-4">
-                    <p class="text-[11px] leading-relaxed italic">
-                        <b>AVODOD</b> — "Ajdod" va "Avlod" o‘rtasidagi raqamli ko‘prik.
+                <div class="bg-black/5 p-5 rounded-2xl space-y-4 text-justify">
+                    <p class="text-[11px] leading-relaxed">
+                        <b>AVODOD</b> — ajdodlarimizning ilmiy merosini zamonaviy texnologiyalar bilan bog‘lovchi <b>"raqamli ko‘prik"</b>.
                     </p>
-                    <div class="text-[10px]">
-                        <span class="font-bold opacity-50 uppercase block mb-1">Muallif:</span>
-                        <b>Dilorom Yusupova Husan qizi</b><br>
-                        <i>Filolog, tadqiqotchi va dasturchi</i>
+                    <div class="space-y-2">
+                        <h4 class="text-[10px] font-black uppercase text-[var(--ornament)]">🌟 Falsafa</h4>
+                        <p class="text-[10px] leading-relaxed opacity-80">Ilm — uzilmas zanjir. Maqsadimiz qo‘lyozmalarni interfaol formatga o‘tkazishdir.</p>
                     </div>
-                    <a href="mailto:Diloromyusupova94@gmail.com" class="text-[11px] font-bold text-[var(--ornament)] flex items-center gap-2">
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                        Diloromyusupova94@gmail.com
-                    </a>
+                    <div class="space-y-2">
+                        <h4 class="text-[10px] font-black uppercase text-[var(--ornament)]">🏗️ Konsepsiya</h4>
+                        <p class="text-[10px] leading-relaxed opacity-80 italic">Arabcha matn ➔ Tarjima ➔ Ilmiy izoh.</p>
+                    </div>
+                    <div class="pt-4 border-t border-black/10">
+                        <span class="text-[9px] font-black opacity-40 uppercase block mb-1">Muallif</span>
+                        <b class="text-[12px] block">Dilorom Yusupova Husan qizi</b>
+                        <i class="text-[10px] opacity-70 block mb-3">Filolog, tadqiqotchi va dasturchi</i>
+                        <a href="mailto:Diloromyusupova94@gmail.com" class="text-[11px] font-bold text-[var(--ornament)] flex items-center gap-2 hover:underline">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            Diloromyusupova94@gmail.com
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -147,14 +158,9 @@
             const content = document.getElementById(id);
             const icon = btn.querySelector('.rotate-icon');
             const isOpen = content.classList.contains('open');
-            
             document.querySelectorAll('.acc-content').forEach(c => c.classList.remove('open'));
             document.querySelectorAll('.rotate-icon').forEach(i => i.classList.remove('rotated'));
-
-            if (!isOpen) {
-                content.classList.add('open');
-                icon.classList.add('rotated');
-            }
+            if (!isOpen) { content.classList.add('open'); icon.classList.add('rotated'); }
         }
 
         function toggleSettings(s) {
@@ -187,9 +193,8 @@
                 const data = await res.json();
                 const ann = data[0].asar_haqida || "";
                 const manbalar = data[0].manbalar || [];
-
                 let h = `<div class="max-w-4xl mx-auto px-5 mb-10 text-center">
-                    <div class="bg-[var(--card)] p-8 rounded-3xl border-2 border-[var(--border)]">
+                    <div class="bg-[var(--card)] p-8 rounded-3xl border-2 border-[var(--border)] shadow-sm">
                         <p class="text-sm opacity-80 italic mb-4 leading-relaxed">${ann}</p>
                         ${manbalar.length > 0 ? `<ul class="text-[10px] list-none opacity-50 space-y-1">${manbalar.map(m => `<li>${m}</li>`).join('')}</ul>` : ''}
                     </div>
@@ -212,7 +217,7 @@
                 </div>
                 <div id="study-view">`;
             matnlar.forEach((item, i) => {
-                h += `<div class="bg-[var(--card)] border border-[var(--border)] rounded-3xl p-6 mb-6 content-card">
+                h += `<div class="bg-[var(--card)] border border-[var(--border)] rounded-3xl p-6 mb-6 content-card shadow-sm">
                     <div class="tab-wrapper"><button class="tab-trigger active" onclick="showTab(this,'ar-${i}')">Matn</button><button class="tab-trigger" onclick="showTab(this,'uz-${i}')">Tarjima</button><button class="tab-trigger" onclick="showTab(this,'iz-${i}')">Izoh</button></div>
                     <div id="ar-${i}" class="tab-panel active"><div class="arab-text">${item.arabcha_matn}</div></div>
                     <div id="uz-${i}" class="tab-panel"><div class="uzb-text">${item.tarjima}</div></div>
