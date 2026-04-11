@@ -30,13 +30,14 @@
         .item-card { background: var(--card); border: 2px solid var(--border); padding: 30px; border-radius: 20px; cursor: pointer; text-align: center; transition: 0.3s; }
         .item-card:hover { border-color: var(--ornament); transform: translateY(-3px); }
 
-        .about-card { background: var(--card); border: 2px solid var(--ornament); border-radius: 24px; padding: 30px; margin-bottom: 40px; box-shadow: 0 10px 30px -10px rgba(180,83,9,0.1); }
+        .about-card { background: var(--card); border: 2px solid var(--ornament); border-radius: 24px; padding: 30px; margin-bottom: 40px; }
         
-        .tab-wrapper { display: flex; gap: 5px; margin-bottom: 20px; background: rgba(0,0,0,0.03); padding: 5px; border-radius: 12px; }
+        .tab-wrapper { display: flex; gap: 5px; margin-bottom: 20px; background: rgba(0,0,0,0.05); padding: 5px; border-radius: 12px; }
         .tab-trigger { flex: 1; padding: 10px 2px; border-radius: 8px; font-size: 10px; font-weight: 900; text-transform: uppercase; cursor: pointer; border: none; background: transparent; color: var(--text); opacity: 0.6; }
-        .tab-trigger.active { background: var(--ornament); color: white; opacity: 1; }
+        .tab-trigger.active { background: var(--ornament); color: white !important; opacity: 1; }
+        
         .tab-panel { display: none; }
-        .tab-panel.active { display: block; }
+        .tab-panel.active { display: block !important; }
 
         /* Sozlamalar paneli */
         #settings-panel { position: fixed; top: 0; right: -320px; width: 310px; height: 100%; background: var(--card); border-left: 4px solid var(--ornament); z-index: 2000; transition: 0.4s; padding: 30px; }
@@ -122,7 +123,7 @@
                     </p>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-[12px] opacity-80">
                         <div class="bg-black/5 p-3 rounded-lg border-l-4 border-[var(--ornament)]">
-                            <b>Falsafa:</b> Ilm — bu uzilmas zanjir. Maqsadimiz murakkab qo‘lyozmalarni interfaol formatga o‘tkazishdir.
+                            <b>Falsafa:</b> Ilm — bu uzilmas zanjir. Murakkab qo‘lyozmalarni interfaol formatga o‘tkazish.
                         </div>
                         <div class="bg-black/5 p-3 rounded-lg border-l-4 border-[var(--ornament)]">
                             <b>Muallif:</b> Dilorom Yusupova Husan qizi<br><i>Filolog, tadqiqotchi va dasturchi</i>
@@ -188,7 +189,7 @@
             
             matnlar.forEach((item, index) => {
                 h += `
-                <div class="bg-[var(--card)] border border-[var(--border)] rounded-3xl p-6 mb-6">
+                <div class="bg-[var(--card)] border border-[var(--border)] rounded-3xl p-6 mb-6 content-card">
                     <div class="tab-wrapper">
                         <button class="tab-trigger active" onclick="showTab(this, 'ar-${index}')">Matn</button>
                         <button class="tab-trigger" onclick="showTab(this, 'uz-${index}')">Tarjima</button>
@@ -208,19 +209,20 @@
             window.scrollTo(0,0);
         }
 
+        function showTab(btn, panelId) {
+            const parent = btn.closest('.content-card') || btn.closest('div.bg-\\[var\\(--card\\)\\]');
+            parent.querySelectorAll('.tab-trigger').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            parent.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            const target = parent.querySelector('#' + panelId);
+            if(target) target.classList.add('active');
+        }
+
         function toggleView(m) {
             document.getElementById('study-view').classList.toggle('hidden', m === 'read');
             document.getElementById('read-view').classList.toggle('hidden', m === 'study');
             document.getElementById('btn-study').classList.toggle('active', m === 'study');
             document.getElementById('btn-read').classList.toggle('active', m === 'read');
-        }
-
-        function showTab(btn, panelId) {
-            const parent = btn.closest('div.bg-[var(--card)]');
-            parent.querySelectorAll('.tab-trigger').forEach(t => t.classList.remove('active'));
-            btn.classList.add('active');
-            parent.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-            parent.querySelector('#' + panelId).classList.add('active');
         }
 
         function changeFontSize(type, d) {
