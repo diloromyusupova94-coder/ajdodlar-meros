@@ -12,39 +12,32 @@
             --arab-size: 36px; --uzb-size: 19px; 
         }
         body.day-mode { --bg: #F0F9FF; --text: #075985; --ornament: #0284C7; --border: #BAE6FD; --card: #ffffff; }
+        body.book-mode { --bg: #FDF8E1; --text: #451A03; --ornament: #B45309; --border: #FDE68A; --card: #FFFCF0; }
         body.night-mode { --bg: #020617; --text: #BAE6FD; --ornament: #EAB308; --border: #1E293B; --card: #0F172A; }
 
         body { background-color: var(--bg); color: var(--text); transition: 0.3s; font-family: 'Inter', sans-serif; margin: 0; }
         
         .top-nav { position: fixed; top: 0; left: 0; right: 0; height: 75px; background: var(--bg); border-bottom: 3px solid var(--ornament); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 1000; }
         
-        /* Matn uslublari */
-        .arab-text { font-family: 'Amiri', serif; text-align: right; line-height: 1.8; font-size: var(--arab-size); direction: rtl; transition: 0.2s; }
-        .uzb-text { font-family: 'Lora', serif; font-size: var(--uzb-size); line-height: 1.6; transition: 0.2s; }
+        .arab-text { font-family: 'Amiri', serif; text-align: right; line-height: 1.8; font-size: var(--arab-size); direction: rtl; }
+        .uzb-text { font-family: 'Lora', serif; font-size: var(--uzb-size); line-height: 1.6; }
         
-        .full-text-mode { font-family: 'Lora', serif; font-size: var(--uzb-size); line-height: 2; text-align: justify; }
-        .full-text-mode p { margin-bottom: 20px; text-indent: 25px; }
-
-        /* Kartochkalar */
         .selection-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 20px; max-width: 1200px; margin: 0 auto; }
         .item-card { background: var(--card); border: 2px solid var(--border); padding: 30px; border-radius: 20px; cursor: pointer; text-align: center; transition: 0.3s; }
         .item-card:hover { border-color: var(--ornament); transform: translateY(-3px); }
 
-        .about-card { background: var(--card); border: 2px solid var(--ornament); border-radius: 24px; padding: 30px; margin-bottom: 40px; }
-        
         .tab-wrapper { display: flex; gap: 5px; margin-bottom: 20px; background: rgba(0,0,0,0.05); padding: 5px; border-radius: 12px; }
-        .tab-trigger { flex: 1; padding: 10px 2px; border-radius: 8px; font-size: 10px; font-weight: 900; text-transform: uppercase; cursor: pointer; border: none; background: transparent; color: var(--text); opacity: 0.6; }
+        .tab-trigger { flex: 1; padding: 10px 2px; border-radius: 8px; font-size: 10px; font-weight: 900; text-transform: uppercase; cursor: pointer; border: none; color: var(--text); opacity: 0.6; }
         .tab-trigger.active { background: var(--ornament); color: white !important; opacity: 1; }
-        
         .tab-panel { display: none; }
         .tab-panel.active { display: block !important; }
 
         /* Sozlamalar paneli */
-        #settings-panel { position: fixed; top: 0; right: -320px; width: 310px; height: 100%; background: var(--card); border-left: 4px solid var(--ornament); z-index: 2000; transition: 0.4s; padding: 30px; }
+        #settings-panel { position: fixed; top: 0; right: -350px; width: 340px; height: 100%; background: var(--card); border-left: 4px solid var(--ornament); z-index: 2000; transition: 0.4s; padding: 25px; overflow-y: auto; }
         #settings-panel.open { right: 0; }
         .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1500; display: none; }
         .overlay.active { display: block; }
-        .btn-opt { flex: 1; padding: 10px; border: 2px solid var(--ornament); border-radius: 8px; font-weight: 800; font-size: 11px; color: var(--text); background: transparent; }
+        .btn-opt { flex: 1; padding: 8px; border: 2px solid var(--ornament); border-radius: 8px; font-weight: 800; font-size: 10px; color: var(--text); background: transparent; }
         .btn-opt.active { background: var(--ornament); color: white; }
         .hidden { display: none !important; }
     </style>
@@ -66,27 +59,50 @@
 
     <div id="overlay" class="overlay" onclick="toggleSettings(false)"></div>
     <aside id="settings-panel">
-        <h3 class="font-black text-xl mb-6">SOZLAMALAR</h3>
-        <div class="mb-6">
-            <span class="text-[10px] font-bold block mb-2 opacity-50 uppercase">Mavzu</span>
-            <div class="flex gap-2">
-                <button onclick="setTheme('day')" id="t-day" class="btn-opt active">KUN</button>
-                <button onclick="setTheme('book')" id="t-book" class="btn-opt">KITOB</button>
-                <button onclick="setTheme('night')" id="t-night" class="btn-opt">TUN</button>
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="font-black text-xl italic">AVODOD 🏛️</h3>
+            <button onclick="toggleSettings(false)" class="opacity-50 text-xl">✕</button>
+        </div>
+
+        <div class="mb-8 p-4 bg-black/5 rounded-xl border border-[var(--ornament)]/20">
+            <p class="text-[11px] leading-relaxed mb-4">
+                <b>AVODOD</b> — "Ajdod" va "Avlod" o‘rtasidagi raqamli ko‘prik.
+            </p>
+            <div class="text-[10px] space-y-3">
+                <div class="border-t border-[var(--ornament)]/10 pt-2">
+                    <span class="font-bold opacity-50 uppercase">Muallif:</span><br>
+                    <b>Dilorom Yusupova Husan qizi</b><br>
+                    <i>Filolog, tadqiqotchi va dasturchi</i>
+                </div>
+                <div class="flex items-center gap-2 pt-1 text-[var(--ornament)]">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    <a href="mailto:Diloromyusupova94@gmail.com" class="font-bold hover:underline">Diloromyusupova94@gmail.com</a>
+                </div>
             </div>
         </div>
-        <div class="mb-6">
-            <span class="text-[10px] font-bold block mb-2 opacity-50 uppercase">Arabcha shrift: <span id="arab-val">36</span>px</span>
-            <div class="flex gap-2">
-                <button onclick="changeFontSize('arab', -2)" class="btn-opt">－</button>
-                <button onclick="changeFontSize('arab', 2)" class="btn-opt">＋</button>
+
+        <div class="space-y-6">
+            <div>
+                <span class="text-[10px] font-bold block mb-2 opacity-50 uppercase">Mavzu</span>
+                <div class="flex gap-2">
+                    <button onclick="setTheme('day')" id="t-day" class="btn-opt active">KUN</button>
+                    <button onclick="setTheme('book')" id="t-book" class="btn-opt">KITOB</button>
+                    <button onclick="setTheme('night')" id="t-night" class="btn-opt">TUN</button>
+                </div>
             </div>
-        </div>
-        <div class="mb-6">
-            <span class="text-[10px] font-bold block mb-2 opacity-50 uppercase">O'zbekcha shrift: <span id="uzb-val">19</span>px</span>
-            <div class="flex gap-2">
-                <button onclick="changeFontSize('uzb', -1)" class="btn-opt">－</button>
-                <button onclick="changeFontSize('uzb', 1)" class="btn-opt">＋</button>
+            <div>
+                <span class="text-[10px] font-bold block mb-2 opacity-50 uppercase">Arabcha shrift: <span id="arab-val">36</span>px</span>
+                <div class="flex gap-2">
+                    <button onclick="changeFontSize('arab', -2)" class="btn-opt">－</button>
+                    <button onclick="changeFontSize('arab', 2)" class="btn-opt">＋</button>
+                </div>
+            </div>
+            <div>
+                <span class="text-[10px] font-bold block mb-2 opacity-50 uppercase">O'zbekcha shrift: <span id="uzb-val">19</span>px</span>
+                <div class="flex gap-2">
+                    <button onclick="changeFontSize('uzb', -1)" class="btn-opt">－</button>
+                    <button onclick="changeFontSize('uzb', 1)" class="btn-opt">＋</button>
+                </div>
             </div>
         </div>
     </aside>
@@ -112,27 +128,9 @@
         function renderOlimlar() {
             view = 'olimlar';
             document.getElementById('back-btn').classList.add('hidden');
-            
-            let h = `
-            <div class="max-w-4xl mx-auto px-5">
-                <div class="about-card">
-                    <h1 class="text-3xl font-black mb-4">AVODOD 🏛️</h1>
-                    <p class="text-sm leading-relaxed mb-6">
-                        <b>AVODOD</b> — bu ajdodlarimizning bebaho ilmiy merosini zamonaviy texnologiyalar yordamida bugungi avlodga yetkazuvchi "raqamli ko‘prik". 
-                        Loyiha nomi <b>Ajdod</b> va <b>Avlod</b> so‘zlarining birlashmasidan hosil bo‘lgan.
-                    </p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-[12px] opacity-80">
-                        <div class="bg-black/5 p-3 rounded-lg border-l-4 border-[var(--ornament)]">
-                            <b>Falsafa:</b> Ilm — bu uzilmas zanjir. Murakkab qo‘lyozmalarni interfaol formatga o‘tkazish.
-                        </div>
-                        <div class="bg-black/5 p-3 rounded-lg border-l-4 border-[var(--ornament)]">
-                            <b>Muallif:</b> Dilorom Yusupova Husan qizi<br><i>Filolog, tadqiqotchi va dasturchi</i>
-                        </div>
-                    </div>
-                </div>
-                <h2 class="text-xs font-black opacity-40 tracking-[0.3em] uppercase mb-6 ml-2">Allomalar merosi</h2>
+            let h = `<div class="max-w-4xl mx-auto px-5">
+                <h2 class="text-xs font-black opacity-40 tracking-[0.3em] uppercase mb-10 text-center">Allomalar merosi</h2>
                 <div class="selection-grid" style="padding:0;">`;
-            
             for(let k in db) h += `<div class="item-card" onclick="selectOlim('${k}')"><h2 class="font-black text-xl">${db[k].ism}</h2></div>`;
             document.getElementById('app-container').innerHTML = h + '</div></div>';
         }
@@ -150,18 +148,16 @@
             try {
                 const res = await fetch(`sources/${o}/${db[o].asarlar[a].file}`);
                 const data = await res.json();
-                
-                const annotatsiya = data[0].asar_haqida || "Ma'lumot mavjud emas.";
+                const annotatsiya = data[0].asar_haqida || "Ma'lumot yo'q.";
                 const manbalar = data[0].manbalar || [];
 
                 let h = `
                 <div class="max-w-4xl mx-auto px-5 mb-10">
                     <div class="bg-[var(--card)] p-6 rounded-2xl border-2 border-[var(--border)]">
-                        <h3 class="font-black text-lg mb-2 text-[var(--ornament)]">ASAR HAQIDA</h3>
-                        <p class="text-sm opacity-80 mb-4 italic leading-relaxed">${annotatsiya}</p>
+                        <h3 class="font-black text-[10px] opacity-40 mb-2 uppercase tracking-widest">Asar haqida</h3>
+                        <p class="text-sm opacity-80 mb-4 italic">${annotatsiya}</p>
                         ${manbalar.length > 0 ? `
-                            <h4 class="text-[10px] font-bold opacity-50 uppercase tracking-widest mb-2">Manbalar:</h4>
-                            <ul class="text-[11px] list-disc pl-5 opacity-70">
+                            <ul class="text-[10px] list-disc pl-5 opacity-60">
                                 ${manbalar.map(m => `<li class="mb-1">${m}</li>`).join('')}
                             </ul>` : ''}
                     </div>
@@ -173,23 +169,21 @@
                     h += `<div class="item-card" onclick="renderMatn('${m}')"><h2 class="font-bold">${b.bob_nomi}</h2></div>`;
                 });
                 document.getElementById('app-container').innerHTML = h + '</div>';
-            } catch(e) { alert("Xatolik: JSON yuklanmadi!"); }
+            } catch(e) { alert("Xatolik!"); }
         }
 
         function renderMatn(mStr) {
             view = 'matn';
             const matnlar = JSON.parse(decodeURIComponent(escape(atob(mStr))));
-            let h = `
-            <div class="max-w-4xl mx-auto px-5">
-                <div class="flex justify-center mb-10 gap-2">
-                    <button onclick="toggleView('study')" id="btn-study" class="btn-opt active">Ilmiy Tahlil</button>
-                    <button onclick="toggleView('read')" id="btn-read" class="btn-opt">Yaxlit Mutolaa</button>
+            let h = `<div class="max-w-4xl mx-auto px-5">
+                <div class="flex justify-center mb-8 gap-2">
+                    <button onclick="toggleView('study')" id="btn-study" class="btn-opt active" style="font-size:12px; padding:10px 20px;">Ilmiy Tahlil</button>
+                    <button onclick="toggleView('read')" id="btn-read" class="btn-opt" style="font-size:12px; padding:10px 20px;">Yaxlit Mutolaa</button>
                 </div>
                 <div id="study-view">`;
             
             matnlar.forEach((item, index) => {
-                h += `
-                <div class="bg-[var(--card)] border border-[var(--border)] rounded-3xl p-6 mb-6 content-card">
+                h += `<div class="bg-[var(--card)] border border-[var(--border)] rounded-3xl p-6 mb-6 content-card">
                     <div class="tab-wrapper">
                         <button class="tab-trigger active" onclick="showTab(this, 'ar-${index}')">Matn</button>
                         <button class="tab-trigger" onclick="showTab(this, 'uz-${index}')">Tarjima</button>
@@ -200,22 +194,18 @@
                     <div id="iz-${index}" class="tab-panel"><div class="p-4 bg-[var(--ornament)]/5 italic text-sm border-l-2 border-[var(--ornament)]">${item.izoh || "Izoh yo'q."}</div></div>
                 </div>`;
             });
-
-            h += `</div><div id="read-view" class="hidden full-text-mode">`;
-            matnlar.forEach(item => { h += `<p>${item.tarjima}</p>`; });
-            h += `</div></div>`;
-            
-            document.getElementById('app-container').innerHTML = h;
+            h += `</div><div id="read-view" class="hidden text-lg leading-relaxed text-justify space-y-6">`;
+            matnlar.forEach(item => { h += `<p style="text-indent: 2rem;">${item.tarjima}</p>`; });
+            document.getElementById('app-container').innerHTML = h + '</div></div>';
             window.scrollTo(0,0);
         }
 
         function showTab(btn, panelId) {
-            const parent = btn.closest('.content-card') || btn.closest('div.bg-\\[var\\(--card\\)\\]');
+            const parent = btn.closest('.content-card');
             parent.querySelectorAll('.tab-trigger').forEach(t => t.classList.remove('active'));
             btn.classList.add('active');
             parent.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-            const target = parent.querySelector('#' + panelId);
-            if(target) target.classList.add('active');
+            parent.querySelector('#' + panelId).classList.add('active');
         }
 
         function toggleView(m) {
