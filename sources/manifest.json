@@ -1,0 +1,28 @@
+{
+  "authors": [
+    {
+      "id": "xorazmiy",
+      "name": "Muhammad ibn Muso al-Xorazmiy",
+      "folder": "xorazmiy",
+      "index_file": "al-jabr.json"
+    },
+    {
+      "id": "beruniy",
+      "name": "Abu Rayhon Beruniy",
+      "folder": "beruniy",
+      "index_file": "al-qonun.json"
+    },
+    {
+      "id": "ibn-sino",
+      "name": "Abu Ali ibn Sino",
+      "folder": "ibn-sino",
+      "index_file": "al-qonun-fit-tibb.json"
+    },
+    {
+      "id": "fargoni",
+      "name": "Ahmad al-Farg‘oniy",
+      "folder": "fargoni",
+      "index_file": "al-harakat.json"
+    }
+  ]
+}
