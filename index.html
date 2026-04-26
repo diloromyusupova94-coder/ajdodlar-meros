@@ -58,7 +58,7 @@
             </div>
         </div>
         <button onclick="toggleSettings(true)" class="p-2 text-[var(--ornament)] hover:rotate-90 transition-transform duration-500">
-            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 a2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
         </button>
     </header>
 
@@ -116,8 +116,13 @@
             <div id="acc-about" class="acc-content">
                 <div class="bg-black/5 p-5 rounded-2xl space-y-5 text-justify">
                     <p class="text-[11px] leading-relaxed">
-                        <b>AVODOD</b> — bu ajdodlarimizning bebaho ilmiy merosini zamonaviy texnologiyalar yordamida bugungi avlodga yetkazuvchi <b>"raqamli ko‘prik"</b>. Loyiha nomi <b>Ajdod</b> va <b>Avlod</b> so‘zlarining birlashmasidan hosil bo‘lgan bo‘lib, ilmning asrlar osha davomiyligini anglatadi.
+                        <b>AVODOD</b> — bu ajdodlarimizning bebaho ilmiy merosini zamonaviy texnologiyalar yordamida bugungi avlodga yetkazuvchi <b>"raqamli ko‘prik"</b>.
                     </p>
+                    <div class="pt-4 border-t border-black/10">
+                        <span class="text-[9px] font-black opacity-40 uppercase block mb-1">Muallif</span>
+                        <b class="text-[12px] block">Dilorom Yusupova Husan qizi</b>
+                        <a href="mailto:Diloromyusupova94@gmail.com" class="text-[11px] font-bold text-[var(--ornament)] hover:underline">Diloromyusupova94@gmail.com</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -168,24 +173,28 @@
         async function selectOlim(folder, indexFile) {
             state.o = folder; state.f = indexFile; view = 'boblar';
             document.getElementById('back-btn').classList.remove('hidden');
+            const container = document.getElementById('app-container');
+            
             try {
                 const res = await fetch(`sources/${folder}/${indexFile}`);
+                if (!res.ok) throw new Error("Fayl yo'q");
+                
                 const data = await res.json();
+                if (!data.mundarija || data.mundarija.length === 0) {
+                    container.innerHTML = `<div class="max-w-4xl mx-auto px-5 text-center mt-20 opacity-50 italic"><p class="text-xl">Bu bo‘lim hozircha bo‘sh...</p></div>`;
+                    return;
+                }
+
                 const ann = data.asar_haqida || "";
                 const manbalar = data.manbalar || [];
-                
-                let h = `<div class="max-w-4xl mx-auto px-5 mb-10 text-center">
-                    <div class="bg-[var(--card)] p-8 rounded-3xl border-2 border-[var(--border)] shadow-sm">
-                        <p class="text-sm opacity-80 italic mb-4 leading-relaxed">${ann}</p>
-                        ${manbalar.length > 0 ? `<ul class="text-[10px] list-none opacity-50 space-y-1">${manbalar.map(m => `<li>${m}</li>`).join('')}</ul>` : ''}
-                    </div>
-                </div><div class="selection-grid" style="padding-top:0;">`;
-                
+                let h = `<div class="max-w-4xl mx-auto px-5 mb-10 text-center"><div class="bg-[var(--card)] p-8 rounded-3xl border-2 border-[var(--border)] shadow-sm"><p class="text-sm opacity-80 italic mb-4 leading-relaxed">${ann}</p>${manbalar.length > 0 ? `<ul class="text-[10px] list-none opacity-50 space-y-1">${manbalar.map(m => `<li>${m}</li>`).join('')}</ul>` : ''}</div></div><div class="selection-grid" style="padding-top:0;">`;
                 data.mundarija.forEach((b) => {
                     h += `<div class="item-card" onclick="loadMatn('${folder}','${b.fayl}')"><h2 class="font-bold">${b.nomi}</h2></div>`;
                 });
-                document.getElementById('app-container').innerHTML = h + '</div>';
-            } catch(e) { console.error("Mundarija yuklanmadi:", e); }
+                container.innerHTML = h + '</div>';
+            } catch(e) {
+                container.innerHTML = `<div class="max-w-4xl mx-auto px-5 text-center mt-20 opacity-40 italic"><p class="text-xl">Ushbu olimning asarlari hozircha shakllantirilmoqda...</p></div>`;
+            }
         }
 
         async function loadMatn(folder, file) {
