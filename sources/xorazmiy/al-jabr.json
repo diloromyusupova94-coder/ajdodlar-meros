@@ -1,178 +1,29 @@
-[
-  {
-    "asar_haqida": "Ushbu asar Muhammad ibn Muso al-Xorazmiy tomonidan 820-yillarda yozilgan bo‘lib, algebra faniga mustaqil fan sifatida asos solgan fundamental asardir.",
-    "manbalar": [
-      "Asl matn: الخوارزمي، محمد بن موسى. (١٩٣٧). كتاب المختصر في حساب الجبر والمقابلة. القاهرة: مطبعة بول باربيه.",
-      "Nashr ma’lumoti: Muhammad ibn Muso al-Xorazmiy. Kitob al-muxtasar fi hisob al-jabr val-muqobala. — Qohira: 'Pol Barbe' matbaasi, 1937-yil.",
-      "Manba: Al-Xorazmiy, M. (1937). Al-Jabr val-Muqobala. Arabcha matn tahriri, so‘zboshi va izohlar mualliflari: Ali Mustafo Musharrafa va Muhammad Mursi Ahmad. Qohira: Misr universiteti, Fan fakulteti."
-    ]
-  },
-  {
-    "bob_nomi": "Muqaddima",
-    "matnlar": [
-      {
-        "id": "01-MUQ-001",
-        "arabcha_matn": "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ",
-        "tarjima": "Mehribon va rahmli Alloh nomi bilan (boshlayman).",
-        "izoh": "Klassik islomiy va ilmiy asarlarning an’anaviy boshlanishi (Basmala)."
-      },
-      {
-        "id": "01-MUQ-002",
-        "arabcha_matn": "هَذَا كِتَابٌ وَضَعَهُ مُحَمَّدُ بْنُ مُوسَى الْخَوَارِزْمِيُّ افْتَتَحَهُ بِأَنْ قَالَ:",
-        "tarjima": "Ushbu kitob Muhammad ibn Muso al-Xorazmiy tarafidan tasnif etilgan bo‘lib, u (kitobni) quyidagi so‘zlar bilan boshladi:",
-        "izoh": "Muallifning o‘zini uchinchi shaxsda tanishtirishi — o‘sha davr ilmiy odobining (tavoze’) ko‘rinishi."
-      },
-      {
-        "id": "01-MUQ-003",
-        "arabcha_matn": "الْحَمْدُ لِلَّهِ عَلَى نِعَمِهِ بِمَا هُوَ أَهْلُهُ مِنْ مَحَامِدِهِ",
-        "tarjima": "Allohga U Zot munosib bo‘lgan hamdlar bilan, ne’matlari uchun hamd bo‘lsin.",
-        "izoh": "Ilohiy ne’matlarga nisbatan tilga olingan dastlabki shukrona va hamd."
-      },
-      {
-        "id": "01-MUQ-004",
-        "arabcha_matn": "الَّتِي بِأَدَاءِ مَا افْتَرَضَ مِنْهَا عَلَى مَنْ يَعْبُدُهُ مِنْ خَلْقِهِ يَقَعُ اسْمُ الشُّكْرِ.",
-        "tarjima": "Alloh O‘z maxluqlaridan Unga ibodat qiluvchilarga o‘sha ne’matlarning shukrini ado etishni farz qilgan (bu amal bilan shukr nomi sobit bo‘ladi).",
-        "izoh": "Bu yerda shukr qilishning nafaqat til bilan, balki farz amallarni bajarish orqali bo‘lishi ta’kidlanmoqda."
-      },
-      {
-        "id": "01-MUQ-005",
-        "arabcha_matn": "وَيَسْتَوْجِبُ الْمَزِيدَ وَتُؤْمِنُ مِنَ الْغِيَرِ إِقْرَارًا بِرُبُوبِيَّتِهِ وَتَذَلُّلاً لِعِزَّتِهِ وَخُشُوعًا لِعَظَمَتِهِ.",
-        "tarjima": "(Bu shukr ne’matlarning) ziyoda bo‘lishiga sabab bo‘ladi va (ne’matlarning) o‘zgarib ketishidan (zavolga uchrashidan) omonda saqlaydi. Bu (hamdlar) Uning parvardigorligini iqror etish, azizligiga hokisorlik va buyukligiga xushu’ (tavoze’) qilishdir.",
-        "izoh": "Xorazmiy bu yerda shukrning ikki asosiy natijasini ko‘rsatmoqda: ne’matning ko‘payishi va uning barqarorligi."
-      },
-      {
-        "id": "01-MUQ-006",
-        "arabcha_matn": "بَعَثَ مُحَمَّدًا صَلَّى اللَّهُ عَلَيْهِ وَعَلَى آلِهِ وَسَلَّمَ بِالنُّبُوَّةِ عَلَى حِينِ فَتْرَةٍ مِنَ الرُّسُلِ.",
-        "tarjima": "(Alloh) Muhammad sollallohu alayhi va sallamni rasullar (kelishi) uzilib qolgan bir davrda payg‘ambarlik bilan yubordi.",
-        "izoh": "«Fatra» (فَتْرَةٍ) — ikki payg‘ambar orasidagi vahy to‘xtagan muddatga nisbatan ishlatiladigan maxsus termin."
-      },
-      {
-        "id": "01-MUQ-007",
-        "arabcha_matn": "وَتَنَكُّرٍ مِنَ الْحَقِّ وَدُرُوسٍ مِنَ الْهُدَى.",
-        "tarjima": "Haq (tanilmay) inkor qilingan va hidoyat (yo‘llari) o‘chib ketgan (bir vaqtda yubordi).",
-        "izoh": "«Durūs» (دُرُوسٍ) so‘zi bu yerda biror narsaning eskirib, asari ham qolmasligi, o‘chib ketishi ma’nosida kelgan."
-      },
-      {
-        "id": "01-MUQ-008",
-        "arabcha_matn": "فَبَصَّرَ بِهِ مِنَ الْعَمَى وَاسْتَنْقَذَ بِهِ مِنَ الْهَلَكَةِ وَكَثَّرَ بِهِ بَعْدَ الْقِلَّةِ وَأَلَّفَ بِهِ بَعْدَ الشَّتَاتِ.",
-        "tarjima": "U (Zot) orqali (odamlarni) ko‘rlikdan qutqarib, ko‘radigan qildi, halokatdan qutqardi, (mo‘minlarni) ozchilikdan keyin ko‘paytirdi va tarqoqlikdan keyin (qalblarni) birlashtirdi.",
-        "izoh": "Islom kelishidan oldingi jaholat davri ko‘rlik va halokatga, islomdan keyingi holat esa hidoyat va birlikka o‘xshatilgan."
-      },
-      {
-        "id": "01-MUQ-009",
-        "arabcha_matn": "تَبَارَكَ اللَّهُ رَبُّنَا وَتَعَالَى جَدُّهُ وَتَقَدَّسَتْ أَسْمَاؤُهُ وَلَا إِلَهَ غَيْرُهُ.",
-        "tarjima": "Rabbimiz Alloh muborak va oliydir, Uning azamati yuksakdir, ismlari muqaddasdir va Undan o‘zga iloh yo‘qdir.",
-        "izoh": "«Jadduhu» (جَدُّهُ) so‘zi bu yerda Allohning azamati va buyukligi ma’nosida kelmoqda."
-      },
-      {
-        "id": "01-MUQ-010",
-        "arabcha_matn": "وَصَلَّى اللَّهُ عَلَى مُحَمَّدٍ النَّبِيِّ وَآلِهِ وَسَلَّمَ.",
-        "tarjima": "Alloh payg‘ambar Muhammadga va uning oilasiga salovvat va salomlar yo‘llasin.",
-        "izoh": "Muqaddimaning diniy qismini yakunlovchi salovat."
-      },
-      {
-        "id": "01-MUQ-011",
-        "arabcha_matn": "وَلَمْ تَزَلِ الْعُلَمَاءُ فِي الْأَزْمِنَةِ الْخَالِيَةِ وَالْأُمَمِ الْمَاضِيَةِ يَكْتُبُونَ الْكُتُبَ مِمَّا يُصَنِّفُونَ مِنْ صُنُوفِ الْعِلْمِ وَوُجُوهِ الْحِكْمَةِ.",
-        "tarjima": "O‘tgan zamonlarda va qadimiy ummatlarda ulamolar ilmning turli sohalari va hikmatning yo‘nalishlari bo‘yicha kitoblar tasnif etishdan to‘xtamadilar.",
-        "izoh": "Ulamolarning ilmiy meros qoldirish an’anasi haqida."
-      },
-      {
-        "id": "01-MUQ-012",
-        "arabcha_matn": "نَظَرًا لِمَنْ بَعْدَهُمْ وَاحْتِسَابًا لِلْأَجْرِ بِقَدْرِ الطَّاقَةِ.",
-        "tarjima": "Ular o‘zlaridan keyingilarni o‘ylagan holda hamda qodir bo‘lganlaricha savob umidida bu ishlarni qildilar.",
-        "izoh": "Ulamolarning asosiy maqsadi — kelajak avlodga manfaat yetkazish va Allohdan savob umid qilish ekani ta'kidlanmoqda."
-      },
-      {
-        "id": "01-MUQ-013",
-        "arabcha_matn": "وَرَجَاءَ أَنْ يَلْحَقَهُمْ مِنْ أَجْرِ ذَلِكَ وَذُخْرِهِ وَذِكْرِهِ.",
-        "tarjima": "Buning ajr-savobi, oxirat zaxirasi va yaxshi nomi o‘zlariga yetishishidan umid qildilar.",
-        "izoh": "Ilm qoldirishning uchta natijasi: savob, zaxira va yaxshi nom (zikr)."
-      },
-      {
-        "id": "01-MUQ-014",
-        "arabcha_matn": "وَيَبْقَى لَهُمْ مِنْ لِسَانِ الصِّدْقِ مَا يَصْغُرُ فِي جَنْبِهِ كَثِيرٌ مِمَّا كَانُوا يَتَكَلَّفُونَهُ مِنَ الْمَؤُونَةِ.",
-        "tarjima": "Ular uchun (avlodlar tilida) shunday haqqoniy maqtovlar qoldiki, uning yonida ular (ilm yo‘lida) chekkan ko‘plab mashaqqatlar kichik bo‘lib qoladi.",
-        "izoh": "Olim vafotidan keyin uning ilmiy mehnati uchun aytiladigan xolis e’tirof va ma’naviy merosning moddiy qiyinchiliklardan ustunligi ta’kidlanmoqda."
-      },
-      {
-        "id": "01-MUQ-015",
-        "arabcha_matn": "وَيَحْمِلُونَهُ عَلَى أَنْفُسِهِمْ مِنَ الْمَشَقَّةِ فِي كَشْفِ أَسْرَارِ الْعِلْمِ وَغَامِضِهِ.",
-        "tarjima": "Vaholanki, ular ilm sirlarini va uning murakkab jihatlarini ochishda o‘z zimmalariga katta mashaqqatlar olgan edilar.",
-        "izoh": "Haqiqiy olimlarning ilmiy tadqiqot yo‘lidagi zahmatlari va fanning eng chigal masalalarini yechishdagi fidoyiligi ifodalangan."
-      },
-      {
-        "id": "01-MUQ-016",
-        "arabcha_matn": "إِمَّا رَجُلٌ سَبَقَ إِلَى مَا لَمْ يَكُنْ مُسْتَخْرَجًا قَبْلَهُ فَوَرِثَهُ مَنْ بَعْدَهُ.",
-        "tarjima": "Yoki (bu olimlar shunday) bir kishidirki, o‘zidan oldin kashf qilinmagan narsaga birinchi bo‘lib yo‘l ochdi va uni o‘zidan keyingilarga meros qoldirdi.",
-        "izoh": "Ulamolarning birinchi toifasi — yangi ilmiy yo‘nalishlarga asos solgan va kashfiyotlar qilgan kashfiyotchilar tavsifi."
-      },
-      {
-        "id": "01-MUQ-017",
-        "arabcha_matn": "وَإِمَّا رَجُلٌ شَرَحَ مِمَّا أَبْقَى الْأَوَّلُونَ مَا كَانَ مُسْتَغْلِقًا فَأَوْضَحَ طَرِيقَهُ وَسَهَّلَ مَسْلَكَهُ وَقَرَّبَ مَأْخَذَهُ.",
-        "tarjima": "Yoki avvalgilar qoldirgan meros ichidagi tushunarsiz joylarni sharhlagan, uning yo‘lini oydinlashtirgan va tushunishni yaqinlashtirgan kishidir.",
-        "izoh": "Ulamolarning ikkinchi toifasi — murakkab asarlarni sharhlovchi, ularni o‘rganuvchilar uchun soddalashtirib, tushunarli holga keltiruvchi olimlar tavsifi."
-      },
-      {
-        "id": "01-MUQ-018",
-        "arabcha_matn": "وَإِمَّا رَجُلٌ وَجَدَ فِي بَعْضِ الْكُتُبِ خَلَلاً فَلَمَّ شَعَثَهُ وَأَقَامَ أَدَدَهُ وَأَحْسَنَ الظَّنَّ بِصَاحِبِهِ غَيْرَ رَادٍّ عَلَيْهِ وَلَا مُفْتَخِرٍ بِذَلِكَ مِنْ فِعْلِ نَفْسِهِ.",
-        "tarjima": "Yoki ba’zi kitoblarda biror nuqson topib, uning tarqoqligini jamlagan, xatosini tuzatgan va o‘sha kitob muallifi haqida yaxshi gumonda bo‘lib, uni rad etmagan hamda o‘zining bu ishi bilan faxrlanmagan kishidir.",
-        "izoh": "Ulamolarning uchinchi toifasi — ilmiy asarlarni tahrir va isloh qiluvchilar tavsifi."
-      },
-      {
-        "id": "01-MUQ-019",
-        "arabcha_matn": "وَقَدْ شَجَّعَنِي مَا فَضَّلَ اللَّهُ بِهِ الْإِمَامَ الْمَأْمُونَ أَمِيرَ الْمُؤْمِنِينَ مَعَ الْخِلَافَةِ الَّتِي حَازَ لَهُ إِرْثُهَا.",
-        "tarjima": "Alloh mo‘minlar amiri imom Ma’munga o‘ziga meros bo‘lib tekkan xalifalik bilan birga ato etgan fazilati meni (ushbu kitobni yozishga) ruhlantirdi.",
-        "izoh": "Xalifa Ma’munning fazilati Xorazmiyning ilmiy ijodi uchun asosiy turtki bo‘lgan."
-      },
-      {
-        "id": "01-MUQ-020",
-        "arabcha_matn": "وَأَكْرَمَهُ بِلِبَاسِهَا وَحَلَّاهُ بِزِينَتِهَا.",
-        "tarjima": "(Alloh) uni o‘sha (xalifalik) libosi bilan mukofotladi va uning ziynati bilan bezadi.",
-        "izoh": "Xalifalik maqomining ulug‘vorligi badiiy o‘xshatishlar orqali ifodalangan."
-      },
-      {
-        "id": "01-MUQ-021",
-        "arabcha_matn": "مِنَ الرَّغْبَةِ فِي الْأَدَبِ وَتَقْرِيبِ أَهْلِهِ وَإِدْنَائِهِمْ وَبَسْطِ كَنَفِهِ لَهُمْ.",
-        "tarjima": "Uning ilm-u adabga bo‘lgan ishtiyoqi, adab ahllarini o‘ziga yaqin qilishi va ularga himoya qanotini yozishi (meni ruhlantirdi).",
-        "izoh": "Hukmdorning ilm ahlini qadrlashi ilm-fanning rivojlanishiga xizmat qilgan."
-      },
-      {
-        "id": "01-MUQ-022",
-        "arabcha_matn": "وَمَعُونَتِهِ إِيَّاهُمْ عَلَى إِيضَاحِ مَا كَانَ مُسْتَبْهَمًا وَتَسْهِيلِ مَا كَانَ مُسْتَوْعَرًا.",
-        "tarjima": "Hamda ularga tushunarsiz narsalarni oydinlashtirishda va qiyin yo‘llarni osonlashtirishda yordam berishi (turtki bo‘ldi).",
-        "izoh": "Murakkab masalalarni hal etishda davlat darajasidagi e’tiborning o‘rni ta’kidlangan."
-      },
-      {
-        "id": "01-MUQ-023",
-        "arabcha_matn": "عَلَى أَنْ أَلَّفْتُ مِنْ كِتَابِ الْجَبْرِ وَالْمُقَابَلَةِ كِتَابًا مُخْتَصَرًا حَاصِرًا لِلَّطِيفِ الْحِسَابِ وَجَلِيلِهِ.",
-        "tarjima": "(Shunday qilib) «Al-jabr va al-muqobala» haqida, hisobning nozik va muhim jihatlarini o‘z ichiga olgan ixcham bir kitob tasnif etdim.",
-        "izoh": "Muallif asarning nomini va mazmunini ma’lum qilmoqda."
-      },
-      {
-        "id": "01-MUQ-024",
-        "arabcha_matn": "لِمَا يَلْزَمُ النَّاسَ مِنَ الْحَاجَةِ إِلَيْهِ فِي مَوَارِيثِهِمْ وَوَصَايَاهُمْ وَفي مَقَاسَمَتِهِمْ وَأَحْكَامِهِمْ وَتِجَارَاتِهِمْ.",
-        "tarjima": "Zero, odamlarning o‘z meroslari, vasiyatlari, taqsimlashlari va savdo-sotiq ishlarida unga ehtiyojlari tushadi.",
-        "izoh": "Matematik hisob-kitoblarning kundalik hayotdagi zarurati ko‘rsatilgan."
-      },
-      {
-        "id": "01-MUQ-025",
-        "arabcha_matn": "وَفِي جَمِيعِ مَا يَتَعَامَلُونَ بِهِ بَيْنَهُمْ مِنْ مِسَاحَةِ الْأَرَضِينَ وَكَرْيِ الْأَنْهَارِ وَالْهَنْدَسَةِ وَغَيْرِ ذَلِكَ مِنْ وُجُوهِهِ وَفُنُونِهِ.",
-        "tarjima": "Shuningdek, yer o‘lchash, ariqlar qazish, muhandislik va boshqa sohalardagi muomalalarida (foydalidir).",
-        "izoh": "Algebraning texnik va muhandislik sohalaridagi o‘rni."
-      },
-      {
-  "id": "01-MUQ-026",
-  "arabcha_matn": "مُقَدِّمًا لِحُسْنِ النِّيَّةِ فِيهِ وَرَاجِيًا لِأَنْ يُنْزِلَهُ أَهْلُ الْأَدَبِ بِفَضْلِ مَا اسْتُودِعُوا مِنْ نِعَمِ اللَّهِ تَعَالَى وَجَلِيلِ آلَائِهِ وَجَمِيلِ بَلَائِهِ عِنْدَهُمْ مَنْزِلَتَهُ.",
-  "tarjima": "Bu ishni go‘zal niyatda boshladim va ilm ahli Alloh in’om etgan ne’matlar, buyuk marhamatlar hamda go‘zal imtihonlar hurmati ushbu kitobni munosib darajada qabul qilishlarini umid qildim.",
-  "izoh": "Xorazmiy ilm ahlidan o‘zlariga berilgan aql va ilmiy zahmatlar (go‘zal imtihonlar) haqqi-hurmati asarni to‘g‘ri baholashni so‘ramoqda."
-},
-      {
-        "id": "01-MUQ-027",
-        "arabcha_matn": "وَبِاللَّهِ تَوْفِيقِي فِي هَذَا وَفِي غَيْرِهِ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ.",
-        "tarjima": "Bu va boshqa ishlardagi muvaffaqiyatim faqat Alloh bilandir. Ungagina tavakkul qildim.",
-        "izoh": "Muallif yakunda Allohga tavakkul qilmoqda."
-      }
-    ]
-  },
-  { "bob_nomi": "1-bob: Sonlar", "matnlar": [] }
-]
+{
+  "asar_haqida": "Ushbu asar Muhammad ibn Muso al-Xorazmiy tomonidan 820-yillarda yozilgan bo‘lib, algebra faniga mustaqil fan sifatida asos solgan fundamental asardir.",
+  "manbalar": [
+    "Asl matn: الخوارزمي، محمد بن موسى. (١٩٣٧). كتاب المختصر في حساب الجبر والمقابلة. القاهرة: مطبعة بول باربيه.",
+    "Nashr ma’lumoti: Muhammad ibn Muso al-Xorazmiy. Kitob al-muxtasar fi hisob al-jabr val-muqobala. — Qohira: 'Pol Barbe' matbaasi, 1937-yil.",
+    "Manba: Al-Xorazmiy, M. (1937). Al-Jabr val-Muqobala. Arabcha matn tahriri, so‘zboshi va izohlar mualliflari: Ali Mustafo Musharrafa va Muhammad Mursi Ahmad. Qohira: Misr universiteti, Fan fakulteti."
+  ],
+  "mundarija": [
+    { "id": "01", "nomi": "Muqaddima", "fayl": "01_muqaddima.json" },
+    { "id": "02", "nomi": "Sonlar tarkibi va algebraik terminlar", "fayl": "01_terminlar.json" },
+    { "id": "03", "nomi": "Olti xil sodda tenglamalar", "fayl": "02_sodda_tenglamalar.json" },
+    { "id": "04", "nomi": "Qo‘shma (murakkab) tenglamalar", "fayl": "03_murakkab_tenglamalar.json" },
+    { "id": "05", "nomi": "Geometrik isbotlar", "fayl": "04_geometrik_isbot.json" },
+    { "id": "06", "nomi": "Algebraik amallar", "fayl": "05_algebraik_amallar.json" },
+    { "id": "07", "nomi": "Kasrlar va ildizlar ustida amallar", "fayl": "06_kasr_ildiz.json" },
+    { "id": "08", "nomi": "Turli umumiy masalalar", "fayl": "07_umumiy_masalalar.json" },
+    { "id": "09", "nomi": "Ko‘p hadlilar ustida amallar", "fayl": "08_kop_hadlilar.json" },
+    { "id": "10", "nomi": "Muomalat (savdo-sotiq) masalalari", "fayl": "09_muomalat.json" },
+    { "id": "11", "nomi": "O‘lchovlar va yuzalar (Mesaha)", "fayl": "10_mesaha_yuzalar.json" },
+    { "id": "12", "nomi": "Geometrik shakllar yuzasiga doir masalalar", "fayl": "11_geometrik_masalalar.json" },
+    { "id": "13", "nomi": "Meros taqsimoti asoslari", "fayl": "12_meros_asoslari.json" },
+    { "id": "14", "nomi": "Vasiyatlar bobi va ulushlar", "fayl": "13_vasiyatlar_bobi.json" },
+    { "id": "15", "nomi": "Ad-davr usuli (Qarz va vasiyat)", "fayl": "14_davr_usuli.json" },
+    { "id": "16", "nomi": "Vasiyat va qul ozod qilish masalalari", "fayl": "15_qul_ozod_qilish.json" },
+    { "id": "17", "nomi": "Mahr va qarz hisoblari", "fayl": "16_mahr_va_qarz.json" },
+    { "id": "18", "nomi": "Murakkab yakuniy masalalar", "fayl": "17_yakuniy_masalalar.json" },
+    { "id": "19", "nomi": "Atamalar lug‘ati", "fayl": "18_umumiy_lugat.json" }
+  ]
+}
