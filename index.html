@@ -259,7 +259,7 @@
                 <div id="study-view">`;
             matnlar.forEach((item, i) => {
                 h += `<div class="bg-[var(--card)] border border-[var(--border)] rounded-3xl p-6 mb-6 content-card shadow-sm">
-                    <div class="tab-wrapper"><button class="tab-trigger active" onclick="showTab(this,'ar-${i}')">Matn</button><button class="tab-trigger" onclick="showTab(this,'uz-${i}')">Tarjima</button><button class="tab-trigger" onclick="showTab(this,'iz-${i}')">Izoh</button></div>
+                    <div class="tab-wrapper"><button class="tab-trigger active" onclick="showTab(this,'ar-${i}')">Arabcha matn</button><button class="tab-trigger" onclick="showTab(this,'uz-${i}')">Tarjima</button><button class="tab-trigger" onclick="showTab(this,'iz-${i}')">Izoh</button></div>
                     <div id="ar-${i}" class="tab-panel active"><div class="arab-text">${item.arabcha_matn}</div></div>
                     <div id="uz-${i}" class="tab-panel"><div class="uzb-text">${item.tarjima}</div></div>
                     <div id="iz-${i}" class="tab-panel"><div class="p-4 bg-[var(--ornament)]/5 italic text-sm border-l-2 border-[var(--ornament)]">${item.izoh || "—"}</div></div>
