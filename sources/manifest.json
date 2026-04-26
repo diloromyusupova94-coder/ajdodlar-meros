@@ -3,7 +3,7 @@
     { "name": "Muhammad ibn Muso al-Xorazmiy", "folder": "xorazmiy", "index_file": "al-jabr.json" },
     { "name": "Abu Rayhon Beruniy", "folder": "beruniy", "index_file": "hindiston.json" },
     { "name": "Abu Ali ibn Sino", "folder": "ibn_sino", "index_file": "qonunlar.json" },
-    { "name": "Ahmad al-Farg'oniy", "folder": "fargony", "index_file": "astronomiya.json" },
+    { "name": "Ahmad al-Farg'oniy", "folder": "fargoni", "index_file": "astronomiya.json" },
     { "name": "Abu Nasr Forobiy", "folder": "forobiy", "index_file": "mantiq.json" },
     { "name": "Mirzo Ulug'bek", "folder": "ulugbek", "index_file": "zij.json" },
     { "name": "Mahmud az-Zamaxshariy", "folder": "zamaxshariy", "index_file": "mufassal.json" }
